@@ -35,6 +35,8 @@ video_id = '8zZHAfq0gls' # aquilo, sober
 #video_id = 'q0hyYWKXF0Q' # dance monkey: video
 #video_id = 'Hx4nWW9z0ig' # dance monkey: song
 d = api.song_info(video_id)
+
+pp(d)
 # opts = \
 # {
 #     'format': 'bestaudio/best',

@@ -13,20 +13,20 @@ class YouTubeMusic(object):
 
         methods = \
         (
-            song_info,
-            search_suggestions,
-            # home,
-            # hotlist,
-            # search,
-            # playlist,
-            # artist,
-            # song,
-            # album,
-            # guide,
+            'song_info',
+            'search_suggestions',
+            # 'home',
+            # 'hotlist',
+            # 'search',
+            # 'playlist',
+            # 'artist',
+            # 'song',
+            # 'album',
+            # 'guide',
         )
 
         for method in methods:
-            setattr(self.__class__, method.__name__.split('.')[-1], method)
+            setattr(self.__class__, method, globals()[method])
 
     def __repr__(self):
         representation = '<{class_name}()>'.format \

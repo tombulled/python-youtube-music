@@ -13,30 +13,30 @@ class BaseYouTubeMusic(object):
     def __init__(self):
         methods = \
         (
-        _get_page,
-        _url_api,
-        _url_yt,
-        _url,
-        browse_album,
-        browse_artist,
-        browse_home,
-        browse_hotlist,
-        browse_playlist,
-        browse,
-        guide,
-        next,
-        page_channel,
-        page_home,
-        page_hotlist,
-        page_playlist,
-        page_search,
-        page_watch,
-        search_suggestions,
-        video_info,
+            '_get_page',
+            '_url_api',
+            '_url_yt',
+            '_url',
+            'browse_album',
+            'browse_artist',
+            'browse_home',
+            'browse_hotlist',
+            'browse_playlist',
+            'browse',
+            'guide',
+            'next',
+            'page_channel',
+            'page_home',
+            'page_hotlist',
+            'page_playlist',
+            'page_search',
+            'page_watch',
+            'search_suggestions',
+            'video_info',
         )
 
         for method in methods:
-            setattr(self.__class__, method.__name__.split('.')[-1], method)
+            setattr(self.__class__, method, globals()[method])
 
         self.session = requests.Session()
 

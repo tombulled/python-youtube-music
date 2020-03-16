@@ -33,6 +33,9 @@ home = api.home()
 # d = api.search_suggestions('foo')
 # d = api.song_info('q0hyYWKXF0Q')
 video_id = '8zZHAfq0gls' # aquilo, sober
+playlist_id = 'RDCLAK5uy_mkLtojKLOUUGwnu3ZnN5AaODijlieB-aQ'
+playlist_id = 'PL4fGSI1pDJn688ebB8czINn0_nov50e3A' # top 100
+playlist_id = 'RDCLAK5uy_m1oO6GcuiUbkB7zVErype6l8vOHQ_vh4g' # cuddling country, 100+
 #video_id = 'q0hyYWKXF0Q' # dance monkey: video
 #video_id = 'Hx4nWW9z0ig' # dance monkey: song
 # d = api.song_info(video_id)
@@ -42,8 +45,9 @@ video_id = '8zZHAfq0gls' # aquilo, sober
 # data2 = api.home(continuation=d['continuation'])
 # d2=data2
 # d = api.hotlist()
-d = api.guide()
-pp(d)
+# d = api.guide()
+d = api.playlist(playlist_id)
+# pp(d)
 # x = ytm_utils.get_nested(data, 'contents', 'singleColumnBrowseResultsRenderer', 'tabs', 0, 'tabRenderer')
 # x=ytm_utils.get_nested(data, 'contents', 'singleColumnBrowseResultsRenderer', 'tabs', 0, 'tabRenderer', 'content', 'sectionListRenderer', 'contents', default = [])[:-1]
 # pp(d)

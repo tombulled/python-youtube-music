@@ -19,11 +19,14 @@ class AbstractYouTubeMusic(object):
             'hotlist',
             # 'guide', # Although implemented, pointless...
 
-            # 'playlist',
+            'playlist',
             # 'album',
             # 'song',
             # 'artist',
             # 'search',
+
+            # shuffle?
+            # radio?
         )
 
         for method in methods:

@@ -36,11 +36,13 @@ video_id = '8zZHAfq0gls' # aquilo, sober
 #video_id = 'q0hyYWKXF0Q' # dance monkey: video
 #video_id = 'Hx4nWW9z0ig' # dance monkey: song
 # d = api.song_info(video_id)
-data = api.home()
-d=data
-
-data2 = api.home(continuation=d['continuation'])
-d2=data2
+# data = api.home()
+# d=data
+#
+# data2 = api.home(continuation=d['continuation'])
+# d2=data2
+d = api.hotlist()
+pp(d)
 # x = ytm_utils.get_nested(data, 'contents', 'singleColumnBrowseResultsRenderer', 'tabs', 0, 'tabRenderer')
 # x=ytm_utils.get_nested(data, 'contents', 'singleColumnBrowseResultsRenderer', 'tabs', 0, 'tabRenderer', 'content', 'sectionListRenderer', 'contents', default = [])[:-1]
 # pp(d)

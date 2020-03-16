@@ -41,7 +41,8 @@ video_id = '8zZHAfq0gls' # aquilo, sober
 #
 # data2 = api.home(continuation=d['continuation'])
 # d2=data2
-d = api.hotlist()
+# d = api.hotlist()
+d = api.guide()
 pp(d)
 # x = ytm_utils.get_nested(data, 'contents', 'singleColumnBrowseResultsRenderer', 'tabs', 0, 'tabRenderer')
 # x=ytm_utils.get_nested(data, 'contents', 'singleColumnBrowseResultsRenderer', 'tabs', 0, 'tabRenderer', 'content', 'sectionListRenderer', 'contents', default = [])[:-1]

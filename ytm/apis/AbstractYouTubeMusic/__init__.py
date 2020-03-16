@@ -17,12 +17,12 @@ class AbstractYouTubeMusic(object):
             'search_suggestions',
             'home',
             'hotlist',
-            # 'search',
+            'guide',
             # 'playlist',
-            # 'artist',
-            # 'song',
             # 'album',
-            # 'guide',
+            # 'song',
+            # 'artist',
+            # 'search',
         )
 
         for method in methods:

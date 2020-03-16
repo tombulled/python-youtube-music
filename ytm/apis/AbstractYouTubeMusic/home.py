@@ -3,12 +3,19 @@ from ... import constants as ytm_constants
 
 __all__ = __name__.split('.')[-1:]
 
-def home(self):
-    data = self.base.browse_home()
+def home(self, continuation=None):
+    if continuation:
+        data = self.base.browse(continuation=continuation)
+
+        data = ytm_utils.get_nested(data, 'continuationContents', 'sectionListContinuation')
+    else:
+        data = self.base.browse_home()
+
+        data = ytm_utils.get_nested(data, 'contents', 'singleColumnBrowseResultsRenderer', 'tabs', 0, 'tabRenderer', 'content', 'sectionListRenderer')
 
     scraped = \
     {
-        'continuation': ytm_utils.get_nested(data, 'contents', 'singleColumnBrowseResultsRenderer', 'tabs', 0, 'tabRenderer', 'content', 'sectionListRenderer', 'continuations', 0, 'nextContinuationData', 'continuation'),
+        'continuation': ytm_utils.get_nested(data, 'continuations', 0, 'nextContinuationData', 'continuation'),
         'shelves': \
         [
             {
@@ -54,7 +61,7 @@ def home(self):
                     for item in ytm_utils.get_nested(shelf, 'contents', default=[])
                 ],
             }
-            for shelf in ytm_utils.get_nested(data, 'contents', 'singleColumnBrowseResultsRenderer', 'tabs', 0, 'tabRenderer', 'content', 'sectionListRenderer', 'contents', default = [])[:-1]
+            for shelf in ytm_utils.get_nested(data, 'contents', default = [])[:-1]
             for shelf in (ytm_utils.first_key(shelf),)
         ],
     }

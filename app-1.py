@@ -39,9 +39,11 @@ video_id = '8zZHAfq0gls' # aquilo, sober
 data = api.home()
 d=data
 
+data2 = api.home(continuation=d['continuation'])
+d2=data2
 # x = ytm_utils.get_nested(data, 'contents', 'singleColumnBrowseResultsRenderer', 'tabs', 0, 'tabRenderer')
 # x=ytm_utils.get_nested(data, 'contents', 'singleColumnBrowseResultsRenderer', 'tabs', 0, 'tabRenderer', 'content', 'sectionListRenderer', 'contents', default = [])[:-1]
-pp(d)
+# pp(d)
 # opts = \
 # {
 #     'format': 'bestaudio/best',

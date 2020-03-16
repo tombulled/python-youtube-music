@@ -16,7 +16,7 @@ class AbstractYouTubeMusic(object):
             'song_info',
             'search_suggestions',
             'home',
-            # 'hotlist',
+            'hotlist',
             # 'search',
             # 'playlist',
             # 'artist',

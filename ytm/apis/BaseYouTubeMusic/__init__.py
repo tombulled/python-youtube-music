@@ -9,6 +9,8 @@ from ... import utils     as ytm_utils
 
 _import(locals())
 
+locals()['__all__'] = __name__.split('.')[-1:]
+
 class BaseYouTubeMusic(object):
     def __init__(self):
         methods = \

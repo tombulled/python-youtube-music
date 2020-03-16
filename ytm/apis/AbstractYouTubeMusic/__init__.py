@@ -5,9 +5,9 @@ from ..BaseYouTubeMusic import BaseYouTubeMusic
 
 _import(locals())
 
-print(__name__, __file__)
+locals()['__all__'] = __name__.split('.')[-1:]
 
-class YouTubeMusic(object):
+class AbstractYouTubeMusic(object):
     def __init__(self):
         self.base = BaseYouTubeMusic()
 
@@ -15,7 +15,7 @@ class YouTubeMusic(object):
         (
             'song_info',
             'search_suggestions',
-            # 'home',
+            'home',
             # 'hotlist',
             # 'search',
             # 'playlist',

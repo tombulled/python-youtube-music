@@ -7,9 +7,10 @@ from ytm import utils
 
 from pprint import pprint as pp
 gn = utils.get_nested
+ytm_utils=utils
 
 bapi = ytm.BaseYouTubeMusic()
-api  = ytm.YouTubeMusic()
+api  = ytm.AbstractYouTubeMusic()
 
 '''
 # Remember, aim is also to make a REST api for each: So each should have dump as dict
@@ -34,8 +35,12 @@ home = api.home()
 video_id = '8zZHAfq0gls' # aquilo, sober
 #video_id = 'q0hyYWKXF0Q' # dance monkey: video
 #video_id = 'Hx4nWW9z0ig' # dance monkey: song
-d = api.song_info(video_id)
+# d = api.song_info(video_id)
+data = api.home()
+d=data
 
+# x = ytm_utils.get_nested(data, 'contents', 'singleColumnBrowseResultsRenderer', 'tabs', 0, 'tabRenderer')
+# x=ytm_utils.get_nested(data, 'contents', 'singleColumnBrowseResultsRenderer', 'tabs', 0, 'tabRenderer', 'content', 'sectionListRenderer', 'contents', default = [])[:-1]
 pp(d)
 # opts = \
 # {
@@ -56,6 +61,8 @@ pp(d)
 
 # for k, v in d.items():
 #     print(k.ljust(35), str(type(v)).ljust(10), repr(v)[:100])
+
+# x = d['INITIAL_ENDPOINT']['browseEndpoint']['browseId']
 
 # pp(d)
 

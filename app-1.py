@@ -36,6 +36,7 @@ video_id = '8zZHAfq0gls' # aquilo, sober
 playlist_id = 'RDCLAK5uy_mkLtojKLOUUGwnu3ZnN5AaODijlieB-aQ'
 playlist_id = 'PL4fGSI1pDJn688ebB8czINn0_nov50e3A' # top 100
 playlist_id = 'RDCLAK5uy_m1oO6GcuiUbkB7zVErype6l8vOHQ_vh4g' # cuddling country, 100+
+playlist_id = 'RDCLAK5uy_nG4p6ReP1bUQMziVrlScqMmElbc7ZqSfk' # has explicit
 #video_id = 'q0hyYWKXF0Q' # dance monkey: video
 #video_id = 'Hx4nWW9z0ig' # dance monkey: song
 # d = api.song_info(video_id)

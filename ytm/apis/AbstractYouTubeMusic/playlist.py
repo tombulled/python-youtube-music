@@ -15,7 +15,7 @@ def playlist(self, playlist_id=None, continuation=None):
     elif playlist_id:
         data = self.base.browse_playlist \
         (
-            browse_id = f'VL{playlist_id}',
+            browse_id = f'VL{playlist_id}', # Check this
         )
 
         scraped['playlist'] = \
@@ -38,19 +38,22 @@ def playlist(self, playlist_id=None, continuation=None):
     scraped['tracks'] = \
     [
         {
-            'playlist_id': ytm_utils.get_nested(track, 'musicResponsiveListItemRenderer', 'overlay', 'musicItemThumbnailOverlayRenderer', 'content', 'musicPlayButtonRenderer', 'playNavigationEndpoint', 'watchEndpoint', 'playlistId'),
-            'video_id': ytm_utils.get_nested(track, 'musicResponsiveListItemRenderer', 'overlay', 'musicItemThumbnailOverlayRenderer', 'content', 'musicPlayButtonRenderer', 'playNavigationEndpoint', 'watchEndpoint', 'videoId'),
+            'id': ytm_utils.get_nested(track, 'musicResponsiveListItemRenderer', 'overlay', 'musicItemThumbnailOverlayRenderer', 'content', 'musicPlayButtonRenderer', 'playNavigationEndpoint', 'watchEndpoint', 'videoId'),
+            'title': ytm_utils.get_nested(track, 'musicResponsiveListItemRenderer', 'flexColumns', 0, 'musicResponsiveListItemFlexColumnRenderer', 'text', 'runs', 0, 'text'),
             'music_video_type': ytm_utils.get_nested(track, 'musicResponsiveListItemRenderer', 'overlay', 'musicItemThumbnailOverlayRenderer', 'content', 'musicPlayButtonRenderer', 'playNavigationEndpoint', 'watchEndpoint', 'watchEndpointMusicSupportedConfigs', 'watchEndpointMusicConfig', 'musicVideoType'),
             'duration': ytm_utils.get_nested(track, 'musicResponsiveListItemRenderer', 'fixedColumns', 0, 'musicResponsiveListItemFixedColumnRenderer', 'text', 'simpleText'),
-            'title': ytm_utils.get_nested(track, 'musicResponsiveListItemRenderer', 'flexColumns', 0, 'musicResponsiveListItemFlexColumnRenderer', 'text', 'runs', 0, 'text'),
+            'thumbnail': ytm_utils.get_nested(track, 'musicResponsiveListItemRenderer', 'thumbnail', 'musicThumbnailRenderer', 'thumbnail', 'thumbnails', -1),
             'artist': \
             {
                 'name': ytm_utils.get_nested(track, 'musicResponsiveListItemRenderer', 'flexColumns', 1, 'musicResponsiveListItemFlexColumnRenderer', 'text', 'runs', 0, 'text'),
                 'id': ytm_utils.get_nested(track, 'musicResponsiveListItemRenderer', 'flexColumns', 1, 'musicResponsiveListItemFlexColumnRenderer', 'text', 'runs', 0, 'navigationEndpoint', 'browseEndpoint', 'browseId'),
             },
-            'thumbnail': ytm_utils.get_nested(track, 'musicResponsiveListItemRenderer', 'thumbnail', 'musicThumbnailRenderer', 'thumbnail', 'thumbnails', -1),
+            'explicit': ytm_utils.get_nested(track, 'musicResponsiveListItemRenderer', 'badges', 0, 'musicInlineBadgeRenderer', 'accessibilityData', 'accessibilityData', 'label', func=str.lower) == 'explicit',
         }
         for index, track in enumerate(ytm_utils.get_nested(data, 'contents', default=[]))
     ]
+
+    # from pprint import pprint as pp
+    # pp(ytm_utils.get_nested(data, 'contents')[11])
 
     return scraped

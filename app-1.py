@@ -42,12 +42,17 @@ playlist_id = 'RDCLAK5uy_nG4p6ReP1bUQMziVrlScqMmElbc7ZqSfk' # has explicit
 # d = api.song_info(video_id)
 # data = api.home()
 # d=data
+album_id = 'OLAK5uy_neMqoK4zw4CrfjMOoy0CjdmZwQTBG3jCA'
+# album_id = 'OLAK5uy_m_ThFBkG5CpG5OwA451_2uT6PUv7PMq1A'
+# album_id = 'OLAK5uy_l_Ss11gFagXVI_H11IFkoZYNqnQR5WCc8'
+
+d = api.album(album_id=album_id)
 #
 # data2 = api.home(continuation=d['continuation'])
 # d2=data2
 # d = api.hotlist()
 # d = api.guide()
-d = api.playlist(playlist_id)
+# d = api.playlist(playlist_id)
 # pp(d)
 # x = ytm_utils.get_nested(data, 'contents', 'singleColumnBrowseResultsRenderer', 'tabs', 0, 'tabRenderer')
 # x=ytm_utils.get_nested(data, 'contents', 'singleColumnBrowseResultsRenderer', 'tabs', 0, 'tabRenderer', 'content', 'sectionListRenderer', 'contents', default = [])[:-1]

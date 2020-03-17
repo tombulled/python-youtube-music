@@ -20,7 +20,7 @@ class AbstractYouTubeMusic(object):
             # 'guide', # Although implemented, pointless...
 
             'playlist',
-            # 'album',
+            'album',
             # 'song',
             # 'artist',
             # 'search',

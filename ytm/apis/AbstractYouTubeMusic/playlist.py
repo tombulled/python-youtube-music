@@ -1,8 +1,9 @@
 from ... import utils as ytm_utils
+from ... import constants as ytm_constants
 
 __all__ = __name__.split('.')[-1:]
 
-def playlist(self, playlist_id=None, continuation=None):
+def playlist(self, playlist_id=None, continuation=None, make_radio=False):
     scraped = {}
 
     if continuation:
@@ -13,9 +14,15 @@ def playlist(self, playlist_id=None, continuation=None):
 
         data = ytm_utils.get_nested(data, 'continuationContents', 'musicPlaylistShelfContinuation')
     elif playlist_id:
+        # Do appropriate playlist checks
+        if make_radio:
+            prefix = ytm_constants.PREFIX_RADIO
+        else:
+            prefix = ytm_constants.PREFIX_PLAYLIST
+
         data = self.base.browse_playlist \
         (
-            browse_id = f'VL{playlist_id}', # Check this
+            browse_id = f'{prefix}{playlist_id}', # Check this
         )
 
         scraped['playlist'] = \

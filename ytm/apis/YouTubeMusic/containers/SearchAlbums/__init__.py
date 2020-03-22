@@ -1,34 +1,30 @@
 ''' xxx '''
 
 from .....utils import _import
+from ..... import utils as ytm_utils
+
 
 _import(locals())
 
 locals()['__all__'] = __name__.split('.')[-1:]
 
-class Search(dict):
+class SearchAlbums(list):
     def __init__(self, api, data):
         methods = \
         (
             '_parse',
-            'filter_albums',
-            'filter_artists',
-            'filter_playlists',
-            'filter_songs',
-            'filter_videos',
+            'next',
         )
 
         for method in methods:
             setattr(self.__class__, method, globals()[method])
 
+        # self._continuation = ytm_utils.get_nested(data, 'continuation')
+        self._continuation = None
+
         self.api = api
-        # self.raw_data = data
-        # self.data = self._parse()
-        # super().__init__(self.data)
 
-        parsed_data = self._parse(data)
-
-        super().__init__(parsed_data)
+        super().__init__(data)
 
     # def __repr__(self):
     #     representation = '<{api_name}:{class_name}({data})>'.format \

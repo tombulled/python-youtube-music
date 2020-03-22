@@ -56,7 +56,13 @@ album_id = 'OLAK5uy_neMqoK4zw4CrfjMOoy0CjdmZwQTBG3jCA'
 # d = api.playlist('VLPL4fGSI1pDJn688ebB8czINn0_nov50e3A')
 # d = api.playlist('VL' + 'RDCLAK5uy_kT8OSioa9yCqsnqdfvCHOXZUXuLowNT2M')
 # d = api.album('OLAK5uy_krJ2XhKRBiQnygRP6n76hbNk_RcmNfkFw')
-d = api.search('foo')
+# d = api.search('amber run')
+# d2 = d.filter_albums()
+# d3 = d2.next()
+# print(len(d['results']['videos']['items']))
+# d2 = d.filter_videos()
+# print(len(d['results']['videos']['items']))
+
 # d = api.playlist('VL' + 'RDCLAK5uy_m1oO6GcuiUbkB7zVErype6l8vOHQ_vh4g')
 # d2 = d.next()
 # artist_id = 'UCMO-CgAtd1jI2m2CrXcP2sQ'

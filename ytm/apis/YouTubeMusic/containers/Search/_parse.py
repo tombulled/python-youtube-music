@@ -4,8 +4,6 @@ from ... import containers
 __all__ = __name__.split('.')[-1:]
 
 def _parse(self, data):
-
-
     data = ytm_utils.get_nested(data, 'contents', 'sectionListRenderer')
 
     query = ytm_utils.get_nested(data, 'contents', -1, 'musicShelfRenderer', 'bottomEndpoint', 'searchEndpoint', 'query')
@@ -31,26 +29,39 @@ def _parse(self, data):
     # from pprint import pprint
     # pprint(shelves)
 
+    # utils.get_nested(data, 'contents', 'sectionListRenderer', 'contents', 0, 'musicShelfRenderer', 'continuations', 0, 'nextContinuationData', 'continuation'),
+
     for shelf in shelves:
         # pprint(shelf)
 
-        # print(ytm_utils.get_nested(shelf, 'musicShelfRenderer', 'title'))
+        # print(ytm_utils.get_nested(shelf, 'musicShelfRenderer'))
+        continuation = ytm_utils.get_nested(shelf, 'musicShelfRenderer', 'continuations', 0, 'nextContinuationData', 'continuation')
         title = ytm_utils.get_nested(shelf, 'musicShelfRenderer', 'title', 'runs', 0, 'text')
-        title_key = title.lower().replace(' ', '_')
         item_type = ytm_utils.get_nested(shelf, 'musicShelfRenderer', 'contents', 0, 'musicResponsiveListItemRenderer', 'flexColumns', 1, 'musicResponsiveListItemFlexColumnRenderer', 'text', 'runs', 0, 'text', func=str.lower)
+        if title:
+            shelf_key = title.lower().replace(' ', '_')
+        elif item_type:
+            item_type + 's'
+        else:
+            return # raise
+        # print(repr(title), repr(item_type), '->', shelf_key)
+        params = ytm_utils.get_nested(shelf, 'musicShelfRenderer', 'bottomEndpoint', 'searchEndpoint', 'params')
 
         items = ytm_utils.get_nested(shelf, 'musicShelfRenderer', 'contents', default=[])
 
-        # shelf_items = []
-        if items:
-            scraped['results'][title_key] = []
+        scraped['results'][shelf_key] = \
+        {
+            'params': params,
+            'continuation': continuation,
+            'items': [] if items else None,
+        }
 
         for item in items:
-            if title_key == 'top_result':
-                scraped[title_key] = item_type
+            if shelf_key == 'top_result':
+                scraped[shelf_key] = item_type
 
                 continue
-            elif title_key == 'artists':
+            elif shelf_key == 'artists':
                 item_data = \
                 {
                     # 'tracking_params': ytm_utils.get_nested(item, 'musicResponsiveListItemRenderer', 'trackingParams'),
@@ -78,7 +89,7 @@ def _parse(self, data):
 
                 # item_obj = containers.SearchArtist(self.api, item)
                 container = containers.SearchArtist
-            elif title_key == 'songs':
+            elif shelf_key == 'songs':
                 item_data = \
                 {
                     # 'tracking_params': ytm_utils.get_nested(item, 'musicResponsiveListItemRenderer', 'trackingParams'),
@@ -125,8 +136,7 @@ def _parse(self, data):
                 }
 
                 container = containers.SearchSong
-
-            elif title_key == 'albums':
+            elif shelf_key == 'albums':
                 item_data = \
                 {
                     # 'tracking_params': ytm_utils.get_nested(item, 'musicResponsiveListItemRenderer', 'trackingParams'),
@@ -136,7 +146,7 @@ def _parse(self, data):
                     'artist': ytm_utils.get_nested(item, 'musicResponsiveListItemRenderer', 'flexColumns', 2, 'musicResponsiveListItemFlexColumnRenderer', 'text', 'runs', 0, 'text'),
                     'year': ytm_utils.get_nested(item, 'musicResponsiveListItemRenderer', 'flexColumns', 3, 'musicResponsiveListItemFlexColumnRenderer', 'text', 'runs', 0, 'text'),
                     # 'year': int(year) if year and year.isdigit() else None,
-                    'explicit': ytm_utils.get_nested(item, 'musicResponsiveListItemRenderer', 'badges', 0, 'musicInlineBadgeRenderer', 'accessibilityData', 'accessibilityData', 'label'), # is not None,
+                    'explicit': ytm_utils.get_nested(item, 'musicResponsiveListItemRenderer', 'badges', 0, 'musicInlineBadgeRenderer', 'accessibilityData', 'accessibilityData', 'label') == 'Explicit', # is not None,
                     # 'shuffle': \
                     # {
                     #     'playlist_id': ytm_utils.get_nested(item, 'musicResponsiveListItemRenderer', 'menu', 'menuRenderer', 'items', 0, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchPlaylistEndpoint', 'playlistId'),
@@ -155,8 +165,7 @@ def _parse(self, data):
                 }
 
                 container = containers.SearchAlbum
-
-            elif title_key == 'videos':
+            elif shelf_key == 'videos':
                 item_data = \
                 {
                     # 'tracking_params': ytm_utils.get_nested(item, 'musicResponsiveListItemRenderer', 'trackingParams'),
@@ -191,7 +200,7 @@ def _parse(self, data):
                 }
 
                 container = containers.SearchVideo
-            elif title_key == 'playlists':
+            elif shelf_key == 'playlists':
                 item_data = \
                 {
                     # 'tracking_params': ytm_utils.get_nested(item, 'musicResponsiveListItemRenderer', 'trackingParams'),
@@ -222,12 +231,14 @@ def _parse(self, data):
 
                 container = containers.SearchPlaylist
             else:
+                from pprint import pprint
+                pprint(data)
                 return # raise
 
             item_obj = container(self.api, item_data)
 
-            # scraped[title_key].append(item_data)
-            scraped['results'][title_key].append(item_obj)
+            # scraped[shelf_key].append(item_data)
+            scraped['results'][shelf_key]['items'].append(item_obj)
 
     return scraped
 

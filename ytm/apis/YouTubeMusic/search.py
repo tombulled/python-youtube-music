@@ -8,6 +8,9 @@ def search(self, query):
         query = query,
     )
 
+    # from pprint import pprint
+    # pprint(data)
+
     container = containers.Search \
     (
         api = self,

@@ -7,26 +7,35 @@ _import(locals())
 
 locals()['__all__'] = __name__.split('.')[-1:]
 
-class AbstractYouTubeMusic(object):
+class YouTubeMusic(object):
     def __init__(self):
         self.base = BaseYouTubeMusic()
 
         methods = \
         (
-            'song_info',
+            # 'song_info',
             'search_suggestions',
-            'home',
-            'hotlist',
+            # 'home',
+            # 'hotlist',
             'guide', # Although implemented, pointless...
+            #
+            # 'playlist',
+            # 'album',
+            # 'search',
 
-            'playlist',
-            'album',
+            # Final, TODO
+            # 'search' (filter by: artists, songs, albums, videos, playlists. Continuations)
+            # 'next' (or better name. Needs make_radio=). Wrapper using .song(...)?
+                # .list(...)
+            # 'artist' () NOTE: Has other pages: artist_songs, ...
+
+            # --------------------------
 
             # 'song', # (next?) a radio'd song
             # 'artist',
             # 'search',
             # search_albums(...), ...
-            # next?
+            # next? (needs a make_radio)
 
             # Song get recommendations (next)
             # shuffle? # pointless

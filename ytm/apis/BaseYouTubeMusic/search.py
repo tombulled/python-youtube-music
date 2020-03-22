@@ -30,7 +30,12 @@ def search(self, query=None, params=None, continuation=None):
             'zeroPrefixEnabled': True,
         }
 
-    resp = self.session.post(url, params=url_params, json=payload)
+    resp = self.session.post \
+    (
+        url = url,
+        params = url_params,
+        json = payload,
+    )
 
     data = resp.json()
 

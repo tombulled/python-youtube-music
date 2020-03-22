@@ -34,6 +34,7 @@ class BaseYouTubeMusic(object):
             'page_search',
             'page_watch',
             'search_suggestions',
+            'search',
             'video_info',
         )
 

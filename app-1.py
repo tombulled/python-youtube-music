@@ -10,7 +10,8 @@ gn = utils.get_nested
 ytm_utils=utils
 
 bapi = ytm.BaseYouTubeMusic()
-api  = ytm.AbstractYouTubeMusic()
+# api  = ytm.AbstractYouTubeMusic()
+api = ytm.YouTubeMusic()
 
 '''
 # Remember, aim is also to make a REST api for each: So each should have dump as dict
@@ -46,10 +47,14 @@ album_id = 'OLAK5uy_neMqoK4zw4CrfjMOoy0CjdmZwQTBG3jCA'
 # album_id = 'OLAK5uy_m_ThFBkG5CpG5OwA451_2uT6PUv7PMq1A'
 # album_id = 'OLAK5uy_l_Ss11gFagXVI_H11IFkoZYNqnQR5WCc8'
 
+# d = api.guide()
+d = api.search_suggestions('foo')
 # artist_id = 'UCMO-CgAtd1jI2m2CrXcP2sQ'
-d = api.base.next(params='mgMDCNgE', player_params='igMDCNgE', video_id=video_id)
+# d = api.base.next(params='mgMDCNgE', player_params='igMDCNgE', video_id=video_id)
 # d = api.base.browse_artist(artist_id)
-
+# d = api.search('fuck you')
+# d2 = api.search('fuck you', params=d['results']['videos']['params'])
+# d3 = api.search(continuation=d2['continuation'])
 # x=d['contents']['singleColumnBrowseResultsRenderer']['tabs'][0]['tabRenderer']['content']['sectionListRenderer']['contents']
 
 # d = api.album(album_id=album_id)

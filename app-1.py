@@ -48,7 +48,17 @@ album_id = 'OLAK5uy_neMqoK4zw4CrfjMOoy0CjdmZwQTBG3jCA'
 # album_id = 'OLAK5uy_l_Ss11gFagXVI_H11IFkoZYNqnQR5WCc8'
 
 # d = api.guide()
-d = api.search_suggestions('foo')
+# d = api.search_suggestions('foo')
+# d = api.hotlist()
+# d = api.song_info(song_id='e4Qy-NTKiUQ')
+# d = api.home()
+# n = d.next()
+# d = api.playlist('VLPL4fGSI1pDJn688ebB8czINn0_nov50e3A')
+# d = api.playlist('VL' + 'RDCLAK5uy_kT8OSioa9yCqsnqdfvCHOXZUXuLowNT2M')
+# d = api.album('OLAK5uy_krJ2XhKRBiQnygRP6n76hbNk_RcmNfkFw')
+d = api.search('foo')
+# d = api.playlist('VL' + 'RDCLAK5uy_m1oO6GcuiUbkB7zVErype6l8vOHQ_vh4g')
+# d2 = d.next()
 # artist_id = 'UCMO-CgAtd1jI2m2CrXcP2sQ'
 # d = api.base.next(params='mgMDCNgE', player_params='igMDCNgE', video_id=video_id)
 # d = api.base.browse_artist(artist_id)

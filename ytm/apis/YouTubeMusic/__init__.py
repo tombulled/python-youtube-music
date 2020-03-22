@@ -13,15 +13,15 @@ class YouTubeMusic(object):
 
         methods = \
         (
-            # 'song_info',
+            'song_info',
             'search_suggestions',
-            # 'home',
-            # 'hotlist',
+            'home',
+            'hotlist',
             'guide', # Although implemented, pointless...
             #
-            # 'playlist',
-            # 'album',
-            # 'search',
+            'playlist',
+            'album',
+            'search',
 
             # Final, TODO
             # 'search' (filter by: artists, songs, albums, videos, playlists. Continuations)

@@ -7,7 +7,8 @@ _import(locals())
 
 USER_AGENTS = \
 (
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0',
+    # 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0',
 )
 
 DOMAIN_YOUTUBE_MUSIC = 'music.youtube.com'
@@ -63,6 +64,9 @@ PARAMS_PLAYLIST_TRACK = '8gECGAM%3D'
 
 PREFIX_RADIO = 'RDAMPL'
 PREFIX_PLAYLIST = 'VL'
+
+PARAMS_WATCH = 'mgMDCNgE'
+PARAMS_PLAYER_WATCH = 'igMDCNgE'
 
 URL_PARAMS = \
 {

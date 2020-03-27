@@ -31,9 +31,20 @@ home = api.home()
 .search_suggestions(): Search suggestions
 '''
 
+'''
+api = ytm.YouTubeMusic()
+
+search = api.search('foo fighters')
+songs = search.filter_songs()
+song = songs[0]
+artist = song.artist()
+album = artist['albums'][0].album()
+track = album['tracks'][0]
+'''
+
 # d = api.search_suggestions('foo')
 # d = api.song_info('q0hyYWKXF0Q')
-video_id = '8zZHAfq0gls' # aquilo, sober
+video_id    = '8zZHAfq0gls' # aquilo, sober
 playlist_id = 'RDCLAK5uy_mkLtojKLOUUGwnu3ZnN5AaODijlieB-aQ'
 playlist_id = 'PL4fGSI1pDJn688ebB8czINn0_nov50e3A' # top 100
 playlist_id = 'RDCLAK5uy_m1oO6GcuiUbkB7zVErype6l8vOHQ_vh4g' # cuddling country, 100+
@@ -47,6 +58,14 @@ album_id = 'OLAK5uy_neMqoK4zw4CrfjMOoy0CjdmZwQTBG3jCA'
 # album_id = 'OLAK5uy_m_ThFBkG5CpG5OwA451_2uT6PUv7PMq1A'
 # album_id = 'OLAK5uy_l_Ss11gFagXVI_H11IFkoZYNqnQR5WCc8'
 
+# d = api.watch(song_id='hwGBYGexu_I', playlist_id='PLeagXyg528O4QWuQRhOyN4qpXhltbYOLc')
+# d = api.artist('UCMO-CgAtd1jI2m2CrXcP2sQ')
+d = api.artist('UCmAgTXAlnckJJBFmqYlHnNA')
+# a = d['shelves']['albums'] # ['items'][0]
+# x = a.next()
+s = d['shelves']['singles']
+x = s.next()
+# d = api.watch(song_id='ItHnOBApqI4', playlist_id='RDEMl1OPQXVBv7sXQEeqlL1HZg')
 # d = api.guide()
 # d = api.search_suggestions('foo')
 # d = api.hotlist()

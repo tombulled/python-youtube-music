@@ -5,8 +5,8 @@ __all__ = __name__.split('.')[-1:]
 def next \
         (
             self,
-            playlist_id         = None,
             video_id            = None,
+            playlist_id         = None,
             index               = None,
             music_video_type    = None,
             params              = None,

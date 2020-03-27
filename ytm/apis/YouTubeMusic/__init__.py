@@ -18,16 +18,22 @@ class YouTubeMusic(object):
             'home',
             'hotlist',
             'guide', # Although implemented, pointless...
-            #
+
             'playlist',
             'album',
             'search',
 
+            'watch',
+            'artist',
+
             # Final, TODO
-            # 'search' (filter by: artists, songs, albums, videos, playlists. Continuations)
-            # 'next' (or better name. Needs make_radio=). Wrapper using .song(...)?
-                # .list(...)
+            # 'watch' (or better name. Needs make_radio=). Wrapper using .song(...)?
             # 'artist' () NOTE: Has other pages: artist_songs, ...
+
+            # '''
+            # list = api.list(playlist_id=)
+            # watch = api.watch(song_id=)
+            # '''
 
             # --------------------------
 

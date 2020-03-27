@@ -53,6 +53,12 @@ class BaseYouTubeMusic(object):
                 'User-Agent'       : ytm_utils.random_user_agent(),
                 'X-Goog-Visitor-Id': ytm_constants.HEADER_VISITOR_ID,
                 'Referer'          : self._url(),
+
+                'Host': ytm_constants.DOMAIN_YOUTUBE_MUSIC,
+                'DNT': '1',
+                'TE': 'Trailers',
+
+                # Cookies: VISITOR_INFO1_LIVE=qwwW67eFoQ0; GPS=1; YSC=4Vr1Swxn89o; PREF=volume=100
             }
         )
 

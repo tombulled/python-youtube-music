@@ -1,10 +1,8 @@
-from ..... import utils as ytm_utils
-from ..... import constants as ytm_constants
-from ... import containers
+from .... import utils as ytm_utils
 
 __all__ = __name__.split('.')[-1:]
 
-def _parse(self, data):
+def browse_home(data):
     if not data:
         return # raise
 
@@ -28,7 +26,8 @@ def _parse(self, data):
             'sectionListRenderer',
         )
 
-    self._continuation = ytm_utils.get_nested \
+    # Insert back into data
+    continuation = ytm_utils.get_nested \
     (
         data,
         'continuations',
@@ -121,8 +120,12 @@ def _parse(self, data):
             'items': shelf_items,
         }
 
-        shelf_obj = containers.HomeShelf(self.api, shelf_data)
+        parsed_shelves.append(shelf_data)
 
-        parsed_shelves.append(shelf_obj)
+    parsed_data = \
+    {
+        'continuation': continuation,
+        'shelves': parsed_shelves,
+    }
 
-    return parsed_shelves
+    return parsed_data

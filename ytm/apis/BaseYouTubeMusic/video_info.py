@@ -16,6 +16,9 @@ def video_info(self, video_id):
         {
             'video_id': video_id,
             'el': 'detailpage',
+            'ps': 'default',
+            'hl': 'en',
+            'gl': 'US',
             'eurl': f'https://youtube.googleapis.com/v/{video_id}',
         }
     )

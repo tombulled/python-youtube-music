@@ -1,6 +1,7 @@
 import ytm
 # import ytm.utils
 from ytm import utils
+from ytm import constants
 # import ytm.apis
 # from type_shell import type_shell
 # import youtube_dl
@@ -8,10 +9,12 @@ from ytm import utils
 from pprint import pprint as pp
 gn = utils.get_nested
 ytm_utils=utils
+ytm_constants=constants
 
 bapi = ytm.BaseYouTubeMusic()
 # api  = ytm.AbstractYouTubeMusic()
 api = ytm.YouTubeMusic()
+aapi = ytm.AbstractYouTubeMusic()
 
 '''
 # Remember, aim is also to make a REST api for each: So each should have dump as dict
@@ -52,19 +55,32 @@ playlist_id = 'RDCLAK5uy_nG4p6ReP1bUQMziVrlScqMmElbc7ZqSfk' # has explicit
 #video_id = 'q0hyYWKXF0Q' # dance monkey: video
 #video_id = 'Hx4nWW9z0ig' # dance monkey: song
 # d = api.song_info(video_id)
-# data = api.home()
+# d = aapi.guide()
+# d = aapi.hotlist()
+d = aapi.song(video_id)
+# d = aapi.suggest('foo')
+# d = aapi.watch(video_id)
+# d2 = aapi.watch \
+# (
+#     song_id = d['playlist']['tracks'][1]['id'],
+#     playlist_id = d['playlist']['id'],
+# )
+# d = aapi.home()
+# with open('out.html', 'w') as file: file.write(str(d))
+# d = api.base.browse(browse_id='VLOLAK5uy_l522aR1P2og1g1mGZkwU_gJj5HKWrjFfU', page_type = ytm_constants.PAGE_TYPE_PLAYLIST)
+# d = api.playlist(playlist_id='OLAK5uy_l522aR1P2og1g1mGZkwU_gJj5HKWrjFfU')
 # d=data
-album_id = 'OLAK5uy_neMqoK4zw4CrfjMOoy0CjdmZwQTBG3jCA'
+# album_id = 'OLAK5uy_neMqoK4zw4CrfjMOoy0CjdmZwQTBG3jCA'
 # album_id = 'OLAK5uy_m_ThFBkG5CpG5OwA451_2uT6PUv7PMq1A'
 # album_id = 'OLAK5uy_l_Ss11gFagXVI_H11IFkoZYNqnQR5WCc8'
 
 # d = api.watch(song_id='hwGBYGexu_I', playlist_id='PLeagXyg528O4QWuQRhOyN4qpXhltbYOLc')
 # d = api.artist('UCMO-CgAtd1jI2m2CrXcP2sQ')
-d = api.artist('UCmAgTXAlnckJJBFmqYlHnNA')
+# d = api.artist('UCmAgTXAlnckJJBFmqYlHnNA')
 # a = d['shelves']['albums'] # ['items'][0]
 # x = a.next()
-s = d['shelves']['singles']
-x = s.next()
+# s = d['shelves']['singles']
+# x = s.next()
 # d = api.watch(song_id='ItHnOBApqI4', playlist_id='RDEMl1OPQXVBv7sXQEeqlL1HZg')
 # d = api.guide()
 # d = api.search_suggestions('foo')

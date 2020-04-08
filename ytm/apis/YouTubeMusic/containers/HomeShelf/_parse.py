@@ -12,16 +12,22 @@ def _parse(self):
     items = ytm_utils.get_nested(data, 'items', default=())
     item_objects = []
 
-    for item in items:
-        object_map = \
-        {
-            'Video': containers.HomeShelfVideo,
-            'Playlist': containers.HomeShelfPlaylist,
-            'Album': containers.HomeShelfAlbum,
-            'Artist': containers.HomeShelfArtist,
-        }
+    object_map = \
+    {
+        'Video': containers.HomeShelfVideo,
+        'Playlist': containers.HomeShelfPlaylist,
+        'Album': containers.HomeShelfAlbum,
+        'Artist': containers.HomeShelfArtist,
+        # Can also be a 'Single'
+    }
 
-        item_obj = object_map[item['type']](self.api, item)
+    for item in items:
+        item_type = ytm_utils.get_nested(item, 'type')
+
+        if item_type not in object_map:
+            return # raise
+
+        item_obj = object_map[item_type](self.api, item)
 
         item_objects.append(item_obj)
 

@@ -6,5 +6,4 @@ def browse_album(self, browse_id):
     return self.browse \
     (
         browse_id = browse_id,
-        page_type = ytm_constants.PAGE_TYPE_ALBUM,
     )

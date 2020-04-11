@@ -3,9 +3,14 @@ from .... import utils as ytm_utils
 __all__ = __name__.split('.')[-1:]
 
 def next(data):
-    playlist_tracks = []
+    if 'continuationContents' in data:
+        playlist_renderer = ytm_utils.get_nested(data, 'continuationContents', 'playlistPanelContinuation')
+    else:
+        playlist_renderer = ytm_utils.get_nested(data, 'contents', 'singleColumnMusicWatchNextResultsRenderer', 'playlist', 'playlistPanelRenderer')
 
-    tracks = ytm_utils.get_nested(data, 'contents', 'singleColumnMusicWatchNextResultsRenderer', 'playlist', 'playlistPanelRenderer', 'contents', default=())
+    tracks = ytm_utils.get_nested(playlist_renderer, 'contents', default=())
+
+    playlist_tracks = []
 
     for track in tracks:
         track = ytm_utils.first_key(track)
@@ -52,7 +57,6 @@ def next(data):
 
         playlist_tracks.append(track_data)
 
-    playlist_renderer = ytm_utils.get_nested(data, 'contents', 'singleColumnMusicWatchNextResultsRenderer', 'playlist', 'playlistPanelRenderer')
 
     playlist_name         = ytm_utils.get_nested(playlist_renderer, 'title')
     playlist_radio        = ytm_utils.get_nested(playlist_renderer, 'isInfinite')
@@ -83,6 +87,7 @@ def next(data):
     current_likes       = ytm_utils.get_nested(current_like_button_renderer, 'likeCount')
     current_dislikes    = ytm_utils.get_nested(current_like_button_renderer, 'dislikeCount')
 
+    # Make this None if its a continuation
     current_data = \
     {
         'index': current_index,

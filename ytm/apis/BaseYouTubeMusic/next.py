@@ -12,6 +12,7 @@ def next \
             params              = None,
             tuner_setting_value = None,
             player_params       = None,
+            continuation        = None,
         ):
     url = self._url_api(ytm_constants.ENDPOINT_YTM_API_NEXT)
 
@@ -53,6 +54,9 @@ def next \
 
     if player_params:
         payload['playerParams'] = player_params
+
+    if continuation:
+        payload['continuation'] = continuation
 
     resp = self.session.post \
     (

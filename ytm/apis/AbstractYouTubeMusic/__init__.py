@@ -20,9 +20,19 @@ class AbstractYouTubeMusic(object):
             'suggest',
             'watch',
             'playlist',
-            # 'album',
-            # 'search',
+            'album',
+
+            'search', # Here last
+
+            # 'search_songs',
+            # 'search_videos',
+            # 'search_artists',
+            # 'search_playlists',
+            # 'search_albums',
+
             # 'artist',
+
+            # others? artist_songs, search_songs
         )
 
         for method in methods:

@@ -24,11 +24,11 @@ class AbstractYouTubeMusic(object):
 
             'search', # Here last
 
-            # 'search_songs',
-            # 'search_videos',
-            # 'search_artists',
-            # 'search_playlists',
-            # 'search_albums',
+            'search_albums',
+            'search_playlists',
+            'search_videos',
+            'search_artists',
+            'search_songs',
 
             # 'artist',
 

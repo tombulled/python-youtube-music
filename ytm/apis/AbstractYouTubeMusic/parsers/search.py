@@ -265,17 +265,17 @@ def search(data):
                     item,
                     'trackingParams',
                 )
-                item_type = ytm_utils.get_nested \
-                (
-                    item,
-                    'flexColumns',
-                    1,
-                    'musicResponsiveListItemFlexColumnRenderer',
-                    'text',
-                    'runs',
-                    0,
-                    'text',
-                )
+                # item_type = ytm_utils.get_nested \
+                # (
+                #     item,
+                #     'flexColumns',
+                #     1,
+                #     'musicResponsiveListItemFlexColumnRenderer',
+                #     'text',
+                #     'runs',
+                #     0,
+                #     'text',
+                # )
                 item_share_entity = ytm_utils.get_nested \
                 (
                     item,
@@ -299,7 +299,7 @@ def search(data):
                     'watchEndpoint',
                     'videoId',
                 )
-                item_title = ytm_utils.get_nested \
+                item_name = ytm_utils.get_nested \
                 (
                     item,
                     'flexColumns',
@@ -324,7 +324,7 @@ def search(data):
                 (
                     item,
                     'flexColumns',
-                    4,
+                    -1,
                     'musicResponsiveListItemFlexColumnRenderer',
                     'text',
                     'runs',
@@ -344,7 +344,7 @@ def search(data):
                 (
                     item,
                     'flexColumns',
-                    3,
+                    -2,
                     'musicResponsiveListItemFlexColumnRenderer',
                     'text',
                     'runs',
@@ -355,7 +355,7 @@ def search(data):
                 (
                     item,
                     'flexColumns',
-                    3,
+                    -2,
                     'musicResponsiveListItemFlexColumnRenderer',
                     'text',
                     'runs',
@@ -393,7 +393,7 @@ def search(data):
                 (
                     item,
                     'flexColumns',
-                    2,
+                    -3,
                     'musicResponsiveListItemFlexColumnRenderer',
                     'text',
                     'runs',
@@ -427,7 +427,7 @@ def search(data):
                 item_data = \
                 {
                     'id':        item_id,
-                    'name':      item_title,
+                    'name':      item_name,
                     'explicit':  item_explicit,
                     'duration':  item_duration,
                     'thumbnail': item_thumbnail,
@@ -513,6 +513,7 @@ def search(data):
                     'runs',
                     0,
                     'text',
+                    func = int,
                 )
                 item_explicit = ytm_utils.get_nested \
                 (
@@ -610,57 +611,300 @@ def search(data):
                     },
                 }
             elif shelf_key == 'videos':
+                item_tracking_params = ytm_utils.get_nested \
+                (
+                    item,
+                    'trackingParams',
+                )
+                # item_type = ytm_utils.get_nested \
+                # (
+                #     item,
+                #     'flexColumns',
+                #     1,
+                #     'musicResponsiveListItemFlexColumnRenderer',
+                #     'text',
+                #     'runs',
+                #     0,
+                #     'text',
+                # )
+                item_share_entity = ytm_utils.get_nested \
+                (
+                    item,
+                    'menu',
+                    'menuRenderer',
+                    'items',
+                    1,
+                    'menuNavigationItemRenderer',
+                    'navigationEndpoint',
+                    'shareEntityEndpoint',
+                    'serializedShareEntity',
+                )
+                item_id = ytm_utils.get_nested \
+                (
+                    item,
+                    'overlay',
+                    'musicItemThumbnailOverlayRenderer',
+                    'content',
+                    'musicPlayButtonRenderer',
+                    'playNavigationEndpoint',
+                    'watchEndpoint',
+                    'videoId',
+                )
+                item_name = ytm_utils.get_nested \
+                (
+                    item,
+                    'flexColumns',
+                    0,
+                    'musicResponsiveListItemFlexColumnRenderer',
+                    'text',
+                    'runs',
+                    0,
+                    'text',
+                )
+                item_views = ytm_utils.get_nested \
+                (
+                    item,
+                    'flexColumns',
+                    -2,
+                    'musicResponsiveListItemFlexColumnRenderer',
+                    'text',
+                    'runs',
+                    0,
+                    'text',
+                    func = lambda views: views.strip().split(' ')[0],
+                )
+                item_duration = ytm_utils.get_nested \
+                (
+                    item,
+                    'flexColumns',
+                    -1,
+                    'musicResponsiveListItemFlexColumnRenderer',
+                    'text',
+                    'runs',
+                    0,
+                    'text',
+                )
+                item_thumbnail = ytm_utils.get_nested \
+                (
+                    item,
+                    'thumbnail',
+                    'musicThumbnailRenderer',
+                    'thumbnail',
+                    'thumbnails',
+                    -1,
+                )
+                item_radio_playlist_id = ytm_utils.get_nested \
+                (
+                    item,
+                    'menu',
+                    'menuRenderer',
+                    'items',
+                    5,
+                    'menuNavigationItemRenderer',
+                    'navigationEndpoint',
+                    'watchEndpoint',
+                    'playlistId',
+                )
+                item_radio_params = ytm_utils.get_nested \
+                (
+                    item,
+                    'menu',
+                    'menuRenderer',
+                    'items',
+                    5,
+                    'menuNavigationItemRenderer',
+                    'navigationEndpoint',
+                    'watchEndpoint',
+                    'params',
+                )
+
+                raw_item_artists = ytm_utils.get_nested \
+                (
+                    item,
+                    'flexColumns',
+                    -3,
+                    'musicResponsiveListItemFlexColumnRenderer',
+                    'text',
+                    'runs',
+                    default = (),
+                )
+
+                item_artists = []
+
+                for item_artist in raw_item_artists:
+                    item_artist_name = ytm_utils.get_nested \
+                    (
+                        item_artist,
+                        'text',
+                    )
+
+                    item_artists.append(item_artist_name)
+
                 item_data = \
                 {
-                    '**tracking_params': ytm_utils.get_nested(item, 'trackingParams'),
-                    '**playlist_id': ytm_utils.get_nested(item, 'overlay', 'musicItemThumbnailOverlayRenderer', 'content', 'musicPlayButtonRenderer', 'playNavigationEndpoint', 'watchEndpoint', 'playlistId'),
-                    '**params': ytm_utils.get_nested(item, 'overlay', 'musicItemThumbnailOverlayRenderer', 'content', 'musicPlayButtonRenderer', 'playNavigationEndpoint', 'watchEndpoint', 'params'),
-                    '**type': ytm_utils.get_nested(item, 'flexColumns', 1, 'musicResponsiveListItemFlexColumnRenderer', 'text', 'runs', 0, 'text'),
-                    '**serialised_share_entity': ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 1, 'menuNavigationItemRenderer', 'navigationEndpoint', 'shareEntityEndpoint', 'serializedShareEntity'),
-
-                    'id': ytm_utils.get_nested(item, 'overlay', 'musicItemThumbnailOverlayRenderer', 'content', 'musicPlayButtonRenderer', 'playNavigationEndpoint', 'watchEndpoint', 'videoId'),
-                    'title': ytm_utils.get_nested(item, 'flexColumns', 0, 'musicResponsiveListItemFlexColumnRenderer', 'text', 'runs', 0, 'text'),
-                    'artists': \
-                    [
-                        ytm_utils.get_nested(run, 'text')
-                        for run in ytm_utils.get_nested(item, 'flexColumns', 2, 'musicResponsiveListItemFlexColumnRenderer', 'text', 'runs', default=[])
-                    ],
-                    'views': ytm_utils.get_nested(item, 'flexColumns', 3, 'musicResponsiveListItemFlexColumnRenderer', 'text', 'runs', 0, 'text', func=lambda subscribers: subscribers.strip().split(' ')[0]),
-                    'duration': ytm_utils.get_nested(item, 'flexColumns', 4, 'musicResponsiveListItemFlexColumnRenderer', 'text', 'runs', 0, 'text'),
+                    'id':        item_id,
+                    'name':      item_name,
+                    'views':     item_views,
+                    'duration':  item_duration,
+                    'thumbnail': item_thumbnail,
+                    'artists':   item_artists,
                     'radio': \
                     {
-                        'playlist_id': ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 5, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchEndpoint', 'playlistId'),
-                        'params': ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 5, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchEndpoint', 'params'),
+                        'playlist_id': item_radio_playlist_id,
+                        'params':      item_radio_params,
                     },
-                    'thumbnail': ytm_utils.get_nested(item, 'thumbnail', 'musicThumbnailRenderer', 'thumbnail', 'thumbnails', -1),
                 }
             elif shelf_key == 'playlists':
+                item_tracking_params = ytm_utils.get_nested \
+                (
+                    item,
+                    'trackingParams',
+                )
+                # item_type = ytm_utils.get_nested \
+                # (
+                #     item,
+                #     'flexColumns',
+                #     1,
+                #     'musicResponsiveListItemFlexColumnRenderer',
+                #     'text',
+                #     'runs',
+                #     0,
+                #     'text',
+                # )
+                item_browse_id = ytm_utils.get_nested \
+                (
+                    item,
+                    'navigationEndpoint',
+                    'browseEndpoint',
+                    'browseId',
+                )
+                item_page_type = ytm_utils.get_nested \
+                (
+                    item,
+                    'navigationEndpoint',
+                    'browseEndpoint',
+                    'browseEndpointContextSupportedConfigs',
+                    'browseEndpointContextMusicConfig',
+                    'pageType',
+                )
+                item_id = ytm_utils.get_nested \
+                (
+                    item,
+                    'doubleTapCommand',
+                    'watchPlaylistEndpoint',
+                    'playlistId',
+                )
+                item_name = ytm_utils.get_nested \
+                (
+                    item,
+                    'flexColumns',
+                    0,
+                    'musicResponsiveListItemFlexColumnRenderer',
+                    'text',
+                    'runs',
+                    0,
+                    'text',
+                )
+                item_artist = ytm_utils.get_nested \
+                (
+                    item,
+                    'flexColumns',
+                    -2,
+                    'musicResponsiveListItemFlexColumnRenderer',
+                    'text',
+                    'runs',
+                    0,
+                    'text',
+                )
+                item_total_tracks = ytm_utils.get_nested \
+                (
+                    item,
+                    'flexColumns',
+                    -1,
+                    'musicResponsiveListItemFlexColumnRenderer',
+                    'text',
+                    'runs',
+                    0,
+                    'text',
+                    func = lambda total: total.strip().split(' ')[0],
+                    # Cant map to int, may be '100+'
+                    # func = lambda total: int(total.strip().split(' ')[0]),
+                )
+                item_thumbnail = ytm_utils.get_nested \
+                (
+                    item,
+                    'thumbnail',
+                    'musicThumbnailRenderer',
+                    'thumbnail',
+                    'thumbnails',
+                    -1,
+                )
+                item_shuffle_playlist_id = ytm_utils.get_nested \
+                (
+                    item,
+                    'menu',
+                    'menuRenderer',
+                    'items',
+                    0,
+                    'menuNavigationItemRenderer',
+                    'navigationEndpoint',
+                    'watchPlaylistEndpoint',
+                    'playlistId',
+                )
+                item_shuffle_params = ytm_utils.get_nested \
+                (
+                    item,
+                    'menu',
+                    'menuRenderer',
+                    'items',
+                    0,
+                    'menuNavigationItemRenderer',
+                    'navigationEndpoint',
+                    'watchPlaylistEndpoint',
+                    'params',
+                )
+                item_radio_playlist_id = ytm_utils.get_nested \
+                (
+                    item,
+                    'menu',
+                    'menuRenderer',
+                    'items',
+                    1,
+                    'menuNavigationItemRenderer',
+                    'navigationEndpoint',
+                    'watchPlaylistEndpoint',
+                    'playlistId',
+                )
+                item_radio_params = ytm_utils.get_nested \
+                (
+                    item,
+                    'menu',
+                    'menuRenderer',
+                    'items',
+                    1,
+                    'menuNavigationItemRenderer',
+                    'navigationEndpoint',
+                    'watchPlaylistEndpoint',
+                    'params',
+                )
+
                 item_data = \
                 {
-                    # 'tracking_params': ytm_utils.get_nested(item, 'trackingParams'),
-                    # 'vertical_gradient_layer_colours': ytm_utils.get_nested(item, 'overlay', 'musicItemThumbnailOverlayRenderer', 'background', 'verticalGradient', 'gradientLayerColors'),
-                    # 'playlist_id': ytm_utils.get_nested(item, 'overlay', 'musicItemThumbnailOverlayRenderer', 'content', 'musicPlayButtonRenderer', 'playNavigationEndpoint', 'watchPlaylistEndpoint', 'playlistId'),
-                    # 'params': ytm_utils.get_nested(item, 'overlay', 'musicItemThumbnailOverlayRenderer', 'content', 'musicPlayButtonRenderer', 'playNavigationEndpoint', 'watchPlaylistEndpoint', 'params'),
-                    'title': ytm_utils.get_nested(item, 'flexColumns', 0, 'musicResponsiveListItemFlexColumnRenderer', 'text', 'runs', 0, 'text'),
-                    # 'type': ytm_utils.get_nested(item, 'flexColumns', 1, 'musicResponsiveListItemFlexColumnRenderer', 'text', 'runs', 0, 'text'),
-                    # Artist is always 'YouTube Music'
-                    # 'artist': ytm_utils.get_nested(item, 'flexColumns', 2, 'musicResponsiveListItemFlexColumnRenderer', 'text', 'runs', 0, 'text'),
-                    'total_tracks': ytm_utils.get_nested(item, 'flexColumns', 3, 'musicResponsiveListItemFlexColumnRenderer', 'text', 'runs', 0, 'text', func=lambda subscribers: subscribers.strip().split(' ')[0]),
-                    # 'shuffle': \
-                    # {
-                    #     'playlist_id': ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 0, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchPlaylistEndpoint', 'playlistId'),
-                    #     'params': ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 0, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchPlaylistEndpoint', 'params'),
-                    # },
-                    # 'radio': \
-                    # {
-                    #     'playlist_id': ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 1, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchPlaylistEndpoint', 'playlistId'),
-                    #     'params': ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 1, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchPlaylistEndpoint', 'params'),
-                    # },
-                    # 'browse_id': ytm_utils.get_nested(item, 'navigationEndpoint', 'browseEndpoint', 'browseId'),
-                    # 'page_type': ytm_utils.get_nested(item, 'navigationEndpoint', 'browseEndpoint', 'browseEndpointContextSupportedConfigs', 'browseEndpointContextMusicConfig', 'pageType'),
-                    'id':  ytm_utils.get_nested(item, 'doubleTapCommand', 'watchPlaylistEndpoint', 'playlistId'),
-                    # 'params':  ytm_utils.get_nested(item, 'doubleTapCommand', 'watchPlaylistEndpoint', 'params'),
-                    'thumbnail': ytm_utils.get_nested(item, 'thumbnail', 'musicThumbnailRenderer', 'thumbnail', 'thumbnails', -1),
+                    'id':           item_id,
+                    'name':         item_name,
+                    'artist':       item_artist,
+                    'total_tracks': item_total_tracks,
+                    'thumbnail':    item_thumbnail,
+                    'shuffle': \
+                    {
+                        'playlist_id': item_shuffle_playlist_id,
+                        'params':      item_shuffle_params,
+                    },
+                    'radio': \
+                    {
+                        'playlist_id': item_radio_playlist_id,
+                        'params':      item_radio_params,
+                    },
                 }
             else:
                 return # raise

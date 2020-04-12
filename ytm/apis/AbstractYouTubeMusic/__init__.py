@@ -3,9 +3,11 @@
 from ...utils import _import
 from ..BaseYouTubeMusic import BaseYouTubeMusic
 
+__all__ = __name__.split('.')[-1:]
+
 _import(locals())
 
-locals()['__all__'] = __name__.split('.')[-1:]
+# locals()['__all__'] = __name__.split('.')[-1:]
 
 class AbstractYouTubeMusic(object):
     def __init__(self):
@@ -30,7 +32,12 @@ class AbstractYouTubeMusic(object):
             'search_artists',
             'search_songs',
 
-            # 'artist',
+            'artist',
+
+            # 'artist_singles', # (artist_id, params)
+            # 'artist_albums', # (artist_id, params)
+
+            # 'video_id' # ?? or just 'video'
 
             # others? artist_songs, search_songs
         )

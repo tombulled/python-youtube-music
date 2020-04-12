@@ -56,12 +56,53 @@ album_id = 'OLAK5uy_mD8Zx-hl4LY7cs5ia8IMvguvtphKvKlR0' # Single track has feat.
 album_id = 'OLAK5uy_lEX2ZWJ-FoqZ3jcWIGciMFASauDCOAiEA' # Madeon
 album_id = 'OLAK5uy_l_d-om0EjO1rBK11kFEDwUC3VZL07D1EA' # EP
 album_id = 'OLAK5uy_lH7XpeHbWduEtZ1PdCOaH5yRuRD0Ppm3U' # Has 'other versions'
+artist_id = 'UCMO-CgAtd1jI2m2CrXcP2sQ' # Amber Run
+artist_id = 'UCqIQRxCUGi7hyJisyzv9zYQ' # U2
+artist_id = 'UCTK1maAvqrDlD2agZDGZzjw' # Take That
+artist_id = 'UCDPM_n1atn2ijUwHd0NNRQw' # Coldplay (Channel)
+artist_id = 'UCIaFw5VBEK8qaW6nRpx_qnw' # Coldplay
 # playlist_id = 'RDCLAK5uy_nG4p6ReP1bUQMziVrlScqMmElbc7ZqSfk' # has explicit
 #video_id = 'q0hyYWKXF0Q' # dance monkey: video
 #video_id = 'Hx4nWW9z0ig' # dance monkey: song
 # d = aapi.playlist(playlist_id)
 # d = aapi.album(album_id)
-d = aapi.search('cocoon')
+# d = aapi.search('cocoon')
+d = aapi.artist(artist_id)
+# artist_id='UCTK1maAvqrDlD2agZDGZzjw'
+# d = aapi.base.browse \
+# (
+#     browse_id = artist_id,
+#     params = '6gPTAUNwc0JDbndLYlFBQVpXNEFBVWRDQUFGSFFnQUJBRVpGYlhWemFXTmZaR1YwWVdsc1gyRnlkR2x6ZEFBQkFBQUJBQUFBQVFBQkFBQUJBUWlYQXhvWVZVTlVTekZ0WVVGMmNYSkViRVF5WVdkYVJFZGFlbXAzZ2dFWVZVTlVTekZ0WVVGMmNYSkViRVF5WVdkYVJFZGFlbXAzQUFFUTE2T2IwZXpqNkFJYUFuZHpHQUFxRDJGeWRHbHpkRjl5Wld4bFlYTmxjekN4MU5EbGxfSEo4bkE%3D',
+# )
+# exit()
+# d = aapi.base.browse_artist(artist_id)
+
+# import time
+# import base64
+# i = 0
+# while True:
+#     i += 1
+#     t1 = time.time()
+#     a_s, a_ms = map(lambda x: x.ljust(16), str(t1).split('.'))
+#     d = api.artist(artist_id)
+#     t2 = time.time()
+#     b_s, b_ms = map(lambda x: x.ljust(16), str(t2).split('.'))
+#     t3 = t2-t1
+#     c_s, c_ms = map(lambda x: x.ljust(16), str(t3).split('.'))
+#
+#     p = d['shelves']['albums']['params']
+#     p_d = p[213:223]
+#     p_d_64 = base64.b64decode(p_d.encode() + b'==')
+#     p_d_h = p_d_64.hex()
+#     p_d_h_c = ' '.join([p_d_h[i:i+2] for i in range(0, len(p_d_h), 2)])
+#     p_d_h_i = ' '.join(map(lambda x: str(x).ljust(3), [int('0x' + hex, 16) for hex in [p_d_h[i:i+2] for i in range(0, len(p_d_h), 2)]]))
+#     p_d_h_b = ' '.join(map(lambda x: str(x).zfill(8), [bin(int('0x' + hex, 16))[2:] for hex in [p_d_h[i:i+2] for i in range(0, len(p_d_h), 2)]]))
+#
+#     # print(p_d, '|', p_d_h_c, '|', p_d_h_i, '|', p_d_h_b)
+#     print(p)
+
+# d2 = api.artist(artist_id)
+# p2 = d2['shelves']['albums']['params']
 # d = aapi.search_videos('cocoon')
 # d = aapi.search_artists('amber run')
 # d = aapi.search_songs('cocoon')

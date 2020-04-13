@@ -37,6 +37,9 @@ class AbstractYouTubeMusic(object):
             # 'artist_singles', # (artist_id, params)
             # 'artist_albums', # (artist_id, params)
 
+            # 'shuffle',
+            # 'radio',
+
             # 'video_id' # ?? or just 'video'
 
             # others? artist_songs, search_songs

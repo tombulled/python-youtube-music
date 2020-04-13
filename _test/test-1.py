@@ -1,53 +1,83 @@
-import time
-t1=time.time()
-import youtube_dl
-t2=time.time()
-print('Imported in:', t2-t1)
-# exit()
-from pprint import pprint as pp
+import pathlib
+import os
 
-def get_video_info(video_id):
-    opts = \
-    {
-        'quiet': True,
-    }
+class YouTubeMusicDL(object):
+    def __init__(self):
+        # Module is heavy
+        import youtube_dl
 
-    with youtube_dl.YoutubeDL(opts) as ydl:
-        info = ydl.extract_info \
+        self.ytdl = youtube_dl.YoutubeDL \
         (
-            url = f'https://www.youtube.com/watch?v={video_id}',
-            download = False,
-            ie_key = 'Youtube',
+            params = \
+            {
+                'format': 'bestaudio',
+                'quiet': True,
+                'outtmpl': '%(title)s.%(ext)s',
+            }
         )
 
-    return info
+        self._format_selector = self.ytdl.build_format_selector('bestaudio')
 
-def download(video_id):
-    opts = \
-    {
-        'format': 'bestaudio',
-        'quiet': True,
-    }
-
-    with youtube_dl.YoutubeDL(opts) as ydl:
-        info = ydl.extract_info \
+    def info(self, video_id):
+        info = self._video_info \
         (
-            url = f'https://www.youtube.com/watch?v={video_id}',
+            video_id = video_id,
+        )
+
+        return info
+
+    def download(self, video_id, file_name=None, file_path=None):
+        if not file_path:
+            file_path = os.getcwd()
+
+        if not file_name:
+            file_name = '%(title)s'
+
+        if '.' not in file_name:
+            file_name += '.%(ext)s'
+
+        path_directory = pathlib.Path(file_path)
+
+        path_file = path_directory.joinpath(file_name)
+
+        _param_outtmpl = self.ytdl.params.get('outtmpl', None)
+
+        self.ytdl.params['outtmpl'] = str(path_file)
+
+        info = self._video_info \
+        (
+            video_id = video_id,
             download = True,
-            ie_key = 'Youtube',
         )
 
-        print('Return code:', ydl._download_retcode)
+        format = next(self._format_selector(info))
 
-    return info
+        file_name = file_name % \
+        {
+            'title': info['title'],
+            'ext': format['ext'],
+        }
 
-def time_it(func, *args, **kwargs):
-    time_start = time.time()
-    response = func(*args, **kwargs)
-    time_stop = time.time()
-    print(f'Executed in: {time_stop - time_start}')
+        path_file = path_directory.joinpath(file_name)
 
-    return response
+        if _param_outtmpl:
+            self.ytdl.params['outtmpl'] = _param_outtmpl
 
-# info  = time_it(get_video_info, 'mG2WyysmHF8')
-info2 = time_it(download, 'mG2WyysmHF8')
+        success = not self.ytdl._download_retcode
+
+        if success:
+            return str(path_file)
+
+    def _video_info(self, video_id, download=False):
+        info = self.ytdl.extract_info \
+        (
+            url = f'https://www.youtube.com/watch?v={video_id}',
+            ie_key = 'Youtube',
+            download = download,
+        )
+
+        return info
+
+dl = YouTubeMusicDL()
+
+x = dl.download('8zZHAfq0gls', file_name='Aquilo - Sober', file_path='C:/Users/Admin/Desktop')

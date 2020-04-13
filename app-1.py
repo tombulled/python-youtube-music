@@ -13,7 +13,7 @@ ytm_constants=constants
 
 bapi = ytm.BaseYouTubeMusic()
 # api  = ytm.AbstractYouTubeMusic()
-api = ytm.YouTubeMusic()
+# api = ytm.YouTubeMusic()
 aapi = ytm.AbstractYouTubeMusic()
 
 '''
@@ -67,7 +67,7 @@ artist_id = 'UCIaFw5VBEK8qaW6nRpx_qnw' # Coldplay
 # d = aapi.playlist(playlist_id)
 # d = aapi.album(album_id)
 # d = aapi.search('cocoon')
-d = aapi.artist(artist_id)
+# d = aapi.artist(artist_id)
 # artist_id='UCTK1maAvqrDlD2agZDGZzjw'
 # d = aapi.base.browse \
 # (
@@ -76,7 +76,8 @@ d = aapi.artist(artist_id)
 # )
 # exit()
 # d = aapi.base.browse_artist(artist_id)
-
+dl = ytm.YouTubeMusicDL()
+info = dl.info(video_id)
 # import time
 # import base64
 # i = 0

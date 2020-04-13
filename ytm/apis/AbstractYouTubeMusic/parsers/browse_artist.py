@@ -483,136 +483,478 @@ def browse_artist(data):
                     },
                 }
             elif shelf_identifier == 'singles':
-                shelf_item_icon_type = ytm_utils.get_nested(item, 'subtitleBadges', 0, 'musicInlineBadgeRenderer', 'icon', 'iconType')
+                shelf_item_browse_endpoint = ytm_utils.get_nested \
+                (
+                    item,
+                    'navigationEndpoint',
+                    'browseEndpoint',
+                )
+                shelf_item_watch_playlist_endpoint_0 = ytm_utils.get_nested \
+                (
+                    item,
+                    'menu',
+                    'menuRenderer',
+                    'items',
+                    0,
+                    'menuNavigationItemRenderer',
+                    'navigationEndpoint',
+                    'watchPlaylistEndpoint',
+                )
+                shelf_item_watch_playlist_endpoint_1 = ytm_utils.get_nested \
+                (
+                    item,
+                    'menu',
+                    'menuRenderer',
+                    'items',
+                    1,
+                    'menuNavigationItemRenderer',
+                    'navigationEndpoint',
+                    'watchPlaylistEndpoint',
+                )
 
-                shelf_item_thumbnail = ytm_utils.get_nested(item, 'thumbnailRenderer', 'musicThumbnailRenderer', 'thumbnail', 'thumbnails', -1)
-                shelf_item_title = ytm_utils.get_nested(item, 'title', 'runs', 0, 'text')
-                shelf_item_browse_id = ytm_utils.get_nested(item, 'navigationEndpoint', 'browseEndpoint', 'browseId')
-                shelf_item_playlist_params = ytm_utils.get_nested(item, 'navigationEndpoint', 'browseEndpoint', 'params')
-                shelf_item_page_type = ytm_utils.get_nested(item, 'navigationEndpoint', 'browseEndpoint', 'browseEndpointContextSupportedConfigs', 'browseEndpointContextMusicConfig', 'pageType')
-                shelf_item_year = ytm_utils.get_nested(item, 'subtitle', 'runs', 0, 'text', func=int)
+                shelf_item_icon_type = ytm_utils.get_nested \
+                (
+                    item,
+                    'subtitleBadges',
+                    0,
+                    'musicInlineBadgeRenderer',
+                    'icon',
+                    'iconType',
+                )
+                shelf_item_thumbnail = ytm_utils.get_nested \
+                (
+                    item,
+                    'thumbnailRenderer',
+                    'musicThumbnailRenderer',
+                    'thumbnail',
+                    'thumbnails',
+                    -1,
+                )
+                shelf_item_name = ytm_utils.get_nested \
+                (
+                    item,
+                    'title',
+                    'runs',
+                    0,
+                    'text',
+                )
+                shelf_item_year = ytm_utils.get_nested \
+                (
+                    item,
+                    'subtitle',
+                    'runs',
+                    0,
+                    'text',
+                    func = int,
+                )
+                shelf_item_browse_id = ytm_utils.get_nested \
+                (
+                    shelf_item_browse_endpoint,
+                    'browseId',
+                )
+                shelf_item_playlist_params = ytm_utils.get_nested \
+                (
+                    shelf_item_browse_endpoint,
+                    'params',
+                )
+                shelf_item_page_type = ytm_utils.get_nested \
+                (
+                    shelf_item_browse_endpoint,
+                    'browseEndpointContextSupportedConfigs',
+                    'browseEndpointContextMusicConfig',
+                    'pageType',
+                )
+                shelf_item_playlist_id = ytm_utils.get_nested \
+                (
+                    item,
+                    'thumbnailOverlay',
+                    'musicItemThumbnailOverlayRenderer',
+                    'content',
+                    'musicPlayButtonRenderer',
+                    'playNavigationEndpoint',
+                    'watchPlaylistEndpoint',
+                    'playlistId',
+                )
+                shelf_item_shuffle_params = ytm_utils.get_nested \
+                (
+                    shelf_item_watch_playlist_endpoint_0,
+                    'params',
+                )
+                shelf_item_shuffle_playlist_id = ytm_utils.get_nested \
+                (
+                    shelf_item_watch_playlist_endpoint_0,
+                    'playlistId',
+                )
+                shelf_item_radio_params = ytm_utils.get_nested \
+                (
+                    shelf_item_watch_playlist_endpoint_1,
+                    'params',
+                )
+                shelf_item_radio_playlist_id = ytm_utils.get_nested \
+                (
+                    shelf_item_watch_playlist_endpoint_1,
+                    'playlistId',
+                )
                 shelf_item_explicit = shelf_item_icon_type == 'MUSIC_EXPLICIT_BADGE'
-                shelf_item_playlist_id = ytm_utils.get_nested(item, 'thumbnailOverlay', 'musicItemThumbnailOverlayRenderer', 'content', 'musicPlayButtonRenderer', 'playNavigationEndpoint', 'watchPlaylistEndpoint', 'playlistId')
-                shelf_item_shuffle_params = ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 0, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchPlaylistEndpoint', 'params')
-                shelf_item_shuffle_playlist_id = ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 0, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchPlaylistEndpoint', 'playlistId')
-                shelf_item_radio_params = ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 1, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchPlaylistEndpoint', 'params')
-                shelf_item_radio_playlist_id = ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 1, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchPlaylistEndpoint', 'playlistId')
 
                 item_data = \
                 {
                     'thumbnail': shelf_item_thumbnail,
-                    'title': shelf_item_title,
-                    'album_id': shelf_item_browse_id,
+                    'name':      shelf_item_name,
+                    'album_id':  shelf_item_browse_id,
+                    'year':      shelf_item_year,
+                    'explicit':  shelf_item_explicit,
                     'playlist': \
                     {
                         'params': shelf_item_playlist_params,
-                        'id': shelf_item_playlist_id,
+                        'id':     shelf_item_playlist_id,
                     },
-                    'year': shelf_item_year,
-                    'explicit': shelf_item_explicit,
                     'shuffle': \
                     {
-                        'params': shelf_item_shuffle_params,
+                        'params':      shelf_item_shuffle_params,
                         'playlist_id': shelf_item_shuffle_playlist_id,
                     },
                     'radio': \
                     {
-                        'params': shelf_item_radio_params,
+                        'params':      shelf_item_radio_params,
                         'playlist_id': shelf_item_radio_playlist_id,
                     },
                 }
             elif shelf_identifier == 'videos':
-                shelf_item_thumbnail = ytm_utils.get_nested(item, 'thumbnailRenderer', 'musicThumbnailRenderer', 'thumbnail', 'thumbnails', -1)
-                shelf_item_title = ytm_utils.get_nested(item, 'title', 'runs', 0, 'text')
-                shelf_item_video_id = ytm_utils.get_nested(item, 'navigationEndpoint', 'watchEndpoint', 'videoId')
-                shelf_item_playlist_id = ytm_utils.get_nested(item, 'navigationEndpoint', 'watchEndpoint', 'playlistId')
-                shelf_item_music_video_type = ytm_utils.get_nested(item, 'navigationEndpoint', 'watchEndpoint', 'watchEndpointMusicSupportedConfigs', 'watchEndpointMusicConfig', 'musicVideoType')
-                shelf_item_radio_params = ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 0, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchEndpoint', 'params')
-                shelf_item_radio_playlist_id = ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 0, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchEndpoint', 'playlistId')
+                shelf_item_watch_endpoint = ytm_utils.get_nested \
+                (
+                    item,
+                    'navigationEndpoint',
+                    'watchEndpoint',
+                )
+                shelf_item_menu_0_watch_endpoint = ytm_utils.get_nested \
+                (
+                    item,
+                    'menu',
+                    'menuRenderer',
+                    'items',
+                    0,
+                    'menuNavigationItemRenderer',
+                    'navigationEndpoint',
+                    'watchEndpoint',
+                )
+                shelf_item_subtitle_run_0 = ytm_utils.get_nested \
+                (
+                    item,
+                    'subtitle',
+                    'runs',
+                    0,
+                )
 
-                shelf_item_artist_id = ytm_utils.get_nested(item, 'subtitle', 'runs', 0, 'navigationEndpoint', 'browseEndpoint', 'browseId')
-                shelf_item_artist_name = ytm_utils.get_nested(item, 'subtitle', 'runs', 0, 'text')
-                shelf_item_views = ytm_utils.get_nested(item, 'subtitle', 'runs', -1, 'text', func=lambda views: views.strip().split(' ')[0])
+                shelf_item_music_video_type = ytm_utils.get_nested \
+                (
+                    shelf_item_watch_endpoint,
+                    'watchEndpointMusicSupportedConfigs',
+                    'watchEndpointMusicConfig',
+                    'musicVideoType',
+                )
+                shelf_item_video_id = ytm_utils.get_nested \
+                (
+                    shelf_item_watch_endpoint,
+                    'videoId',
+                )
+                shelf_item_playlist_id = ytm_utils.get_nested \
+                (
+                    shelf_item_watch_endpoint,
+                    'playlistId',
+                )
+                shelf_item_thumbnail = ytm_utils.get_nested \
+                (
+                    item,
+                    'thumbnailRenderer',
+                    'musicThumbnailRenderer',
+                    'thumbnail',
+                    'thumbnails',
+                    -1,
+                )
+                shelf_item_name = ytm_utils.get_nested \
+                (
+                    item,
+                    'title',
+                    'runs',
+                    0,
+                    'text',
+                )
+                shelf_item_radio_params = ytm_utils.get_nested \
+                (
+                    shelf_item_menu_0_watch_endpoint,
+                    'params',
+                )
+                shelf_item_radio_playlist_id = ytm_utils.get_nested \
+                (
+                    shelf_item_menu_0_watch_endpoint,
+                    'playlistId',
+                )
+                shelf_item_artist_id = ytm_utils.get_nested \
+                (
+                    shelf_item_subtitle_run_0,
+                    'navigationEndpoint',
+                    'browseEndpoint',
+                    'browseId',
+                )
+                shelf_item_artist_name = ytm_utils.get_nested \
+                (
+                    shelf_item_subtitle_run_0,
+                    'text',
+                )
+                shelf_item_views = ytm_utils.get_nested \
+                (
+                    item,
+                    'subtitle',
+                    'runs',
+                    -1,
+                    'text',
+                    func = lambda views: views.strip().split(' ')[0],
+                )
 
                 item_data = \
                 {
+                    'name':      shelf_item_name,
+                    'id':        shelf_item_video_id,
+                    'views':     shelf_item_views,
                     'thumbnail': shelf_item_thumbnail,
-                    'title': shelf_item_title,
-                    'id': shelf_item_video_id,
-                    'views': shelf_item_views,
-                    # 'playlist_id': shelf_item_playlist_id,
-                    # 'video_type': shelf_item_music_video_type,
                     'artist': \
                     {
-                        'id': shelf_item_artist_id,
+                        'id':   shelf_item_artist_id,
                         'name': shelf_item_artist_name,
                     },
                     'radio': \
                     {
-                        'params': shelf_item_radio_params,
+                        'params':      shelf_item_radio_params,
                         'playlist_id': shelf_item_radio_playlist_id,
                     },
                 }
             elif shelf_identifier == 'featured_on':
-                shelf_item_thumbnail = ytm_utils.get_nested(item, 'thumbnailRenderer', 'musicThumbnailRenderer', 'thumbnail', 'thumbnails', -1)
-                shelf_item_title = ytm_utils.get_nested(item, 'title', 'runs', 0, 'text')
-                shelf_item_playlist_browse_id = ytm_utils.get_nested(item, 'navigationEndpoint', 'browseEndpoint', 'browseId')
-                shelf_item_page_type = ytm_utils.get_nested(item, 'navigationEndpoint', 'browseEndpoint', 'browseEndpointContextSupportedConfigs', 'browseEndpointContextMusicConfig', 'pageType')
-                shelf_item_type = ytm_utils.get_nested(item, 'subtitle', 'runs', 0, 'text')
-                shelf_item_artist = ytm_utils.get_nested(item, 'subtitle', 'runs', 2, 'text')
-                shelf_item_playlist_id = ytm_utils.get_nested(item, 'thumbnailOverlay', 'musicItemThumbnailOverlayRenderer', 'content', 'musicPlayButtonRenderer', 'playNavigationEndpoint', 'watchPlaylistEndpoint', 'playlistId')
-                shelf_item_shuffle_params = ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 0, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchPlaylistEndpoint', 'params')
-                shelf_item_shuffle_playlist_id = ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 0, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchPlaylistEndpoint', 'playlistId')
-                shelf_item_radio_params = ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 1, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchPlaylistEndpoint', 'params')
-                shelf_item_radio_playlist_id = ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 1, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchPlaylistEndpoint', 'playlistId')
+                shelf_item_browse_endpoint = ytm_utils.get_nested \
+                (
+                    item,
+                    'navigationEndpoint',
+                    'browseEndpoint',
+                )
+                shelf_item_menu_item_0_playlist_endpoint = ytm_utils.get_nested \
+                (
+                    item,
+                    'menu',
+                    'menuRenderer',
+                    'items',
+                    0,
+                    'menuNavigationItemRenderer',
+                    'navigationEndpoint',
+                    'watchPlaylistEndpoint',
+                )
+                shelf_item_menu_item_1_playlist_endpoint = ytm_utils.get_nested \
+                (
+                    item,
+                    'menu',
+                    'menuRenderer',
+                    'items',
+                    1,
+                    'menuNavigationItemRenderer',
+                    'navigationEndpoint',
+                    'watchPlaylistEndpoint',
+                )
+
+                shelf_item_thumbnail = ytm_utils.get_nested \
+                (
+                    item,
+                    'thumbnailRenderer',
+                    'musicThumbnailRenderer',
+                    'thumbnail',
+                    'thumbnails',
+                    -1,
+                )
+                shelf_item_playlist_id = ytm_utils.get_nested \
+                (
+                    item,
+                    'thumbnailOverlay',
+                    'musicItemThumbnailOverlayRenderer',
+                    'content',
+                    'musicPlayButtonRenderer',
+                    'playNavigationEndpoint',
+                    'watchPlaylistEndpoint',
+                    'playlistId',
+                )
+                shelf_item_name = ytm_utils.get_nested \
+                (
+                    item,
+                    'title',
+                    'runs',
+                    0,
+                    'text',
+                )
+                shelf_item_playlist_browse_id = ytm_utils.get_nested \
+                (
+                    shelf_item_browse_endpoint,
+                    'browseId',
+                )
+                shelf_item_page_type = ytm_utils.get_nested \
+                (
+                    shelf_item_browse_endpoint,
+                    'browseEndpointContextSupportedConfigs',
+                    'browseEndpointContextMusicConfig',
+                    'pageType',
+                )
+                shelf_item_type = ytm_utils.get_nested \
+                (
+                    item,
+                    'subtitle',
+                    'runs',
+                    0,
+                    'text',
+                )
+                shelf_item_artist = ytm_utils.get_nested \
+                (
+                    item,
+                    'subtitle',
+                    'runs',
+                    2,
+                    'text',
+                )
+                shelf_item_shuffle_params = ytm_utils.get_nested \
+                (
+                    shelf_item_menu_item_0_playlist_endpoint,
+                    'params',
+                )
+                shelf_item_shuffle_playlist_id = ytm_utils.get_nested \
+                (
+                    shelf_item_menu_item_0_playlist_endpoint,
+                    'playlistId',
+                )
+                shelf_item_radio_params = ytm_utils.get_nested \
+                (
+                    shelf_item_menu_item_1_playlist_endpoint,
+                    'params',
+                )
+                shelf_item_radio_playlist_id = ytm_utils.get_nested \
+                (
+                    shelf_item_menu_item_1_playlist_endpoint,
+                    'playlistId',
+                )
 
                 item_data = \
                 {
+                    'name':      shelf_item_name,
+                    'id':        shelf_item_playlist_id,
                     'thumbnail': shelf_item_thumbnail,
-                    'title': shelf_item_title,
-                    # 'artist': shelf_item_artist,
-                    # 'playlist': \
-                    # {
-                    #     'browse_id': shelf_item_playlist_browse_id,
-                    'id': shelf_item_playlist_id,
-                    # },
                     'shuffle': \
                     {
-                        'params': shelf_item_shuffle_params,
+                        'params':      shelf_item_shuffle_params,
                         'playlist_id': shelf_item_shuffle_playlist_id,
                     },
                     'radio': \
                     {
-                        'params': shelf_item_radio_params,
+                        'params':      shelf_item_radio_params,
                         'playlist_id': shelf_item_radio_playlist_id,
                     },
                 }
             elif shelf_identifier == 'fans_might_also_like':
-                shelf_item_page_type = ytm_utils.get_nested(item, 'navigationEndpoint', 'browseEndpoint', 'browseEndpointContextSupportedConfigs', 'browseEndpointContextMusicConfig', 'pageType')
-                shelf_item_thumbnail = ytm_utils.get_nested(item, 'thumbnailRenderer', 'musicThumbnailRenderer', 'thumbnail', 'thumbnails', -1)
-                shelf_item_title = ytm_utils.get_nested(item, 'title', 'runs', 0, 'text')
-                shelf_item_browse_id = ytm_utils.get_nested(item, 'navigationEndpoint', 'browseEndpoint', 'browseId')
-                shelf_item_subscribers = ytm_utils.get_nested(item, 'subtitle', 'runs', 0, 'text', func=lambda subscribers: subscribers.split(' ')[0])
-                shelf_item_shuffle_params = ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 0, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchPlaylistEndpoint', 'params')
-                shelf_item_shuffle_playlist_id = ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 0, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchPlaylistEndpoint', 'playlistId')
-                shelf_item_radio_params = ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 1, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchPlaylistEndpoint', 'params')
-                shelf_item_radio_playlist_id = ytm_utils.get_nested(item, 'menu', 'menuRenderer', 'items', 1, 'menuNavigationItemRenderer', 'navigationEndpoint', 'watchPlaylistEndpoint', 'playlistId')
+                shelf_item_browse_endpoint = ytm_utils.get_nested \
+                (
+                    item,
+                    'navigationEndpoint',
+                    'browseEndpoint',
+                )
+                shelf_item_menu_item_0_playlist_endpoint = ytm_utils.get_nested \
+                (
+                    item,
+                    'menu',
+                    'menuRenderer',
+                    'items',
+                    0,
+                    'menuNavigationItemRenderer',
+                    'navigationEndpoint',
+                    'watchPlaylistEndpoint',
+                )
+                shelf_item_menu_item_1_playlist_endpoint = ytm_utils.get_nested \
+                (
+                    item,
+                    'menu',
+                    'menuRenderer',
+                    'items',
+                    1,
+                    'menuNavigationItemRenderer',
+                    'navigationEndpoint',
+                    'watchPlaylistEndpoint',
+                )
+
+                shelf_item_page_type = ytm_utils.get_nested \
+                (
+                    shelf_item_browse_endpoint,
+                    'browseEndpointContextSupportedConfigs',
+                    'browseEndpointContextMusicConfig',
+                    'pageType',
+                )
+                shelf_item_browse_id = ytm_utils.get_nested \
+                (
+                    shelf_item_browse_endpoint,
+                    'browseId',
+                )
+                shelf_item_thumbnail = ytm_utils.get_nested \
+                (
+                    item,
+                    'thumbnailRenderer',
+                    'musicThumbnailRenderer',
+                    'thumbnail',
+                    'thumbnails',
+                    -1,
+                )
+                shelf_item_title = ytm_utils.get_nested \
+                (
+                    item,
+                    'title',
+                    'runs',
+                    0,
+                    'text',
+                )
+                shelf_item_subscribers = ytm_utils.get_nested \
+                (
+                    item,
+                    'subtitle',
+                    'runs',
+                    0,
+                    'text',
+                    func = lambda subscribers: subscribers.split(' ')[0],
+                )
+                shelf_item_shuffle_params = ytm_utils.get_nested \
+                (
+                    shelf_item_menu_item_0_playlist_endpoint,
+                    'params',
+                )
+                shelf_item_shuffle_playlist_id = ytm_utils.get_nested \
+                (
+                    shelf_item_menu_item_0_playlist_endpoint,
+                    'playlistId',
+                )
+                shelf_item_radio_params = ytm_utils.get_nested \
+                (
+                    shelf_item_menu_item_1_playlist_endpoint,
+                    'params',
+                )
+                shelf_item_radio_playlist_id = ytm_utils.get_nested \
+                (
+                    shelf_item_menu_item_1_playlist_endpoint,
+                    'playlistId',
+                )
 
                 item_data = \
                 {
-                    'thumbnail': shelf_item_thumbnail,
-                    'title': shelf_item_title,
-                    'id': shelf_item_browse_id,
-                    # 'page_type': shelf_item_page_type,
+                    'name':        shelf_item_title,
+                    'id':          shelf_item_browse_id,
                     'subscribers': shelf_item_subscribers,
+                    'thumbnail':   shelf_item_thumbnail,
                     'shuffle': \
                     {
-                        'params': shelf_item_shuffle_params,
+                        'params':      shelf_item_shuffle_params,
                         'playlist_id': shelf_item_shuffle_playlist_id,
                     },
                     'radio': \
                     {
-                        'params': shelf_item_shuffle_params,
+                        'params':      shelf_item_shuffle_params,
                         'playlist_id': shelf_item_shuffle_playlist_id,
                     },
                 }
@@ -625,7 +967,6 @@ def browse_artist(data):
             shelf_data = \
             {
                 'title': shelf_title,
-                # 'artist_id': shelf_browse_id,
                 'params': shelf_params,
                 'items': items,
             }
@@ -636,7 +977,6 @@ def browse_artist(data):
             shelf_data = \
             {
                 'title': shelf_title,
-                # 'artist_id': shelf_browse_id,
                 'params': shelf_params,
                 'items': items,
             }
@@ -650,16 +990,13 @@ def browse_artist(data):
             shelf_data = \
             {
                 'title': shelf_title,
-                'playlist_id': shelf_browse_id, # left-strip 'VL'
-                # 'params': shelf_params, # Needed?
+                'playlist_id': shelf_browse_id,
                 'items': items,
             }
         elif shelf_identifier == 'featured_on':
             shelf_data = \
             {
                 'title': shelf_title,
-                # 'browse_id': shelf_browse_id,
-                # 'params': shelf_params,
                 'items': items,
             }
 
@@ -668,8 +1005,6 @@ def browse_artist(data):
             shelf_data = \
             {
                 'title': shelf_title,
-                # 'browse_id': shelf_browse_id,
-                # 'params': shelf_params,
                 'items': items,
             }
 
@@ -685,8 +1020,7 @@ def browse_artist(data):
     shelves_data['songs'] = \
     {
         'title': 'Songs',
-        'playlist_id': artist_playlist_id, # Left-strip 'VL'
-        # 'params': artist_playlist_params, # Needed?
+        'playlist_id': artist_playlist_id,
         'items': songs,
     }
 
@@ -697,7 +1031,6 @@ def browse_artist(data):
         'subscribers': artist_subscribers,
         'views': artist_views,
         'description': artist_description,
-        # 'shelves': shelves_data,
         **shelves_data,
     }
 

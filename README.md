@@ -6,7 +6,6 @@ Unofficial Python YouTube Music Web API Client
 
 ## Dependencies
 [requests](https://github.com/psf/requests) >= 2.18.2
-
 [youtube_dl](https://github.com/ytdl-org/youtube-dl) >= 2020.03.24 (optional)
 
 ## Installation

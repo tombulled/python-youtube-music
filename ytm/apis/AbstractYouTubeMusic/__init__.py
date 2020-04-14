@@ -19,8 +19,8 @@ class AbstractYouTubeMusic(object):
             # 'guide', # Made but so pointless
             'hotlist',
             'song',
-            'suggest',
-            'watch',
+            'suggest', # Rename to search_suggest ??
+            'watch',   # Rename to next?
             'playlist',
             'album',
 
@@ -35,16 +35,18 @@ class AbstractYouTubeMusic(object):
             'artist',
 
             # 'artist_singles', # (artist_id, params)
-            # 'artist_albums', # (artist_id, params)
+            # 'artist_albums',  # (artist_id, params)
 
-            # 'shuffle',
-            # 'radio',
-
-            # 'video_id' # ?? or just 'video'
-
-            # 'download'
+            # 'shuffle', # 'playlist_shuffle' ?
+            # 'radio',   # 'playlist_radio'   ?
 
             # Others?
+
+            #########################################
+
+            # 'download'
+            # 'video_id' # ?? or just 'video'
+            # Can use YouTubeMusicDL
         )
 
         for method in methods:

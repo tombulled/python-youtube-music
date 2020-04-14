@@ -10,23 +10,39 @@ class YouTubeMusicDL(object):
         (
             params = \
             {
-                'format': 'bestaudio',
-                'quiet': True,
+                'format':  'bestaudio',
+                'quiet':   True,
                 'outtmpl': '%(title)s.%(ext)s',
             }
         )
 
-        self._format_selector = self.ytdl.build_format_selector('bestaudio')
-
     def info(self, video_id):
-        info = self._video_info \
+        info = self._info \
         (
             video_id = video_id,
         )
 
         return info
 
-    def download(self, video_id, file_name=None, file_path=None):
+    def download_audio(self, video_id, file_name=None, file_path=None):
+        return self.download \
+        (
+            video_id  = video_id,
+            file_name = file_name,
+            file_path = file_path,
+            format    = 'bestaudio',
+        )
+
+    def download_video(self, video_id, file_name=None, file_path=None):
+        return self.download \
+        (
+            video_id  = video_id,
+            file_name = file_name,
+            file_path = file_path,
+            format    = 'bestvideo+bestaudio/best',
+        )
+
+    def download(self, video_id, file_name=None, file_path=None, format=None):
         if not file_path:
             file_path = os.getcwd()
 
@@ -36,21 +52,28 @@ class YouTubeMusicDL(object):
         if '.' not in file_name:
             file_name += '.%(ext)s'
 
+        if format is None:
+            format = 'bestaudio'
+
         path_directory = pathlib.Path(file_path)
 
         path_file = path_directory.joinpath(file_name)
 
         _param_outtmpl = self.ytdl.params.get('outtmpl', None)
+        _param_format = self.ytdl.params.get('format', None)
 
         self.ytdl.params['outtmpl'] = str(path_file)
+        self.ytdl.params['format'] = format
 
-        info = self._video_info \
+        info = self._info \
         (
             video_id = video_id,
             download = True,
         )
 
-        format = next(self._format_selector(info))
+        format_selector = self.ytdl.build_format_selector(format)
+
+        format = next(format_selector(info))
 
         file_name = file_name % \
         {
@@ -63,12 +86,15 @@ class YouTubeMusicDL(object):
         if _param_outtmpl:
             self.ytdl.params['outtmpl'] = _param_outtmpl
 
+        if _param_format:
+            self.ytdl.params['format'] = _param_format
+
         success = not self.ytdl._download_retcode
 
         if success:
             return str(path_file)
 
-    def _video_info(self, video_id, download=False):
+    def _info(self, video_id, download=False):
         info = self.ytdl.extract_info \
         (
             url = f'https://www.youtube.com/watch?v={video_id}',
@@ -80,4 +106,4 @@ class YouTubeMusicDL(object):
 
 dl = YouTubeMusicDL()
 
-x = dl.download('8zZHAfq0gls', file_name='Aquilo - Sober', file_path='C:/Users/Admin/Desktop')
+x = dl.download_audio('8zZHAfq0gls', file_name='Aquilo - Sober', file_path='C:/Users/Admin/Desktop')

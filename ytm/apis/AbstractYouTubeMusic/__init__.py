@@ -9,6 +9,8 @@ _import(locals())
 
 class AbstractYouTubeMusic(object):
     def __init__(self):
+        # This should be _base or __base
+        # ... so not confused with a method when dir(...)
         self.base = BaseYouTubeMusic()
 
         methods = \

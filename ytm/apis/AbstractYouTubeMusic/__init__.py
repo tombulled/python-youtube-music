@@ -34,8 +34,8 @@ class AbstractYouTubeMusic(object):
 
             'artist',
 
-            # 'artist_singles', # (artist_id, params)
-            # 'artist_albums',  # (artist_id, params)
+            'artist_albums',  # (artist_id, params)
+            'artist_singles', # (artist_id, params)
 
             # 'shuffle', # 'playlist_shuffle' ?
             # 'radio',   # 'playlist_radio'   ?

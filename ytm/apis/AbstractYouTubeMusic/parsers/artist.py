@@ -2,7 +2,7 @@ from .... import utils as ytm_utils
 
 __all__ = __name__.split('.')[-1:]
 
-def browse_artist(data):
+def artist(data):
     contents = ytm_utils.get_nested \
     (
         data,

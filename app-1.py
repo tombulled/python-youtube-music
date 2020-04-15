@@ -67,7 +67,16 @@ artist_id = 'UCIaFw5VBEK8qaW6nRpx_qnw' # Coldplay
 # d = aapi.playlist(playlist_id)
 # d = aapi.album(album_id)
 # d = aapi.search('cocoon')
-# d = aapi.artist(artist_id)
+
+d1 = aapi.artist(artist_id)
+i = d1['id']
+p = d1['singles']['params']
+d = aapi.artist_singles \
+(
+    artist_id = i,
+    params    = p,
+)
+
 # artist_id='UCTK1maAvqrDlD2agZDGZzjw'
 # d = aapi.base.browse \
 # (

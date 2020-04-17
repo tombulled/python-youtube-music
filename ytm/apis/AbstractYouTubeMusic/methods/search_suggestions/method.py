@@ -1,0 +1,11 @@
+from . import parser
+from ... import decorators
+
+__all__ = __name__.split('.')[-1:]
+
+@decorators.parse(parser.parse)
+def method(self, query):
+    return self._base.search_suggestions \
+    (
+        query = query
+    )

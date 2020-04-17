@@ -11,6 +11,7 @@ class AbstractYouTubeMusic(object):
     def __init__(self):
         # This should be _base or __base
         # ... so not confused with a method when dir(...)
+        # ... Note: Has to be removed from all methods aswell
         self.base = BaseYouTubeMusic()
 
         methods = \
@@ -19,7 +20,7 @@ class AbstractYouTubeMusic(object):
             # 'guide', # Made but so pointless
             'hotlist',
             'song',
-            'suggest', # Rename to search_suggest ??
+            'suggest', # Rename to search_suggest ?? search_suggestions ??
             'watch',   # Rename to next?
             'playlist',
             'album',
@@ -37,16 +38,10 @@ class AbstractYouTubeMusic(object):
             'artist_albums',  # (artist_id, params)
             'artist_singles', # (artist_id, params)
 
-            # 'shuffle', # 'playlist_shuffle' ?
-            # 'radio',   # 'playlist_radio'   ?
+            # 'shuffle', # 'playlist_shuffle' ? 'watch_shuffle' ?
+            # 'radio',   # 'playlist_radio'   ? 'watch_radio' ?
 
             # Others?
-
-            #########################################
-
-            # 'download'
-            # 'video_id' # ?? or just 'video'
-            # Can use YouTubeMusicDL
         )
 
         for method in methods:

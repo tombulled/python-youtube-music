@@ -19,6 +19,14 @@ class YouTubeMusicDL(object):
             }
         )
 
+    def __repr__(self):
+        representation = '<{class_name}()>'.format \
+        (
+            class_name = self.__class__.__name__,
+        )
+
+        return representation
+
     def info(self, video_id):
         info = self._info \
         (

@@ -7,10 +7,11 @@ __all__ = __name__.split('.')[-1:]
 
 _import(locals())
 
-# locals()['__all__'] = __name__.split('.')[-1:]
-
 class AbstractYouTubeMusic(object):
     def __init__(self):
+        # This should be _base or __base
+        # ... so not confused with a method when dir(...)
+        # ... Note: Has to be removed from all methods aswell
         self.base = BaseYouTubeMusic()
 
         methods = \
@@ -19,12 +20,12 @@ class AbstractYouTubeMusic(object):
             # 'guide', # Made but so pointless
             'hotlist',
             'song',
-            'suggest',
-            'watch',
+            'suggest', # Rename to search_suggest ?? search_suggestions ??
+            'watch',   # Rename to next?
             'playlist',
             'album',
 
-            'search', # Here last
+            'search',
 
             'search_albums',
             'search_playlists',
@@ -34,12 +35,13 @@ class AbstractYouTubeMusic(object):
 
             'artist',
 
-            # 'artist_singles', # (artist_id, params)
-            # 'artist_albums', # (artist_id, params)
+            'artist_albums',  # (artist_id, params)
+            'artist_singles', # (artist_id, params)
 
-            # 'video_id' # ?? or just 'video'
+            # 'shuffle', # 'playlist_shuffle' ? 'watch_shuffle' ?
+            # 'radio',   # 'playlist_radio'   ? 'watch_radio' ?
 
-            # others? artist_songs, search_songs
+            # Others?
         )
 
         for method in methods:

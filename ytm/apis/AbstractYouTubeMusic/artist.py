@@ -8,6 +8,6 @@ def artist(self, artist_id):
         browse_id = artist_id,
     )
 
-    parsed_data = parsers.browse_artist(data)
+    parsed_data = parsers.artist(data)
 
     return parsed_data

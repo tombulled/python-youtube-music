@@ -1,17 +1,20 @@
 from . import parser
-from ..... import utils as ytm_utils
+from ... import utils
 
 __all__ = __name__.split('.')[-1:]
 
-# Note: alum_id can also be a browse_id
 def method(self, id):
+    '''
+    Note: alum_id can also be a browse_id
+    '''
+
     if id.startswith('OLAK5uy'): # playlist_id
         page = self._base.page_playlist \
         (
             list = id,
         )
 
-        browse_id = ytm_utils.get_nested \
+        browse_id = utils.get_nested \
         (
             page,
             'INITIAL_ENDPOINT',

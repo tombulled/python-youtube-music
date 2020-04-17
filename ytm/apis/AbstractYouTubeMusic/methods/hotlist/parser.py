@@ -1,37 +1,117 @@
-from ..... import utils as ytm_utils
+from ... import utils
 
 __all__ = __name__.split('.')[-1:]
 
 def parse(data):
-    tracks = ytm_utils.get_nested(data, 'contents', 'singleColumnBrowseResultsRenderer', 'tabs', 0, 'tabRenderer', 'content', 'sectionListRenderer', 'contents', 0, 'itemSectionRenderer', 'contents', 0, 'gridRenderer', 'items', default=[])
+    grid_items = utils.get_nested \
+    (
+        data,
+        'contents',
+        'singleColumnBrowseResultsRenderer',
+        'tabs',
+        0,
+        'tabRenderer',
+        'content',
+        'sectionListRenderer',
+        'contents',
+        0,
+        'itemSectionRenderer',
+        'contents',
+        0,
+        'gridRenderer',
+        'items',
+        default = (),
+    )
 
-    scraped = []
+    tracks = []
 
-    for track in tracks:
-        title = ytm_utils.get_nested(track, 'musicFullBleedItemRenderer', 'title', 'runs', 0, 'text')
-        views = ytm_utils.get_nested(track, 'musicFullBleedItemRenderer', 'subtitle', 'runs', -1, 'text')
-        artists = \
-        [
-            ytm_utils.get_nested(run, 'text')
-            for run in ytm_utils.get_nested(track, 'musicFullBleedItemRenderer', 'subtitle', 'runs', default=[])[:-1:2]
-        ]
-        artist_id = ytm_utils.get_nested(track, 'musicFullBleedItemRenderer', 'menu', 'menuRenderer', 'items', 5, 'menuNavigationItemRenderer', 'navigationEndpoint', 'browseEndpoint', 'browseId')
-        thumbnail = ytm_utils.get_nested(track, 'musicFullBleedItemRenderer', 'backgroundImage', 'musicThumbnailRenderer', 'thumbnail', 'thumbnails', -1)
-        id = ytm_utils.get_nested(track, 'musicFullBleedItemRenderer', 'onTap', 'watchEndpoint', 'videoId')
-        music_video_type = ytm_utils.get_nested(track, 'musicFullBleedItemRenderer', 'onTap', 'watchEndpoint', 'watchEndpointMusicSupportedConfigs', 'watchEndpointMusicConfig', 'musicVideoType')
+    for track in grid_items:
+        track = utils.first_key(track)
 
-        # Only specify key, then fetch value from locals()
+        track_title = utils.get_nested \
+        (
+            track,
+            'title',
+            'runs',
+            0,
+            'text',
+        )
+        track_views = utils.get_nested \
+        (
+            track,
+            'subtitle',
+            'runs',
+            -1,
+            'text',
+        )
+        track_artist_id = utils.get_nested \
+        (
+            track,
+            'menu',
+            'menuRenderer',
+            'items',
+            5,
+            'menuNavigationItemRenderer',
+            'navigationEndpoint',
+            'browseEndpoint',
+            'browseId',
+        )
+        track_thumbnail = utils.get_nested \
+        (
+            track,
+            'backgroundImage',
+            'musicThumbnailRenderer',
+            'thumbnail',
+            'thumbnails',
+            -1,
+        )
+        track_id = utils.get_nested \
+        (
+            track,
+            'onTap',
+            'watchEndpoint',
+            'videoId',
+        )
+        track_music_video_type = utils.get_nested \
+        (
+            track,
+            'onTap',
+            'watchEndpoint',
+            'watchEndpointMusicSupportedConfigs',
+            'watchEndpointMusicConfig',
+            'musicVideoType',
+        )
+
+        raw_track_artists = utils.get_nested \
+        (
+            track,
+            'subtitle',
+            'runs',
+            default = (),
+        )[:-1:2]
+
+        track_artists = []
+
+        for track_artist in raw_track_artists:
+            track_artist_title = utils.get_nested \
+            (
+                track_artist,
+                'text',
+            )
+
+            track_artists.append(track_artist_title)
+
         track_data = \
         {
-            'title': title,
-            'views': views,
-            'artists': artists,
-            'artist_id': artist_id,
-            'thumbnail': thumbnail,
-            'id': id,
-            'music_video_type': music_video_type,
+            'title':            track_title,
+            'views':            track_views,
+            'artists':          track_artists,
+            'artist_id':        track_artist_id,
+            'thumbnail':        track_thumbnail,
+            'id':               track_id,
+            'music_video_type': track_music_video_type,
         }
 
-        scraped.append(track_data)
+        tracks.append(track_data)
 
-    return scraped
+    return tracks

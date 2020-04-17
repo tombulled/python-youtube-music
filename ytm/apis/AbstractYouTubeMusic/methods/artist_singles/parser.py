@@ -1,9 +1,9 @@
-from ..... import utils as ytm_utils
+from ... import utils
 
 __all__ = __name__.split('.')[-1:]
 
 def parse(data):
-    contents = ytm_utils.get_nested \
+    contents = utils.get_nested \
     (
         data,
         'contents',
@@ -22,9 +22,9 @@ def parse(data):
     parsed_items = []
 
     for item in contents:
-        item = ytm_utils.first_key(item)
+        item = utils.first_key(item)
 
-        item_menu_items = ytm_utils.get_nested \
+        item_menu_items = utils.get_nested \
         (
             item,
             'menu',
@@ -36,9 +36,9 @@ def parse(data):
         item_menu_items_map = {}
 
         for item_menu_item in item_menu_items:
-            item_menu_item = ytm_utils.first_key(item_menu_item)
+            item_menu_item = utils.first_key(item_menu_item)
 
-            item_menu_item_text = ytm_utils.get_nested \
+            item_menu_item_text = utils.get_nested \
             (
                 item_menu_item,
                 'text',
@@ -48,7 +48,7 @@ def parse(data):
             )
 
             if not item_menu_item_text:
-                item_menu_item_text = ytm_utils.get_nested \
+                item_menu_item_text = utils.get_nested \
                 (
                     item_menu_item,
                     'defaultText',
@@ -65,7 +65,7 @@ def parse(data):
 
             item_menu_items_map[item_menu_item_identifier] = item_menu_item
 
-        item_badges = ytm_utils.get_nested \
+        item_badges = utils.get_nested \
         (
             item,
             'badges',
@@ -75,9 +75,9 @@ def parse(data):
         item_badges_map = {}
 
         for badge in item_badges:
-            badge = ytm_utils.first_key(badge)
+            badge = utils.first_key(badge)
 
-            badge_label = ytm_utils.get_nested \
+            badge_label = utils.get_nested \
             (
                 badge,
                 'accessibilityData',
@@ -93,20 +93,20 @@ def parse(data):
 
             item_badges_map[badge_identifier] = badge
 
-        item_browse_endpoint = ytm_utils.get_nested \
+        item_browse_endpoint = utils.get_nested \
         (
             item,
             'navigationEndpoint',
             'browseEndpoint',
         )
-        item_shuffle_playlist_endpoint = ytm_utils.get_nested \
+        item_shuffle_playlist_endpoint = utils.get_nested \
         (
             item_menu_items_map,
             'shuffle_play',
             'navigationEndpoint',
             'watchPlaylistEndpoint',
         )
-        item_radio_playlist_endpoint = ytm_utils.get_nested \
+        item_radio_playlist_endpoint = utils.get_nested \
         (
             item_menu_items_map,
             'start_radio',
@@ -114,17 +114,17 @@ def parse(data):
             'watchPlaylistEndpoint',
         )
 
-        item_id = ytm_utils.get_nested \
+        item_id = utils.get_nested \
         (
             item_browse_endpoint,
             'browseId',
         )
-        item_params = ytm_utils.get_nested \
+        item_params = utils.get_nested \
         (
             item_browse_endpoint,
             'params',
         )
-        item_name = ytm_utils.get_nested \
+        item_name = utils.get_nested \
         (
             item,
             'flexColumns',
@@ -135,7 +135,7 @@ def parse(data):
             0,
             'text',
         )
-        item_year = ytm_utils.get_nested \
+        item_year = utils.get_nested \
         (
             item,
             'flexColumns',
@@ -147,7 +147,7 @@ def parse(data):
             'text',
             func = int,
         )
-        item_thumbnail = ytm_utils.get_nested \
+        item_thumbnail = utils.get_nested \
         (
             item,
             'thumbnail',
@@ -156,22 +156,22 @@ def parse(data):
             'thumbnails',
             -1,
         )
-        item_shuffle_playlist_params = ytm_utils.get_nested \
+        item_shuffle_playlist_params = utils.get_nested \
         (
             item_shuffle_playlist_endpoint,
             'params',
         )
-        item_shuffle_playlist_id = ytm_utils.get_nested \
+        item_shuffle_playlist_id = utils.get_nested \
         (
             item_shuffle_playlist_endpoint,
             'playlistId',
         )
-        item_radio_playlist_params = ytm_utils.get_nested \
+        item_radio_playlist_params = utils.get_nested \
         (
             item_radio_playlist_endpoint,
             'params',
         )
-        item_radio_playlist_id = ytm_utils.get_nested \
+        item_radio_playlist_id = utils.get_nested \
         (
             item_radio_playlist_endpoint,
             'playlistId',

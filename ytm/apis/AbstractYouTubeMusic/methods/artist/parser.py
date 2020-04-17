@@ -1,9 +1,10 @@
-from ..... import utils as ytm_utils
+# from ..... import utils as utils
+from ... import utils
 
 __all__ = __name__.split('.')[-1:]
 
 def parse(data):
-    contents = ytm_utils.get_nested \
+    contents = utils.get_nested \
     (
         data,
         'contents',
@@ -28,48 +29,48 @@ def parse(data):
         else:
             shelves[content_key] = [content]
 
-    header_renderer = ytm_utils.get_nested \
+    header_renderer = utils.get_nested \
     (
         data,
         'header',
         'musicImmersiveHeaderRenderer',
     )
-    shelf_renderer = ytm_utils.get_nested \
+    shelf_renderer = utils.get_nested \
     (
         shelves,
         'musicShelfRenderer',
         0,
     )
-    browse_endpoint = ytm_utils.get_nested \
+    browse_endpoint = utils.get_nested \
     (
         shelf_renderer,
         'bottomEndpoint',
         'browseEndpoint',
     )
-    description_shelf_renderer = ytm_utils.get_nested \
+    description_shelf_renderer = utils.get_nested \
     (
         shelves,
         'musicDescriptionShelfRenderer',
         0,
     )
-    subscribe_button_renderer = ytm_utils.get_nested \
+    subscribe_button_renderer = utils.get_nested \
     (
         header_renderer,
         'subscriptionButton',
         'subscribeButtonRenderer',
     )
 
-    artist_playlist_id = ytm_utils.get_nested \
+    artist_playlist_id = utils.get_nested \
     (
         browse_endpoint,
         'browseId',
     )
-    artist_playlist_params = ytm_utils.get_nested \
+    artist_playlist_params = utils.get_nested \
     (
         browse_endpoint,
         'params',
     )
-    artist_name = ytm_utils.get_nested \
+    artist_name = utils.get_nested \
     (
         header_renderer,
         'title',
@@ -77,12 +78,12 @@ def parse(data):
         0,
         'text',
     )
-    artist_id = ytm_utils.get_nested \
+    artist_id = utils.get_nested \
     (
         subscribe_button_renderer,
         'channelId',
     )
-    artist_subscribers = ytm_utils.get_nested \
+    artist_subscribers = utils.get_nested \
     (
         subscribe_button_renderer,
         'subscriberCountText',
@@ -90,7 +91,7 @@ def parse(data):
         0,
         'text',
     )
-    artist_views = ytm_utils.get_nested \
+    artist_views = utils.get_nested \
     (
         description_shelf_renderer,
         'subheader',
@@ -99,7 +100,7 @@ def parse(data):
         'text',
         func = lambda views:int(views.strip().split(' ')[0].replace(',', '')),
     )
-    artist_description = ytm_utils.get_nested \
+    artist_description = utils.get_nested \
     (
         description_shelf_renderer,
         'description',
@@ -108,7 +109,7 @@ def parse(data):
         'text',
     )
 
-    shelf_songs = ytm_utils.get_nested \
+    shelf_songs = utils.get_nested \
     (
         shelf_renderer,
         'contents',
@@ -118,13 +119,13 @@ def parse(data):
     songs = []
 
     for song in shelf_songs:
-        song = ytm_utils.get_nested \
+        song = utils.get_nested \
         (
             song,
             'musicResponsiveListItemRenderer',
         )
 
-        song_overlay_watch_endpoint = ytm_utils.get_nested \
+        song_overlay_watch_endpoint = utils.get_nested \
         (
             song,
             'overlay',
@@ -134,7 +135,7 @@ def parse(data):
             'playNavigationEndpoint',
             'watchEndpoint',
         )
-        song_menu_watch_endpoint = ytm_utils.get_nested \
+        song_menu_watch_endpoint = utils.get_nested \
         (
             song,
             'menu',
@@ -145,7 +146,7 @@ def parse(data):
             'navigationEndpoint',
             'watchEndpoint',
         )
-        song_flex_column_0_run = ytm_utils.get_nested \
+        song_flex_column_0_run = utils.get_nested \
         (
             song,
             'flexColumns',
@@ -155,7 +156,7 @@ def parse(data):
             'runs',
             0,
         )
-        song_flex_column_1_run = ytm_utils.get_nested \
+        song_flex_column_1_run = utils.get_nested \
         (
             song,
             'flexColumns',
@@ -165,7 +166,7 @@ def parse(data):
             'runs',
             0,
         )
-        song_flex_column_2_run = ytm_utils.get_nested \
+        song_flex_column_2_run = utils.get_nested \
         (
             song,
             'flexColumns',
@@ -176,29 +177,29 @@ def parse(data):
             0,
         )
 
-        song_playlist_params = ytm_utils.get_nested \
+        song_playlist_params = utils.get_nested \
         (
             song_overlay_watch_endpoint,
             'params',
         )
-        song_playlist_id = ytm_utils.get_nested \
+        song_playlist_id = utils.get_nested \
         (
             song_overlay_watch_endpoint,
             'playlistId',
         )
-        song_video_id = ytm_utils.get_nested \
+        song_video_id = utils.get_nested \
         (
             song_overlay_watch_endpoint,
             'videoId',
         )
-        song_music_video_type = ytm_utils.get_nested \
+        song_music_video_type = utils.get_nested \
         (
             song_overlay_watch_endpoint,
             'watchEndpointMusicSupportedConfigs',
             'watchEndpointMusicConfig',
             'musicVideoType',
         )
-        song_thumbnail = ytm_utils.get_nested \
+        song_thumbnail = utils.get_nested \
         (
             song,
             'thumbnail',
@@ -207,41 +208,41 @@ def parse(data):
             'thumbnails',
             -1,
         )
-        song_title = ytm_utils.get_nested \
+        song_title = utils.get_nested \
         (
             song_flex_column_0_run,
             'text',
         )
-        song_artist_title = ytm_utils.get_nested \
+        song_artist_title = utils.get_nested \
         (
             song_flex_column_1_run,
             'text',
         )
-        song_artist_browse_id = ytm_utils.get_nested \
+        song_artist_browse_id = utils.get_nested \
         (
             song_flex_column_1_run,
             'navigationEndpoint',
             'browseEndpoint',
             'browseId',
         )
-        song_album_title = ytm_utils.get_nested \
+        song_album_title = utils.get_nested \
         (
             song_flex_column_2_run,
             'text',
         )
-        song_album_browse_id = ytm_utils.get_nested \
+        song_album_browse_id = utils.get_nested \
         (
             song_flex_column_2_run,
             'navigationEndpoint',
             'browseEndpoint',
             'browseId',
         )
-        song_radio_params = ytm_utils.get_nested \
+        song_radio_params = utils.get_nested \
         (
             song_menu_watch_endpoint,
             'params',
         )
-        song_radio_playlist_id = ytm_utils.get_nested \
+        song_radio_playlist_id = utils.get_nested \
         (
             song_menu_watch_endpoint,
             'playlistId',
@@ -271,7 +272,7 @@ def parse(data):
 
         songs.append(song_data)
 
-    shelves = ytm_utils.get_nested \
+    shelves = utils.get_nested \
     (
         shelves,
         'musicCarouselShelfRenderer',
@@ -294,13 +295,13 @@ def parse(data):
         shelves_data.setdefault(field, None)
 
     for shelf in shelves:
-        shelf_header = ytm_utils.get_nested \
+        shelf_header = utils.get_nested \
         (
             shelf,
             'header',
             'musicCarouselShelfBasicHeaderRenderer',
         )
-        shelf_browse_endpoint = ytm_utils.get_nested \
+        shelf_browse_endpoint = utils.get_nested \
         (
             shelf_header,
             'endIcons',
@@ -310,7 +311,7 @@ def parse(data):
             'browseEndpoint',
         )
 
-        shelf_title = ytm_utils.get_nested \
+        shelf_title = utils.get_nested \
         (
             shelf_header,
             'title',
@@ -318,12 +319,12 @@ def parse(data):
             0,
             'text',
         )
-        shelf_browse_id = ytm_utils.get_nested \
+        shelf_browse_id = utils.get_nested \
         (
             shelf_browse_endpoint,
             'browseId',
         )
-        shelf_params = ytm_utils.get_nested \
+        shelf_params = utils.get_nested \
         (
             shelf_browse_endpoint,
             'params',
@@ -332,7 +333,7 @@ def parse(data):
         shelf_identifier = shelf_title.strip().lower().replace(' ', '_') \
             if shelf_title else None
 
-        shelf_items = ytm_utils.get_nested \
+        shelf_items = utils.get_nested \
         (
             shelf,
             'contents',
@@ -342,20 +343,20 @@ def parse(data):
         items = []
 
         for item in shelf_items:
-            item = ytm_utils.get_nested \
+            item = utils.get_nested \
             (
                 item,
                 'musicTwoRowItemRenderer',
             )
 
             if shelf_identifier == 'albums':
-                shelf_item_browse_endpoint = ytm_utils.get_nested \
+                shelf_item_browse_endpoint = utils.get_nested \
                 (
                     item,
                     'navigationEndpoint',
                     'browseEndpoint',
                 )
-                shelf_item_menu_item_0_playlist_endpoint = ytm_utils.get_nested \
+                shelf_item_menu_item_0_playlist_endpoint = utils.get_nested \
                 (
                     item,
                     'menu',
@@ -366,7 +367,7 @@ def parse(data):
                     'navigationEndpoint',
                     'watchPlaylistEndpoint',
                 )
-                shelf_item_menu_item_1_playlist_endpoint = ytm_utils.get_nested \
+                shelf_item_menu_item_1_playlist_endpoint = utils.get_nested \
                 (
                     item,
                     'menu',
@@ -377,14 +378,14 @@ def parse(data):
                     'navigationEndpoint',
                     'watchPlaylistEndpoint',
                 )
-                shelf_item_subtitle_runs = ytm_utils.get_nested \
+                shelf_item_subtitle_runs = utils.get_nested \
                 (
                     item,
                     'subtitle',
                     'runs',
                 )
 
-                shelf_item_icon_type = ytm_utils.get_nested \
+                shelf_item_icon_type = utils.get_nested \
                 (
                     item,
                     'subtitleBadges',
@@ -393,7 +394,7 @@ def parse(data):
                     'icon',
                     'iconType',
                 )
-                shelf_item_thumbnail = ytm_utils.get_nested \
+                shelf_item_thumbnail = utils.get_nested \
                 (
                     item,
                     'thumbnailRenderer',
@@ -402,7 +403,7 @@ def parse(data):
                     'thumbnails',
                     -1,
                 )
-                shelf_item_title = ytm_utils.get_nested \
+                shelf_item_title = utils.get_nested \
                 (
                     item,
                     'title',
@@ -410,52 +411,52 @@ def parse(data):
                     0,
                     'text',
                 )
-                shelf_item_browse_id = ytm_utils.get_nested \
+                shelf_item_browse_id = utils.get_nested \
                 (
                     shelf_item_browse_endpoint,
                     'browseId',
                 )
-                shelf_item_params = ytm_utils.get_nested \
+                shelf_item_params = utils.get_nested \
                 (
                     shelf_item_browse_endpoint,
                     'params',
                 )
-                shelf_item_page_type = ytm_utils.get_nested \
+                shelf_item_page_type = utils.get_nested \
                 (
                     shelf_item_browse_endpoint,
                     'browseEndpointContextSupportedConfigs',
                     'browseEndpointContextMusicConfig',
                     'pageType',
                 )
-                shelf_item_type = ytm_utils.get_nested \
+                shelf_item_type = utils.get_nested \
                 (
                     shelf_item_subtitle_runs,
                     0,
                     'text',
                 )
-                shelf_item_year = ytm_utils.get_nested \
+                shelf_item_year = utils.get_nested \
                 (
                     shelf_item_subtitle_runs,
                     2,
                     'text',
                     func = int,
                 )
-                shelf_item_shuffle_params = ytm_utils.get_nested \
+                shelf_item_shuffle_params = utils.get_nested \
                 (
                     shelf_item_menu_item_0_playlist_endpoint,
                     'params',
                 )
-                shelf_item_shuffle_playlist_id = ytm_utils.get_nested \
+                shelf_item_shuffle_playlist_id = utils.get_nested \
                 (
                     shelf_item_menu_item_0_playlist_endpoint,
                     'playlistId',
                 )
-                shelf_item_radio_params = ytm_utils.get_nested \
+                shelf_item_radio_params = utils.get_nested \
                 (
                     shelf_item_menu_item_1_playlist_endpoint,
                     'params',
                 )
-                shelf_item_radio_playlist_id = ytm_utils.get_nested \
+                shelf_item_radio_playlist_id = utils.get_nested \
                 (
                     shelf_item_menu_item_1_playlist_endpoint,
                     'playlistId',
@@ -483,13 +484,13 @@ def parse(data):
                     },
                 }
             elif shelf_identifier == 'singles':
-                shelf_item_browse_endpoint = ytm_utils.get_nested \
+                shelf_item_browse_endpoint = utils.get_nested \
                 (
                     item,
                     'navigationEndpoint',
                     'browseEndpoint',
                 )
-                shelf_item_watch_playlist_endpoint_0 = ytm_utils.get_nested \
+                shelf_item_watch_playlist_endpoint_0 = utils.get_nested \
                 (
                     item,
                     'menu',
@@ -500,7 +501,7 @@ def parse(data):
                     'navigationEndpoint',
                     'watchPlaylistEndpoint',
                 )
-                shelf_item_watch_playlist_endpoint_1 = ytm_utils.get_nested \
+                shelf_item_watch_playlist_endpoint_1 = utils.get_nested \
                 (
                     item,
                     'menu',
@@ -512,7 +513,7 @@ def parse(data):
                     'watchPlaylistEndpoint',
                 )
 
-                shelf_item_icon_type = ytm_utils.get_nested \
+                shelf_item_icon_type = utils.get_nested \
                 (
                     item,
                     'subtitleBadges',
@@ -521,7 +522,7 @@ def parse(data):
                     'icon',
                     'iconType',
                 )
-                shelf_item_thumbnail = ytm_utils.get_nested \
+                shelf_item_thumbnail = utils.get_nested \
                 (
                     item,
                     'thumbnailRenderer',
@@ -530,7 +531,7 @@ def parse(data):
                     'thumbnails',
                     -1,
                 )
-                shelf_item_name = ytm_utils.get_nested \
+                shelf_item_name = utils.get_nested \
                 (
                     item,
                     'title',
@@ -538,7 +539,7 @@ def parse(data):
                     0,
                     'text',
                 )
-                shelf_item_year = ytm_utils.get_nested \
+                shelf_item_year = utils.get_nested \
                 (
                     item,
                     'subtitle',
@@ -547,24 +548,24 @@ def parse(data):
                     'text',
                     func = int,
                 )
-                shelf_item_browse_id = ytm_utils.get_nested \
+                shelf_item_browse_id = utils.get_nested \
                 (
                     shelf_item_browse_endpoint,
                     'browseId',
                 )
-                shelf_item_playlist_params = ytm_utils.get_nested \
+                shelf_item_playlist_params = utils.get_nested \
                 (
                     shelf_item_browse_endpoint,
                     'params',
                 )
-                shelf_item_page_type = ytm_utils.get_nested \
+                shelf_item_page_type = utils.get_nested \
                 (
                     shelf_item_browse_endpoint,
                     'browseEndpointContextSupportedConfigs',
                     'browseEndpointContextMusicConfig',
                     'pageType',
                 )
-                shelf_item_playlist_id = ytm_utils.get_nested \
+                shelf_item_playlist_id = utils.get_nested \
                 (
                     item,
                     'thumbnailOverlay',
@@ -575,22 +576,22 @@ def parse(data):
                     'watchPlaylistEndpoint',
                     'playlistId',
                 )
-                shelf_item_shuffle_params = ytm_utils.get_nested \
+                shelf_item_shuffle_params = utils.get_nested \
                 (
                     shelf_item_watch_playlist_endpoint_0,
                     'params',
                 )
-                shelf_item_shuffle_playlist_id = ytm_utils.get_nested \
+                shelf_item_shuffle_playlist_id = utils.get_nested \
                 (
                     shelf_item_watch_playlist_endpoint_0,
                     'playlistId',
                 )
-                shelf_item_radio_params = ytm_utils.get_nested \
+                shelf_item_radio_params = utils.get_nested \
                 (
                     shelf_item_watch_playlist_endpoint_1,
                     'params',
                 )
-                shelf_item_radio_playlist_id = ytm_utils.get_nested \
+                shelf_item_radio_playlist_id = utils.get_nested \
                 (
                     shelf_item_watch_playlist_endpoint_1,
                     'playlistId',
@@ -621,13 +622,13 @@ def parse(data):
                     },
                 }
             elif shelf_identifier == 'videos':
-                shelf_item_watch_endpoint = ytm_utils.get_nested \
+                shelf_item_watch_endpoint = utils.get_nested \
                 (
                     item,
                     'navigationEndpoint',
                     'watchEndpoint',
                 )
-                shelf_item_menu_0_watch_endpoint = ytm_utils.get_nested \
+                shelf_item_menu_0_watch_endpoint = utils.get_nested \
                 (
                     item,
                     'menu',
@@ -638,7 +639,7 @@ def parse(data):
                     'navigationEndpoint',
                     'watchEndpoint',
                 )
-                shelf_item_subtitle_run_0 = ytm_utils.get_nested \
+                shelf_item_subtitle_run_0 = utils.get_nested \
                 (
                     item,
                     'subtitle',
@@ -646,24 +647,24 @@ def parse(data):
                     0,
                 )
 
-                shelf_item_music_video_type = ytm_utils.get_nested \
+                shelf_item_music_video_type = utils.get_nested \
                 (
                     shelf_item_watch_endpoint,
                     'watchEndpointMusicSupportedConfigs',
                     'watchEndpointMusicConfig',
                     'musicVideoType',
                 )
-                shelf_item_video_id = ytm_utils.get_nested \
+                shelf_item_video_id = utils.get_nested \
                 (
                     shelf_item_watch_endpoint,
                     'videoId',
                 )
-                shelf_item_playlist_id = ytm_utils.get_nested \
+                shelf_item_playlist_id = utils.get_nested \
                 (
                     shelf_item_watch_endpoint,
                     'playlistId',
                 )
-                shelf_item_thumbnail = ytm_utils.get_nested \
+                shelf_item_thumbnail = utils.get_nested \
                 (
                     item,
                     'thumbnailRenderer',
@@ -672,7 +673,7 @@ def parse(data):
                     'thumbnails',
                     -1,
                 )
-                shelf_item_name = ytm_utils.get_nested \
+                shelf_item_name = utils.get_nested \
                 (
                     item,
                     'title',
@@ -680,29 +681,29 @@ def parse(data):
                     0,
                     'text',
                 )
-                shelf_item_radio_params = ytm_utils.get_nested \
+                shelf_item_radio_params = utils.get_nested \
                 (
                     shelf_item_menu_0_watch_endpoint,
                     'params',
                 )
-                shelf_item_radio_playlist_id = ytm_utils.get_nested \
+                shelf_item_radio_playlist_id = utils.get_nested \
                 (
                     shelf_item_menu_0_watch_endpoint,
                     'playlistId',
                 )
-                shelf_item_artist_id = ytm_utils.get_nested \
+                shelf_item_artist_id = utils.get_nested \
                 (
                     shelf_item_subtitle_run_0,
                     'navigationEndpoint',
                     'browseEndpoint',
                     'browseId',
                 )
-                shelf_item_artist_name = ytm_utils.get_nested \
+                shelf_item_artist_name = utils.get_nested \
                 (
                     shelf_item_subtitle_run_0,
                     'text',
                 )
-                shelf_item_views = ytm_utils.get_nested \
+                shelf_item_views = utils.get_nested \
                 (
                     item,
                     'subtitle',
@@ -730,13 +731,13 @@ def parse(data):
                     },
                 }
             elif shelf_identifier == 'featured_on':
-                shelf_item_browse_endpoint = ytm_utils.get_nested \
+                shelf_item_browse_endpoint = utils.get_nested \
                 (
                     item,
                     'navigationEndpoint',
                     'browseEndpoint',
                 )
-                shelf_item_menu_item_0_playlist_endpoint = ytm_utils.get_nested \
+                shelf_item_menu_item_0_playlist_endpoint = utils.get_nested \
                 (
                     item,
                     'menu',
@@ -747,7 +748,7 @@ def parse(data):
                     'navigationEndpoint',
                     'watchPlaylistEndpoint',
                 )
-                shelf_item_menu_item_1_playlist_endpoint = ytm_utils.get_nested \
+                shelf_item_menu_item_1_playlist_endpoint = utils.get_nested \
                 (
                     item,
                     'menu',
@@ -759,7 +760,7 @@ def parse(data):
                     'watchPlaylistEndpoint',
                 )
 
-                shelf_item_thumbnail = ytm_utils.get_nested \
+                shelf_item_thumbnail = utils.get_nested \
                 (
                     item,
                     'thumbnailRenderer',
@@ -768,7 +769,7 @@ def parse(data):
                     'thumbnails',
                     -1,
                 )
-                shelf_item_playlist_id = ytm_utils.get_nested \
+                shelf_item_playlist_id = utils.get_nested \
                 (
                     item,
                     'thumbnailOverlay',
@@ -779,7 +780,7 @@ def parse(data):
                     'watchPlaylistEndpoint',
                     'playlistId',
                 )
-                shelf_item_name = ytm_utils.get_nested \
+                shelf_item_name = utils.get_nested \
                 (
                     item,
                     'title',
@@ -787,19 +788,19 @@ def parse(data):
                     0,
                     'text',
                 )
-                shelf_item_playlist_browse_id = ytm_utils.get_nested \
+                shelf_item_playlist_browse_id = utils.get_nested \
                 (
                     shelf_item_browse_endpoint,
                     'browseId',
                 )
-                shelf_item_page_type = ytm_utils.get_nested \
+                shelf_item_page_type = utils.get_nested \
                 (
                     shelf_item_browse_endpoint,
                     'browseEndpointContextSupportedConfigs',
                     'browseEndpointContextMusicConfig',
                     'pageType',
                 )
-                shelf_item_type = ytm_utils.get_nested \
+                shelf_item_type = utils.get_nested \
                 (
                     item,
                     'subtitle',
@@ -807,7 +808,7 @@ def parse(data):
                     0,
                     'text',
                 )
-                shelf_item_artist = ytm_utils.get_nested \
+                shelf_item_artist = utils.get_nested \
                 (
                     item,
                     'subtitle',
@@ -815,22 +816,22 @@ def parse(data):
                     2,
                     'text',
                 )
-                shelf_item_shuffle_params = ytm_utils.get_nested \
+                shelf_item_shuffle_params = utils.get_nested \
                 (
                     shelf_item_menu_item_0_playlist_endpoint,
                     'params',
                 )
-                shelf_item_shuffle_playlist_id = ytm_utils.get_nested \
+                shelf_item_shuffle_playlist_id = utils.get_nested \
                 (
                     shelf_item_menu_item_0_playlist_endpoint,
                     'playlistId',
                 )
-                shelf_item_radio_params = ytm_utils.get_nested \
+                shelf_item_radio_params = utils.get_nested \
                 (
                     shelf_item_menu_item_1_playlist_endpoint,
                     'params',
                 )
-                shelf_item_radio_playlist_id = ytm_utils.get_nested \
+                shelf_item_radio_playlist_id = utils.get_nested \
                 (
                     shelf_item_menu_item_1_playlist_endpoint,
                     'playlistId',
@@ -853,13 +854,13 @@ def parse(data):
                     },
                 }
             elif shelf_identifier == 'fans_might_also_like':
-                shelf_item_browse_endpoint = ytm_utils.get_nested \
+                shelf_item_browse_endpoint = utils.get_nested \
                 (
                     item,
                     'navigationEndpoint',
                     'browseEndpoint',
                 )
-                shelf_item_menu_item_0_playlist_endpoint = ytm_utils.get_nested \
+                shelf_item_menu_item_0_playlist_endpoint = utils.get_nested \
                 (
                     item,
                     'menu',
@@ -870,7 +871,7 @@ def parse(data):
                     'navigationEndpoint',
                     'watchPlaylistEndpoint',
                 )
-                shelf_item_menu_item_1_playlist_endpoint = ytm_utils.get_nested \
+                shelf_item_menu_item_1_playlist_endpoint = utils.get_nested \
                 (
                     item,
                     'menu',
@@ -882,19 +883,19 @@ def parse(data):
                     'watchPlaylistEndpoint',
                 )
 
-                shelf_item_page_type = ytm_utils.get_nested \
+                shelf_item_page_type = utils.get_nested \
                 (
                     shelf_item_browse_endpoint,
                     'browseEndpointContextSupportedConfigs',
                     'browseEndpointContextMusicConfig',
                     'pageType',
                 )
-                shelf_item_browse_id = ytm_utils.get_nested \
+                shelf_item_browse_id = utils.get_nested \
                 (
                     shelf_item_browse_endpoint,
                     'browseId',
                 )
-                shelf_item_thumbnail = ytm_utils.get_nested \
+                shelf_item_thumbnail = utils.get_nested \
                 (
                     item,
                     'thumbnailRenderer',
@@ -903,7 +904,7 @@ def parse(data):
                     'thumbnails',
                     -1,
                 )
-                shelf_item_title = ytm_utils.get_nested \
+                shelf_item_title = utils.get_nested \
                 (
                     item,
                     'title',
@@ -911,7 +912,7 @@ def parse(data):
                     0,
                     'text',
                 )
-                shelf_item_subscribers = ytm_utils.get_nested \
+                shelf_item_subscribers = utils.get_nested \
                 (
                     item,
                     'subtitle',
@@ -920,22 +921,22 @@ def parse(data):
                     'text',
                     func = lambda subscribers: subscribers.split(' ')[0],
                 )
-                shelf_item_shuffle_params = ytm_utils.get_nested \
+                shelf_item_shuffle_params = utils.get_nested \
                 (
                     shelf_item_menu_item_0_playlist_endpoint,
                     'params',
                 )
-                shelf_item_shuffle_playlist_id = ytm_utils.get_nested \
+                shelf_item_shuffle_playlist_id = utils.get_nested \
                 (
                     shelf_item_menu_item_0_playlist_endpoint,
                     'playlistId',
                 )
-                shelf_item_radio_params = ytm_utils.get_nested \
+                shelf_item_radio_params = utils.get_nested \
                 (
                     shelf_item_menu_item_1_playlist_endpoint,
                     'params',
                 )
-                shelf_item_radio_playlist_id = ytm_utils.get_nested \
+                shelf_item_radio_playlist_id = utils.get_nested \
                 (
                     shelf_item_menu_item_1_playlist_endpoint,
                     'playlistId',
@@ -966,9 +967,9 @@ def parse(data):
         if shelf_identifier == 'albums':
             shelf_data = \
             {
-                'title': shelf_title,
+                'title':  shelf_title,
                 'params': shelf_params,
-                'items': items,
+                'items':  items,
             }
 
             # Update to correct artist id
@@ -976,9 +977,9 @@ def parse(data):
         elif shelf_identifier == 'singles':
             shelf_data = \
             {
-                'title': shelf_title,
+                'title':  shelf_title,
                 'params': shelf_params,
-                'items': items,
+                'items':  items,
             }
 
             # Update to correct artist id
@@ -989,9 +990,9 @@ def parse(data):
 
             shelf_data = \
             {
-                'title': shelf_title,
+                'title':       shelf_title,
                 'playlist_id': shelf_browse_id,
-                'items': items,
+                'items':       items,
             }
         elif shelf_identifier == 'featured_on':
             shelf_data = \
@@ -1019,19 +1020,20 @@ def parse(data):
 
     shelves_data['songs'] = \
     {
-        'title': 'Songs',
+        'title':       'Songs',
         'playlist_id': artist_playlist_id,
-        'items': songs,
+        'items':       songs,
     }
 
     scraped = \
     {
-        'name': artist_name,
-        'id': artist_id,
+        'name':        artist_name,
+        'id':          artist_id,
         'subscribers': artist_subscribers,
-        'views': artist_views,
+        'views':       artist_views,
         'description': artist_description,
-        **shelves_data,
     }
+
+    scraped.update(shelves_data)
 
     return scraped

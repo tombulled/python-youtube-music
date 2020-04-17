@@ -1,12 +1,11 @@
-from ..... import utils as ytm_utils
+from ... import utils
 
 __all__ = __name__.split('.')[-1:]
 
 def parse(data):
     scraped = {}
 
-    # Better way of doing this?
-    raw_mutations = ytm_utils.get_nested \
+    raw_mutations = utils.get_nested \
     (
         data,
         'frameworkUpdates',
@@ -18,19 +17,23 @@ def parse(data):
     mutations = {}
 
     for mutation in raw_mutations:
-        payload = ytm_utils.get_nested(mutation, 'payload', default={})
+        payload = utils.get_nested \
+        (
+            mutation,
+            'payload',
+            default = {},
+        )
 
-        # Use utils.first_key ?
-        payload_type = ytm_utils.get_nested(list(payload.keys()), 0)
+        payload_type = utils.get_nested(list(payload.keys()), 0)
 
-        payload = ytm_utils.get_nested(payload, payload_type)
+        payload = utils.get_nested(payload, payload_type)
 
         if not payload:
             continue
 
         mutations.setdefault(payload_type, []).append(payload)
 
-    other_versions_contents = ytm_utils.get_nested \
+    other_versions_contents = utils.get_nested \
     (
         data,
         'contents',
@@ -44,15 +47,19 @@ def parse(data):
         1,
         'musicCarouselShelfRenderer',
         'contents',
-        default=(),
+        default = (),
     )
 
     other_versions = []
 
     for album in other_versions_contents:
-        album = ytm_utils.get_nested(album, 'musicTwoRowItemRenderer')
+        album = utils.get_nested \
+        (
+            album,
+            'musicTwoRowItemRenderer',
+        )
 
-        album_menu_items = ytm_utils.get_nested \
+        album_menu_items = utils.get_nested \
         (
             album,
             'menu',
@@ -64,7 +71,7 @@ def parse(data):
         album_menu = {}
 
         for menu_item in album_menu_items:
-            menu_item = ytm_utils.first_key(menu_item)
+            menu_item = utils.first_key(menu_item)
 
             for key, val in menu_item.copy().items():
                 if not key.startswith('default'):
@@ -75,7 +82,7 @@ def parse(data):
 
                 menu_item[new_key] = menu_item.pop(key)
 
-            menu_text = ytm_utils.get_nested \
+            menu_text = utils.get_nested \
             (
                 menu_item,
                 'text',
@@ -83,13 +90,13 @@ def parse(data):
                 0,
                 'text',
             )
-            menu_icon = ytm_utils.get_nested \
+            menu_icon = utils.get_nested \
             (
                 menu_item,
                 'icon',
                 'iconType',
             )
-            menu_endpoint = ytm_utils.get_nested \
+            menu_endpoint = utils.get_nested \
             (
                 menu_item,
                 'navigationEndpoint',
@@ -98,7 +105,8 @@ def parse(data):
             if not menu_endpoint:
                 continue
 
-            menu_identifier = menu_text[0].lower() + menu_text.title()[1:].replace(' ', '') if menu_text else None
+            menu_identifier = menu_text[0].lower() + menu_text.title()[1:].replace(' ', '') \
+                if menu_text else None
 
             menu_item_data = \
             {
@@ -109,7 +117,7 @@ def parse(data):
 
             album_menu[menu_identifier] = menu_item_data
 
-        album_thumbnail = ytm_utils.get_nested \
+        album_thumbnail = utils.get_nested \
         (
             album,
             'thumbnailRenderer',
@@ -118,7 +126,7 @@ def parse(data):
             'thumbnails',
             -1,
         )
-        album_name = ytm_utils.get_nested \
+        album_name = utils.get_nested \
         (
             album,
             'title',
@@ -126,7 +134,7 @@ def parse(data):
             0,
             'text',
         )
-        album_type = ytm_utils.get_nested \
+        album_type = utils.get_nested \
         (
             album,
             'subtitle',
@@ -134,7 +142,7 @@ def parse(data):
             0,
             'text',
         )
-        album_artist_name = ytm_utils.get_nested \
+        album_artist_name = utils.get_nested \
         (
             album,
             'subtitle',
@@ -142,7 +150,7 @@ def parse(data):
             2,
             'text',
         )
-        album_artist_id = ytm_utils.get_nested \
+        album_artist_id = utils.get_nested \
         (
             album,
             'subtitle',
@@ -152,7 +160,7 @@ def parse(data):
             'browseEndpoint',
             'browseId',
         )
-        album_page_type = ytm_utils.get_nested \
+        album_page_type = utils.get_nested \
         (
             album,
             'navigationEndpoint',
@@ -161,21 +169,21 @@ def parse(data):
             'browseEndpointContextMusicConfig',
             'pageType',
         )
-        album_id = ytm_utils.get_nested \
+        album_id = utils.get_nested \
         (
             album,
             'navigationEndpoint',
             'browseEndpoint',
             'browseId',
         )
-        album_params = ytm_utils.get_nested \
+        album_params = utils.get_nested \
         (
             album,
             'navigationEndpoint',
             'browseEndpoint',
             'params',
         )
-        album_radio_id = ytm_utils.get_nested \
+        album_radio_id = utils.get_nested \
         (
             album_menu,
             'startRadio',
@@ -183,7 +191,7 @@ def parse(data):
             'watchPlaylistEndpoint',
             'playlistId',
         )
-        album_radio_params = ytm_utils.get_nested \
+        album_radio_params = utils.get_nested \
         (
             album_menu,
             'startRadio',
@@ -191,7 +199,6 @@ def parse(data):
             'watchPlaylistEndpoint',
             'params',
         )
-
 
         album_data = \
         {
@@ -214,48 +221,53 @@ def parse(data):
 
         other_versions.append(album_data)
 
-    tracks = ytm_utils.get_nested(mutations, 'musicTrack', default=())
+    tracks = utils.get_nested \
+    (
+        mutations,
+        'musicTrack',
+        default = (),
+    )
 
     tracks_data = []
 
     for track in tracks:
-        track_index = ytm_utils.get_nested \
+        track_index = utils.get_nested \
         (
             track,
             'albumTrackIndex',
             func = int,
         )
-        track_artists = ytm_utils.get_nested \
+        track_artists = utils.get_nested \
         (
             track,
             'artistNames',
             func = lambda names: list(map(str.strip, names.split(','))),
         )
-        track_explicit = ytm_utils.get_nested \
+        track_explicit = utils.get_nested \
         (
             track,
             'contentRating',
             'explicitType',
         ) == 'MUSIC_ENTITY_EXPLICIT_TYPE_EXPLICIT'
-        track_length = ytm_utils.get_nested \
+        track_length = utils.get_nested \
         (
             track,
             'lengthMs',
             func = int,
         ) # round(int(track.get('lengthMs'))/60*10**-3, 2)
-        track_thumbnail = ytm_utils.get_nested \
+        track_thumbnail = utils.get_nested \
         (
             track,
             'thumbnailDetails',
             'thumbnails',
             -1,
         )
-        track_title = ytm_utils.get_nested \
+        track_title = utils.get_nested \
         (
             track,
             'title',
         )
-        track_id = ytm_utils.get_nested \
+        track_id = utils.get_nested \
         (
             track,
             'videoId',
@@ -276,10 +288,24 @@ def parse(data):
 
     artists_data = []
 
-    for artist in ytm_utils.get_nested(mutations, 'musicArtist'):
-        artist_id        = ytm_utils.get_nested(artist, 'externalChannelId')
-        artist_name      = ytm_utils.get_nested(artist, 'name')
-        artist_thumbnail = ytm_utils.get_nested(artist, 'thumbnailDetails', 'thumbnails', -1)
+    for artist in utils.get_nested(mutations, 'musicArtist'):
+        artist_id = utils.get_nested \
+        (
+            artist,
+            'externalChannelId',
+        )
+        artist_name = utils.get_nested \
+        (
+            artist,
+            'name',
+        )
+        artist_thumbnail = utils.get_nested \
+        (
+            artist,
+            'thumbnailDetails',
+            'thumbnails',
+            -1,
+        )
 
         artist_data = \
         {
@@ -290,31 +316,107 @@ def parse(data):
 
         artists_data.append(artist_data)
 
+    album_release = utils.get_nested \
+    (
+        mutations,
+        'musicAlbumRelease',
+        0,
+    )
+    album_release_detail = utils.get_nested \
+    (
+        mutations,
+        'musicAlbumReleaseDetail',
+        0,
+    )
+
+    album_track_count = utils.get_nested \
+    (
+        album_release,
+        'trackCount',
+        func = int,
+    )
+    album_radio_id = utils.get_nested \
+    (
+        album_release,
+        'radioAutomixPlaylistId',
+    )
+    album_id = utils.get_nested \
+    (
+        album_release,
+        'audioPlaylistId',
+    )
+    album_artist_name = utils.get_nested \
+    (
+        album_release,
+        'artistDisplayName',
+    )
+    album_explicit = utils.get_nested \
+    (
+        album_release,
+        'contentRating',
+        'explicitType',
+    ) == 'MUSIC_ENTITY_EXPLICIT_TYPE_EXPLICIT'
+    album_duration = utils.get_nested \
+    (
+        album_release,
+        'durationMs',
+        func = int,
+    ) # /60*10**-3
+    album_primary_artist_ids = utils.get_nested \
+    (
+        album_release,
+        'primaryArtists',
+    )
+    album_release_date = utils.get_nested \
+    (
+        album_release,
+        'releaseDate',
+    )
+    album_release_type = utils.get_nested \
+    (
+        album_release,
+        'releaseType',
+        func = lambda type: type.split('_')[-1].title(),
+    )
+    album_thumbnail = utils.get_nested \
+    (
+        album_release,
+        'thumbnailDetails',
+        'thumbnails',
+        -1,
+    )
+    album_title = utils.get_nested \
+    (
+        album_release,
+        'title',
+    )
+    album_description = utils.get_nested \
+    (
+        album_release_detail,
+        'description',
+    )
+
     album_data = \
     {
-        'track_count': int(ytm_utils.get_nested(mutations, 'musicAlbumRelease', 0, 'trackCount')),
-        'radio_id': ytm_utils.get_nested(mutations, 'musicAlbumRelease', 0, 'radioAutomixPlaylistId'),
-        'id': ytm_utils.get_nested(mutations, 'musicAlbumRelease', 0, 'audioPlaylistId'),
-        'artist_name': ytm_utils.get_nested(mutations, 'musicAlbumRelease', 0, 'artistDisplayName'),
-        'explicit': ytm_utils.get_nested(mutations, 'musicAlbumRelease', 0, 'contentRating', 'explicitType') == 'MUSIC_ENTITY_EXPLICIT_TYPE_EXPLICIT',
-        'duration': ytm_utils.get_nested(mutations, 'musicAlbumRelease', 0, 'durationMs', func=int), # /60*10**-3
-        'primary_artist_ids': ytm_utils.get_nested(mutations, 'musicAlbumRelease', 0, 'primaryArtists'),
-        'release_date': ytm_utils.get_nested(mutations, 'musicAlbumRelease', 0, 'releaseDate'),
-        'release_type': \
-        {
-            'MUSIC_RELEASE_TYPE_ALBUM': 'Album',
-            'MUSIC_RELEASE_TYPE_EP': 'EP',
-        }[ytm_utils.get_nested(mutations, 'musicAlbumRelease', 0, 'releaseType')],
-        'thumbnail': ytm_utils.get_nested(mutations, 'musicAlbumRelease', 0, 'thumbnailDetails', 'thumbnails', -1),
-        'title': ytm_utils.get_nested(mutations, 'musicAlbumRelease', 0, 'title'),
-        'description': ytm_utils.get_nested(mutations, 'musicAlbumReleaseDetail', 0, 'description'),
+        'name':               album_title,
+        'id':                 album_id,
+        'track_count':        album_track_count,
+        'radio_id':           album_radio_id,
+        'artist_name':        album_artist_name,
+        'explicit':           album_explicit,
+        'duration':           album_duration,
+        'primary_artist_ids': album_primary_artist_ids,
+        'release_date':       album_release_date,
+        'release_type':       album_release_type,
+        'thumbnail':          album_thumbnail,
+        'description':        album_description,
     }
 
     scraped = \
     {
-        'artists': artists_data,
-        'album': album_data,
-        'tracks': tracks_data,
+        'artists':  artists_data,
+        'album':    album_data,
+        'tracks':   tracks_data,
         'variants': other_versions,
     }
 

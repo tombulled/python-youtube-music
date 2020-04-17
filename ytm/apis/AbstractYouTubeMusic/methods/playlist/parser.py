@@ -1,24 +1,19 @@
-from ..... import utils as ytm_utils
+from ... import utils
 
 __all__ = __name__.split('.')[-1:]
 
 def parse(data):
-    scraped = \
-    {
-        'playlist': None,
-        'tracks': [],
-        'continuation': None,
-    }
-
     if 'continuationContents' in data:
-        data = ytm_utils.get_nested \
+        playlist_data = None
+
+        data = utils.get_nested \
         (
             data,
             'continuationContents',
             'musicPlaylistShelfContinuation',
         )
 
-        continuation = ytm_utils.get_nested \
+        continuation = utils.get_nested \
         (
             data,
             'continuations',
@@ -27,13 +22,13 @@ def parse(data):
             'continuation',
         )
     else:
-        music_detail_header_renderer = ytm_utils.get_nested \
+        music_detail_header_renderer = utils.get_nested \
         (
             data,
             'header',
             'musicDetailHeaderRenderer',
         )
-        music_playlist_shelf_renderer = ytm_utils.get_nested \
+        music_playlist_shelf_renderer = utils.get_nested \
         (
             data,
             'contents',
@@ -48,7 +43,7 @@ def parse(data):
             'musicPlaylistShelfRenderer',
         )
 
-        playlist_title = ytm_utils.get_nested \
+        playlist_title = utils.get_nested \
         (
             music_detail_header_renderer,
             'title',
@@ -56,7 +51,7 @@ def parse(data):
             0,
             'text',
         )
-        playlist_type = ytm_utils.get_nested \
+        playlist_type = utils.get_nested \
         (
             music_detail_header_renderer,
             'subtitle',
@@ -64,7 +59,7 @@ def parse(data):
             0,
             'text',
         )
-        playlist_subtitle = ytm_utils.get_nested \
+        playlist_subtitle = utils.get_nested \
         (
             music_detail_header_renderer,
             'subtitle',
@@ -72,7 +67,7 @@ def parse(data):
             2,
             'text',
         )
-        playlist_year = ytm_utils.get_nested \
+        playlist_year = utils.get_nested \
         (
             music_detail_header_renderer,
             'subtitle',
@@ -81,7 +76,7 @@ def parse(data):
             'text',
             func = int,
         )
-        playlist_thumbnail = ytm_utils.get_nested \
+        playlist_thumbnail = utils.get_nested \
         (
             music_detail_header_renderer,
             'thumbnail',
@@ -90,7 +85,7 @@ def parse(data):
             'thumbnails',
             -1,
         )
-        playlist_duration = ytm_utils.get_nested \
+        playlist_duration = utils.get_nested \
         (
             music_detail_header_renderer,
             'secondSubtitle',
@@ -98,18 +93,18 @@ def parse(data):
             2,
             'text',
         )
-        playlist_id = ytm_utils.get_nested \
+        playlist_id = utils.get_nested \
         (
             music_playlist_shelf_renderer,
             'playlistId',
         )
-        playlist_track_count = ytm_utils.get_nested \
+        playlist_track_count = utils.get_nested \
         (
             music_playlist_shelf_renderer,
             'collapsedItemCount',
         )
 
-        scraped['playlist'] = \
+        playlist_data = \
         {
             'title':       playlist_title,
             'type':        playlist_type,
@@ -121,7 +116,7 @@ def parse(data):
             'track_count': playlist_track_count,
         }
 
-        data = ytm_utils.get_nested \
+        data = utils.get_nested \
         (
             data,
             'contents',
@@ -136,7 +131,7 @@ def parse(data):
             'musicPlaylistShelfRenderer',
         )
 
-        continuation = ytm_utils.get_nested \
+        continuation = utils.get_nested \
         (
             data,
             'continuations',
@@ -145,14 +140,19 @@ def parse(data):
             'continuation',
         )
 
-    scraped['continuation'] = continuation
+    raw_tracks = utils.get_nested \
+    (
+        data,
+        'contents',
+        default = (),
+    )
 
-    tracks = ytm_utils.get_nested(data, 'contents', default=())
+    tracks = []
 
-    for track in tracks:
-        track = ytm_utils.get_nested(track, 'musicResponsiveListItemRenderer')
+    for track in raw_tracks:
+        track = utils.first_key(track)
 
-        track_watch_endpoint = ytm_utils.get_nested \
+        track_watch_endpoint = utils.get_nested \
         (
             track,
             'overlay',
@@ -163,19 +163,19 @@ def parse(data):
             'watchEndpoint',
         )
 
-        track_music_video_type = ytm_utils.get_nested \
+        track_music_video_type = utils.get_nested \
         (
             track_watch_endpoint,
             'watchEndpointMusicSupportedConfigs',
             'watchEndpointMusicConfig',
             'musicVideoType',
         )
-        track_id = ytm_utils.get_nested \
+        track_id = utils.get_nested \
         (
             track_watch_endpoint,
             'videoId',
         )
-        track_title = ytm_utils.get_nested \
+        track_title = utils.get_nested \
         (
             track,
             'flexColumns',
@@ -186,36 +186,7 @@ def parse(data):
             0,
             'text',
         )
-        track_duration = ytm_utils.get_nested \
-        (
-            track,
-            'fixedColumns',
-            0,
-            'musicResponsiveListItemFixedColumnRenderer',
-            'text',
-            'simpleText',
-        )
-        track_thumbnail = ytm_utils.get_nested \
-        (
-            track,
-            'thumbnail',
-            'musicThumbnailRenderer',
-            'thumbnail',
-            'thumbnails',
-            -1,
-        )
-        track_explicit = ytm_utils.get_nested \
-        (
-            track,
-            'badges',
-            0,
-            'musicInlineBadgeRenderer',
-            'accessibilityData',
-            'accessibilityData',
-            'label',
-            func = str.lower
-        ) == 'explicit'
-        track_artist_id = ytm_utils.get_nested \
+        track_artist_id = utils.get_nested \
         (
             track,
             'flexColumns',
@@ -228,7 +199,7 @@ def parse(data):
             'browseEndpoint',
             'browseId',
         )
-        track_artist_name = ytm_utils.get_nested \
+        track_artist_name = utils.get_nested \
         (
             track,
             'flexColumns',
@@ -239,6 +210,35 @@ def parse(data):
             0,
             'text',
         )
+        track_duration = utils.get_nested \
+        (
+            track,
+            'fixedColumns',
+            0,
+            'musicResponsiveListItemFixedColumnRenderer',
+            'text',
+            'simpleText',
+        )
+        track_thumbnail = utils.get_nested \
+        (
+            track,
+            'thumbnail',
+            'musicThumbnailRenderer',
+            'thumbnail',
+            'thumbnails',
+            -1,
+        )
+        track_explicit = utils.get_nested \
+        (
+            track,
+            'badges',
+            0,
+            'musicInlineBadgeRenderer',
+            'accessibilityData',
+            'accessibilityData',
+            'label',
+            func = str.lower
+        ) == 'explicit'
 
         track_data = \
         {
@@ -254,6 +254,13 @@ def parse(data):
             },
         }
 
-        scraped['tracks'].append(track_data)
+        tracks.append(track_data)
+
+    scraped = \
+    {
+        'playlist':     playlist_data,
+        'tracks':       tracks,
+        'continuation': continuation,
+    }
 
     return scraped

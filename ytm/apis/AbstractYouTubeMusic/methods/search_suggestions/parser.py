@@ -1,9 +1,10 @@
-from ..... import utils as ytm_utils
+# from ..... import utils as utils
+from ... import utils
 
 __all__ = __name__.split('.')[-1:]
 
 def parse(data):
-    contents = ytm_utils.get_nested \
+    contents = utils.get_nested \
     (
         data,
         'contents',
@@ -16,19 +17,31 @@ def parse(data):
     suggestions = []
 
     for item in contents:
-        suggestion = ''.join \
+        item_runs = utils.get_nested \
         (
-            ytm_utils.get_nested(run, 'text', default = '')
-            for run in ytm_utils.get_nested \
-            (
-                item,
-                'searchSuggestionRenderer',
-                'suggestion',
-                'runs',
-            )
+            item,
+            'searchSuggestionRenderer',
+            'suggestion',
+            'runs',
+            default = (),
         )
 
-        if suggestion:
-            suggestions.append(suggestion)
+        if not item_runs:
+            continue
+
+        item_suggestion = ''
+
+        for item_run in item_runs:
+            item_run_text = utils.get_nested \
+            (
+                item_run,
+                'text',
+            )
+
+            if item_run_text:
+                item_suggestion += item_run_text
+
+        if item_suggestion:
+            suggestions.append(item_suggestion)
 
     return suggestions

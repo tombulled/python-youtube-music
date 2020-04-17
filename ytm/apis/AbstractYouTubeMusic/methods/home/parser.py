@@ -1,4 +1,4 @@
-from ..... import utils as ytm_utils
+from ... import utils
 
 __all__ = __name__.split('.')[-1:]
 
@@ -7,14 +7,14 @@ def parse(data):
         return # raise
 
     if 'continuationContents' in data:
-        data = ytm_utils.get_nested \
+        data = utils.get_nested \
         (
             data,
             'continuationContents',
             'sectionListContinuation',
         )
     else:
-        data = ytm_utils.get_nested \
+        data = utils.get_nested \
         (
             data,
             'contents',
@@ -27,7 +27,7 @@ def parse(data):
         )
 
     # Insert back into data
-    continuation = ytm_utils.get_nested \
+    continuation = utils.get_nested \
     (
         data,
         'continuations',
@@ -38,72 +38,192 @@ def parse(data):
 
     parsed_shelves = []
 
-    shelves = ytm_utils.get_nested(data, 'contents', default = ())[:-1]
+    shelves = utils.get_nested \
+    (
+        data,
+        'contents',
+        default = (),
+    )[:-1]
 
     for shelf in shelves:
-        shelf = ytm_utils.first_key(shelf)
+        shelf = utils.first_key(shelf)
 
-        shelf_header = ytm_utils.get_nested(shelf, 'header', 'musicCarouselShelfBasicHeaderRenderer')
-        shelf_contents = ytm_utils.get_nested(shelf, 'contents', default=[])
+        shelf_header = utils.get_nested \
+        (
+            shelf,
+            'header',
+            'musicCarouselShelfBasicHeaderRenderer',
+        )
+        shelf_contents = utils.get_nested \
+        (
+            shelf,
+            'contents',
+            default = (),
+        )
 
-        shelf_title = ytm_utils.get_nested(shelf_header, 'title', 'runs', 0, 'text')
-        shelf_strapline = ytm_utils.get_nested(shelf_header, 'strapline', 'runs', 0, 'text')
+        shelf_title = utils.get_nested \
+        (
+            shelf_header,
+            'title',
+            'runs',
+            0,
+            'text',
+        )
+        shelf_strapline = utils.get_nested \
+        (
+            shelf_header,
+            'strapline',
+            'runs',
+            0,
+            'text',
+        )
 
         shelf_items = []
 
         for item in shelf_contents:
-            item = ytm_utils.first_key(item)
+            item = utils.first_key(item)
 
-            aspect_ratio = ytm_utils.get_nested(item, 'aspectRatio')
+            aspect_ratio = utils.get_nested \
+            (
+                item,
+                'aspectRatio',
+            )
 
+            item_thumbnail = utils.get_nested \
+            (
+                item,
+                'thumbnailRenderer',
+                'musicThumbnailRenderer',
+                'thumbnail',
+                'thumbnails',
+                -1,
+            )
+            item_title = utils.get_nested \
+            (
+                item,
+                'title',
+                'runs',
+                0,
+                'text',
+            )
+
+            # Find a better way of distinguishing item types?
             if aspect_ratio == 'MUSIC_TWO_ROW_ITEM_THUMBNAIL_ASPECT_RATIO_RECTANGLE_16_9':
-                item_thumbnail = ytm_utils.get_nested(item, 'thumbnailRenderer', 'musicThumbnailRenderer', 'thumbnail', 'thumbnails', -1)
-                item_title = ytm_utils.get_nested(item, 'title', 'runs', 0, 'text')
+                item_artist_name = utils.get_nested \
+                (
+                    item,
+                    'subtitle',
+                    'runs',
+                    0,
+                    'text',
+                )
+                item_artist_id = utils.get_nested \
+                (
+                    item,
+                    'subtitle',
+                    'runs',
+                    0,
+                    'navigationEndpoint',
+                    'browseEndpoint',
+                    'browseId',
+                )
+                item_views = utils.get_nested \
+                (
+                    item,
+                    'subtitle',
+                    'runs',
+                    2,
+                    'text',
+                )
+                item_playlist_id = utils.get_nested \
+                (
+                    item,
+                    'navigationEndpoint',
+                    'watchEndpoint',
+                    'playlistId',
+                )
+                item_id = utils.get_nested \
+                (
+                    item,
+                    'navigationEndpoint',
+                    'watchEndpoint',
+                    'videoId',
+                )
                 item_type = 'Video'
-                item_artist_name = ytm_utils.get_nested(item, 'subtitle', 'runs', 0, 'text')
-                item_artist_id = ytm_utils.get_nested(item, 'subtitle', 'runs', 0, 'navigationEndpoint', 'browseEndpoint', 'browseId')
-                item_views = ytm_utils.get_nested(item, 'subtitle', 'runs', 2, 'text')
-                item_id = ytm_utils.get_nested(item, 'navigationEndpoint', 'watchEndpoint', 'videoId')
-                item_playlist_id = ytm_utils.get_nested(item, 'navigationEndpoint', 'watchEndpoint', 'playlistId')
 
                 item_data = \
                 {
-                    'thumbnail': item_thumbnail,
-                    'title': item_title,
-                    'type': item_type,
+                    'id':          item_id,
+                    'name':        item_title,
+                    'type':        item_type,
+                    'views':       item_views,
+                    'playlist_id': item_playlist_id,
+                    'thumbnail':   item_thumbnail,
                     'artist': \
                     {
                         'name': item_artist_name,
-                        'id': item_artist_id,
+                        'id':   item_artist_id,
                     },
-                    'views': item_views,
-                    'id': item_id,
-                    'playlist_id': item_playlist_id,
                 }
             elif aspect_ratio == 'MUSIC_TWO_ROW_ITEM_THUMBNAIL_ASPECT_RATIO_SQUARE':
-                item_subtitle = ytm_utils.get_nested(item, 'subtitle', 'runs', 0, 'text')
-
-                item_thumbnail = ytm_utils.get_nested(item, 'thumbnailRenderer', 'musicThumbnailRenderer', 'thumbnail', 'thumbnails', -1)
-                item_title = ytm_utils.get_nested(item, 'title', 'runs', 0, 'text')
-                item_id = ytm_utils.get_nested(item, 'navigationEndpoint', 'browseEndpoint', 'browseId')
-                item_artist_name = ytm_utils.get_nested(item, 'subtitle', 'runs', 2, 'text')
-                item_artist_id = ytm_utils.get_nested(item, 'subtitle', 'runs', 2, 'navigationEndpoint', 'browseEndpoint', 'browseId')
-                item_type = ytm_utils.get_nested(item, 'navigationEndpoint', 'browseEndpoint', 'browseEndpointContextSupportedConfigs', 'browseEndpointContextMusicConfig', 'pageType', func=lambda page_type: page_type.strip().split('_')[-1].capitalize())
+                item_subtitle = utils.get_nested \
+                (
+                    item,
+                    'subtitle',
+                    'runs',
+                    0,
+                    'text',
+                )
+                item_artist_name = utils.get_nested \
+                (
+                    item,
+                    'subtitle',
+                    'runs',
+                    2,
+                    'text',
+                )
+                item_artist_id = utils.get_nested \
+                (
+                    item,
+                    'subtitle',
+                    'runs',
+                    2,
+                    'navigationEndpoint',
+                    'browseEndpoint',
+                    'browseId',
+                )
+                item_id = utils.get_nested \
+                (
+                    item,
+                    'navigationEndpoint',
+                    'browseEndpoint',
+                    'browseId',
+                )
+                item_type = utils.get_nested \
+                (
+                    item,
+                    'navigationEndpoint',
+                    'browseEndpoint',
+                    'browseEndpointContextSupportedConfigs',
+                    'browseEndpointContextMusicConfig',
+                    'pageType',
+                    func = lambda page_type: page_type.strip().split('_')[-1].capitalize(),
+                )
 
                 if item_title == 'Your Mix':
-                    continue # Pointless to scrape
+                    continue # Pointless to process
 
                 item_data = \
                 {
+                    'id':        item_id,
+                    'name':      item_title,
+                    'type':      item_type,
                     'thumbnail': item_thumbnail,
-                    'title': item_title,
                     'artist': \
                     {
                         'name': item_artist_name,
-                        'id': item_artist_id,
+                        'id':   item_artist_id,
                     },
-                    'id': item_id,
-                    'type': item_type,
                 }
             else:
                 return # raise
@@ -115,9 +235,9 @@ def parse(data):
 
         shelf_data = \
         {
-            'title': shelf_title,
+            'title':     shelf_title,
             'strapline': shelf_strapline,
-            'items': shelf_items,
+            'items':     shelf_items,
         }
 
         parsed_shelves.append(shelf_data)
@@ -125,7 +245,7 @@ def parse(data):
     parsed_data = \
     {
         'continuation': continuation,
-        'shelves': parsed_shelves,
+        'shelves':      parsed_shelves,
     }
 
     return parsed_data

@@ -108,8 +108,8 @@ class YouTubeMusicDL(object):
     def _info(self, video_id, download=False):
         info = self.ytdl.extract_info \
         (
-            url = f'https://www.youtube.com/watch?v={video_id}',
-            ie_key = 'Youtube',
+            url      = ytm_utils.url_youtube(f'watch/?v={video_id}'),
+            ie_key   = 'Youtube',
             download = download,
         )
 

@@ -1,9 +1,6 @@
 __all__ = __name__.split('.')[-1:]
 
-def filter_dict(dictionary, func=None):
-    if func is None:
-        func = lambda key, val: val is not None
-
+def filter_dict(dictionary, func=bool):
     return \
     {
         key: val

@@ -1,7 +1,7 @@
 ''' xxx '''
 
 import random
-from .. import constants
+from .... import constants
 
 __all__ = __name__.split('.')[-1:]
 

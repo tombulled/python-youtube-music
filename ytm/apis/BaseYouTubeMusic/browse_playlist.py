@@ -1,5 +1,3 @@
-from ... import constants as ytm_constants
-
 __all__ = __name__.split('.')[-1:]
 
 def browse_playlist(self, browse_id):

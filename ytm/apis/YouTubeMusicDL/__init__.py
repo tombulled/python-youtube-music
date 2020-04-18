@@ -1,6 +1,3 @@
-from ... import constants as ytm_constants
-from ... import utils     as ytm_utils
-
 import pathlib
 import os
 
@@ -108,6 +105,7 @@ class YouTubeMusicDL(object):
     def _info(self, video_id, download=False):
         info = self.ytdl.extract_info \
         (
+            # Make this use a utility function
             url = f'https://www.youtube.com/watch?v={video_id}',
             ie_key = 'Youtube',
             download = download,

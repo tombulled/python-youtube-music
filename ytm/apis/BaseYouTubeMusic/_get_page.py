@@ -1,9 +1,16 @@
+'''
+'''
+
 import re
 import json
 
-__all__ = __name__.split('.')[-1:]
+__method__ = __name__.split('.')[-1]
+__all__    = (__method__,)
 
-def _get_page(self, endpoint, *args, **kwargs):
+def _get_page(self: object, endpoint: str, *args, **kwargs) -> dict:
+    '''
+    '''
+
     url = self._url(endpoint)
 
     resp = self.session.get(url, *args, **kwargs)

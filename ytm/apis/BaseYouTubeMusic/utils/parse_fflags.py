@@ -1,8 +1,15 @@
+'''
+'''
+
 from .is_float import is_float
 
-__all__ = __name__.split('.')[-1:]
+__util__ = __name__.split('.')[-1]
+__all__  = (__util__,)
 
 def parse_fflags(fflags: dict) -> dict:
+    '''
+    '''
+
     new_fflags = {}
 
     for fflag_key, fflag_val in fflags.items():

@@ -1,9 +1,18 @@
-from ... import utils as ytm_utils
+'''
+'''
 
-__all__ = __name__.split('.')[-1:]
+from . import utils
+from . import decorators
 
-def _url(self, endpoint=None):
-    return ytm_utils.url_youtube_music \
+__method__ = __name__.split('.')[-1]
+__all__    = (__method__,)
+
+@decorators.staticmethod
+def _url(endpoint: str = None) -> str:
+    '''
+    '''
+
+    return utils.url_youtube_music \
     (
         endpoint = endpoint or '',
     )

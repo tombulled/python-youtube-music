@@ -1,6 +1,19 @@
-__all__ = __name__.split('.')[-1:]
+'''
+'''
 
-def filter_dict(dictionary, func=bool):
+from typing import Callable
+
+__util__ = __name__.split('.')[-1]
+__all__  = (__util__,)
+
+def filter_dict \
+        (
+            dictionary: dict,
+            func: Callable[[str], dict] = bool,
+        ) -> dict:
+    '''
+    '''
+
     return \
     {
         key: val

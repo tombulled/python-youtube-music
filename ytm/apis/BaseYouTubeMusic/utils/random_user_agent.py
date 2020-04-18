@@ -1,9 +1,14 @@
-''' xxx '''
+'''
+'''
 
 import random
-from .... import constants
+from .. import constants
 
-__all__ = __name__.split('.')[-1:]
+__util__ = __name__.split('.')[-1]
+__all__  = (__util__,)
 
-def random_user_agent():
+def random_user_agent() -> str:
+    '''
+    '''
+
     return random.choice(constants.USER_AGENTS)

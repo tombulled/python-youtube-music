@@ -1,3 +1,6 @@
+'''
+'''
+
 from ... import constants as ytm_constants
 
 from . import utils
@@ -6,9 +9,13 @@ import urllib
 import base64
 import json
 
-__all__ = __name__.split('.')[-1:]
+__method__ = __name__.split('.')[-1]
+__all__    = (__method__,)
 
-def video_info(self, video_id):
+def video_info(self: object, video_id: str) -> dict:
+    '''
+    '''
+    
     resp = self.session.get \
     (
         url = self._url_yt(ytm_constants.ENDPOINT_YT_VIDEO_INFO),

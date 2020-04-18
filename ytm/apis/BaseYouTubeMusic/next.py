@@ -1,19 +1,26 @@
+'''
+'''
+
 from ... import constants as ytm_constants
 
-__all__ = __name__.split('.')[-1:]
+__method__ = __name__.split('.')[-1]
+__all__    = (__method__,)
 
 def next \
         (
-            self,
-            video_id            = None,
-            playlist_id         = None,
-            index               = None,
-            music_video_type    = None,
-            params              = None,
-            tuner_setting_value = None,
-            player_params       = None,
-            continuation        = None,
-        ):
+            self:                object,
+            video_id:            str    = None,
+            playlist_id:         str    = None,
+            index:               int    = None,
+            music_video_type:    str    = None,
+            params:              str    = None,
+            tuner_setting_value: str    = None,
+            player_params:       str    = None,
+            continuation:        str    = None,
+        ) -> dict:
+    '''
+    '''
+
     url = self._url_api(ytm_constants.ENDPOINT_YTM_API_NEXT)
 
     url_params = ytm_constants.URL_PARAMS

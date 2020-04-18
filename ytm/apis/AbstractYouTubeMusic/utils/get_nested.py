@@ -1,19 +1,39 @@
-from .iter_get import iter_get
+'''
+'''
 
-__all__ = __name__.split('.')[-1:]
+from collections.abc import Iterable
+from typing import Any, Callable
 
-def get_nested(data, *keys, default=None, func=None):
-    if not keys or not data: return default
+__util__ = __name__.split('.')[-1]
+__all__  = (__util__,)
 
-    for key in keys[:-1]:
-        data = iter_get(data, key, {})
+def get_nested \
+        (
+            iterable: Iterable,
+            *keys:    Any,
+            default:  Any      = None,
+            func:     Callable = None,
+        ) -> Any:
+    '''
+    '''
 
-    if not data:
+    if not isinstance(iterable, Iterable) \
+            or not iterable \
+            or not keys:
         return default
 
-    item = iter_get(data, keys[-1], default=default)
+    item = iterable
 
-    if func and item != default:
+    for key in keys:
+        if not isinstance(item, dict):
+            item = dict(enumerate(item))
+
+        if key not in item:
+            return default
+
+        item = item[key]
+
+    if func:
         item = func(item)
 
     return item

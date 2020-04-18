@@ -1,8 +1,7 @@
 '''
 '''
 
-from ... import constants as ytm_constants
-
+from . import constants
 from . import utils
 
 import urllib
@@ -15,10 +14,10 @@ __all__    = (__method__,)
 def video_info(self: object, video_id: str) -> dict:
     '''
     '''
-    
+
     resp = self.session.get \
     (
-        url = self._url_yt(ytm_constants.ENDPOINT_YT_VIDEO_INFO),
+        url = self._url_yt(constants.ENDPOINT_YT_VIDEO_INFO),
         params = \
         {
             'video_id': video_id,

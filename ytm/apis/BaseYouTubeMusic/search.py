@@ -1,7 +1,7 @@
 '''
 '''
 
-from ... import constants as ytm_constants
+from . import constants
 
 __method__ = __name__.split('.')[-1]
 __all__    = (__method__,)
@@ -16,10 +16,10 @@ def search \
     '''
     '''
 
-    url = self._url_api(ytm_constants.ENDPOINT_YTM_API_SEARCH)
+    url = self._url_api(constants.ENDPOINT_YTM_API_SEARCH)
 
-    url_params = ytm_constants.URL_PARAMS
-    payload    = ytm_constants.PAYLOAD
+    url_params = constants.URL_PARAMS
+    payload    = constants.PAYLOAD
 
     if continuation:
         url_params['continuation'] = continuation

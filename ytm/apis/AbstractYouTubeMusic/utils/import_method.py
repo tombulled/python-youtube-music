@@ -1,11 +1,16 @@
-import pkgutil
+'''
+'''
+
 import importlib
 import sys
 
-__all__ = __name__.split('.')[-1:]
+__util__ = __name__.split('.')[-1]
+__all__  = (__util__,)
 
-def import_method(locals):
-    path    = locals.get('__path__')
+def import_method(locals: dict) -> dict:
+    '''
+    '''
+
     package = locals.get('__package__')
     spec    = locals.get('__spec__')
 
@@ -33,4 +38,4 @@ def import_method(locals):
             method.__name__: method
         }
     except ModuleNotFoundError:
-        return
+        pass

@@ -1,7 +1,7 @@
 '''
 '''
 
-from ... import constants as ytm_constants
+from . import constants
 
 __method__ = __name__.split('.')[-1]
 __all__    = (__method__,)
@@ -17,15 +17,15 @@ def browse \
     '''
     '''
 
-    url = self._url_api(ytm_constants.ENDPOINT_YTM_API_BROWSE)
+    url = self._url_api(constants.ENDPOINT_YTM_API_BROWSE)
 
-    request_params = ytm_constants.URL_PARAMS
+    request_params = constants.URL_PARAMS
 
     if continuation:
         request_params['continuation'] = continuation
         request_params['ctoken']       = continuation
 
-    payload = ytm_constants.PAYLOAD
+    payload = constants.PAYLOAD
 
     if browse_id:
         payload['browseId'] = browse_id

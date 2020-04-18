@@ -1,7 +1,7 @@
 '''
 '''
 
-from ... import constants as ytm_constants
+from . import constants
 
 __method__ = __name__.split('.')[-1]
 __all__    = (__method__,)
@@ -12,5 +12,5 @@ def browse_home(self: object) -> dict:
 
     return self.browse \
     (
-        browse_id = ytm_constants.BROWSE_ID_HOME,
+        browse_id = constants.BROWSE_ID_HOME,
     )

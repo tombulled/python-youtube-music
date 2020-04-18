@@ -9,10 +9,13 @@ __all__  = (__util__,)
 def filter_dict \
         (
             dictionary: dict,
-            func: Callable[[str], dict] = bool,
+            func: Callable[[str, str], dict] = None,
         ) -> dict:
     '''
     '''
+
+    if func is None:
+        func = lambda key, val: bool(val)
 
     return \
     {

@@ -1,7 +1,8 @@
 from . import parser
 from ... import utils
 
-__all__ = __name__.split('.')[-1:]
+__method__ = __name__.split('.')[-1]
+__all__ = (__method__,)
 
 def method(self, id):
     '''

@@ -1,16 +1,17 @@
 from . import parser
-from ..... import constants as ytm_constants
+from ... import constants
 
-__all__ = __name__.split('.')[-1:]
+__method__ = __name__.split('.')[-1]
+__all__ = (__method__,)
 
 def method(self, query, filter):
     param_map = \
     {
-        'albums':    ytm_constants.SEARCH_PARAM_ALBUMS,
-        'artists':   ytm_constants.SEARCH_PARAM_ARTISTS,
-        'playlists': ytm_constants.SEARCH_PARAM_PLAYLISTS,
-        'songs':     ytm_constants.SEARCH_PARAM_SONGS,
-        'videos':    ytm_constants.SEARCH_PARAM_VIDEOS,
+        'albums':    constants.SEARCH_PARAM_ALBUMS,
+        'artists':   constants.SEARCH_PARAM_ARTISTS,
+        'playlists': constants.SEARCH_PARAM_PLAYLISTS,
+        'songs':     constants.SEARCH_PARAM_SONGS,
+        'videos':    constants.SEARCH_PARAM_VIDEOS,
     }
 
     param = param_map[filter]
@@ -21,9 +22,9 @@ def method(self, query, filter):
         params = ''.join \
         (
             (
-                ytm_constants.SEARCH_PARAM_PREFIX,
+                constants.SEARCH_PARAM_PREFIX,
                 param,
-                ytm_constants.SEARCH_PARAM_SUFFIX,
+                constants.SEARCH_PARAM_SUFFIX,
             ),
         ),
     )

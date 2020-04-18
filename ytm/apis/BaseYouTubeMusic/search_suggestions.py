@@ -1,7 +1,7 @@
 '''
 '''
 
-from ... import constants as ytm_constants
+from . import constants
 from typing import List
 
 __method__ = __name__.split('.')[-1]
@@ -10,11 +10,11 @@ __all__    = (__method__,)
 def search_suggestions(self: object, query: str = None) -> List[str]:
     '''
     '''
-    
-    url = self._url_api(ytm_constants.ENDPOINT_YTM_API_SEARCH_SUGGESTIONS)
 
-    params  = ytm_constants.URL_PARAMS
-    payload = ytm_constants.PAYLOAD
+    url = self._url_api(constants.ENDPOINT_YTM_API_SEARCH_SUGGESTIONS)
+
+    params  = constants.URL_PARAMS
+    payload = constants.PAYLOAD
 
     payload['input'] = query or ''
 

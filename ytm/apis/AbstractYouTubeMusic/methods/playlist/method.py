@@ -2,7 +2,8 @@ from . import parser
 from ..... import constants as ytm_constants
 from ... import decorators
 
-__all__ = __name__.split('.')[-1:]
+__method__ = __name__.split('.')[-1]
+__all__ = (__method__,)
 
 @decorators.parse(parser.parse)
 def method(self, playlist_id=None, continuation=None):

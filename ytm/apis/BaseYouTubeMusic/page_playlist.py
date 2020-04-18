@@ -1,7 +1,7 @@
 '''
 '''
 
-from ... import constants as ytm_constants
+from . import constants
 
 __method__ = __name__.split('.')[-1]
 __all__    = (__method__,)
@@ -9,10 +9,10 @@ __all__    = (__method__,)
 def page_playlist(self: object, list: str) -> dict:
     '''
     '''
-    
+
     return self._get_page \
     (
-        endpoint = ytm_constants.ENDPOINT_YTM_PLAYLIST,
+        endpoint = constants.ENDPOINT_YTM_PLAYLIST,
         params = \
         {
             'list': list,

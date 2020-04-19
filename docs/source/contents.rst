@@ -1,5 +1,5 @@
-Welcome to python-youtube-music's documentation!
-================================================
+Contents
+========
 
 .. toctree::
    :maxdepth: 2

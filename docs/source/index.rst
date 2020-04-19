@@ -5,13 +5,13 @@ Welcome to python-youtube-music's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-.. automodule:: ytm.module
+.. automodule:: ytm
     :members:
 
-.. autoclass:: ytm.module.YouTubeMusic
+.. autoclass:: ytm.AbstractYouTubeMusic
     :members:
     :inherited-members:
-    :exclude-members: members, to, exclude
+    :exclude-members:
 
 Indices and tables
 ==================

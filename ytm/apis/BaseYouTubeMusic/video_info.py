@@ -3,6 +3,7 @@
 
 from . import constants
 from . import utils
+from . import decorators
 
 import urllib
 import base64
@@ -11,6 +12,7 @@ import json
 __method__ = __name__.split('.')[-1]
 __all__    = (__method__,)
 
+@decorators.catch
 def video_info(self: object, video_id: str) -> dict:
     '''
     '''

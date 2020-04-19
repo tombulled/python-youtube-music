@@ -2,11 +2,13 @@
 '''
 
 from . import constants
+from . import decorators
 from typing import List
 
 __method__ = __name__.split('.')[-1]
 __all__    = (__method__,)
 
+@decorators.catch
 def search_suggestions(self: object, query: str = None) -> List[str]:
     '''
     '''

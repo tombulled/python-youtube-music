@@ -1,6 +1,7 @@
 from ... import utils
 
-__all__ = __name__.split('.')[-1:]
+__parser__ = __name__.split('.')[-1]
+__all__ = (__parser__,)
 
 def parse(data):
     scraped = {}
@@ -13,6 +14,9 @@ def parse(data):
         'mutations',
         default = (),
     )
+
+    if not raw_mutations:
+        return # No data to parse
 
     mutations = {}
 
@@ -288,7 +292,9 @@ def parse(data):
 
     artists_data = []
 
-    for artist in utils.get_nested(mutations, 'musicArtist'):
+    music_artist = utils.get_nested(mutations, 'musicArtist', default=())
+
+    for artist in music_artist:
         artist_id = utils.get_nested \
         (
             artist,

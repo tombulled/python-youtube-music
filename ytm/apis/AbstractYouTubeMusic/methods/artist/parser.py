@@ -1,10 +1,10 @@
-# from ..... import utils as utils
 from ... import utils
 
-__all__ = __name__.split('.')[-1:]
+__parser__ = __name__.split('.')[-1]
+__all__ = (__parser__,)
 
 def parse(data):
-    contents = utils.get_nested \
+    content = utils.get_nested \
     (
         data,
         'contents',
@@ -13,6 +13,14 @@ def parse(data):
         0,
         'tabRenderer',
         'content',
+    )
+
+    if content is None:
+        return # Maybe invalid id, but no data returned
+
+    contents = utils.get_nested \
+    (
+        content,
         'sectionListRenderer',
         'contents',
         default = (),
@@ -1023,7 +1031,7 @@ def parse(data):
         'title':       'Songs',
         'playlist_id': artist_playlist_id,
         'items':       songs,
-    }
+    } if songs else None
 
     scraped = \
     {

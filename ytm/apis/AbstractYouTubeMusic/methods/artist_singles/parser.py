@@ -1,6 +1,7 @@
 from ... import utils
 
-__all__ = __name__.split('.')[-1:]
+__parser__ = __name__.split('.')[-1]
+__all__ = (__parser__,)
 
 def parse(data):
     contents = utils.get_nested \

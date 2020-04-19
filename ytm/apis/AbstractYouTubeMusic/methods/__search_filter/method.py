@@ -5,6 +5,12 @@ __method__ = __name__.split('.')[-1]
 __all__ = (__method__,)
 
 def method(self, query, filter):
+    filter = filter.strip().lower()
+    query  = query.strip()
+
+    if not query:
+        return # No point
+
     param_map = \
     {
         'albums':    constants.SEARCH_PARAM_ALBUMS,
@@ -14,7 +20,10 @@ def method(self, query, filter):
         'videos':    constants.SEARCH_PARAM_VIDEOS,
     }
 
-    param = param_map[filter]
+    param = param_map.get(filter)
+
+    if not param:
+        return
 
     data = self._base.search \
     (

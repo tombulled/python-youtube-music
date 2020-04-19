@@ -1,15 +1,19 @@
 from . import parser
 from ... import utils
+from ... import types
 
 __method__ = __name__.split('.')[-1]
 __all__ = (__method__,)
 
-def method(self, id):
+AlbumId = types.AlbumId
+
+def method(self, id: AlbumId):
     '''
-    Note: alum_id can also be a browse_id
     '''
 
-    if id.startswith('OLAK5uy'): # playlist_id
+    id = types.AlbumId(id)
+
+    if types.isinstance(id, types.AlbumPlaylistId):
         page = self._base.page_playlist \
         (
             list = id,
@@ -22,18 +26,14 @@ def method(self, id):
             'browseEndpoint',
             'browseId',
         )
-
-        if not browse_id:
-            return # raise
-    elif id.startswith('MPREb'): # browse_id
+    elif types.isinstance(id, types.AlbumBrowseId):
         browse_id = id
-    else:
-        # Make decorator?
-        raise ValueError(f'Invalid album id: {repr(id)}')
+
+    browse_id = types.AlbumBrowseId(browse_id)
 
     data = self._base.browse_album \
     (
-        browse_id = browse_id, # check browse_id is correct format?
+        browse_id = browse_id,
     )
 
     parsed_data = parser.parse(data)

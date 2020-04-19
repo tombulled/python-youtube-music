@@ -1,13 +1,17 @@
+# import re
 from . import parser
 from ... import decorators
+# from ... import exceptions
+from ... import types
 
 __method__ = __name__.split('.')[-1]
 __all__ = (__method__,)
 
+ArtistId = types.ArtistId
+
 @decorators.parse(parser.parse)
-def method(self, artist_id):
-    if len(artist_id) != 24 or not artist_id.startswith('UC'):
-        raise ValueError(f'Invalid artist id: {repr(artist_id)}')
+def method(self, artist_id: ArtistId):
+    artist_id = types.ArtistId(artist_id)
 
     return self._base.browse_artist \
     (

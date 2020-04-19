@@ -6,7 +6,14 @@ __all__ = (__parser__,)
 
 def parse(data, filter):
     # Compat, so parser knows what each item represents
-    shelves = utils.get_nested(data, 'contents', 'sectionListRenderer', 'contents', default=())
+    shelves = utils.get_nested \
+    (
+        data,
+        'contents',
+        'sectionListRenderer',
+        'contents',
+        default = (),
+    )
 
     for shelf in shelves:
         shelf = utils.first_key(shelf)

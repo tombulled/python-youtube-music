@@ -79,6 +79,55 @@ custom_types  = \
         ),
     },
     {
+        'name': 'Continuation',
+        'patterns': \
+        (
+            r'^[a-zA-Z0-9_-]+$',
+        ),
+    },
+    {
+        'name': 'ArtistSinglesContinuation',
+        'patterns': \
+        (
+            (
+                r'^'
+                r'6gPTAUNwc0JDbndLYlFBQVpXNEFBVWRDQUFGSFFnQUJBRVpGYlhWemFXTmZaR'
+                r'1YwWVdsc1gyRnlkR2x6ZEFBQkFBQUJBQUFBQVFBQkFBQUJBUW'
+                r'k4'
+                r'QXhvWVZVT'
+                r'(?P<b64_artist_id>[a-zA-Z0-9_-]{39})'
+                r'Z2dFWVZVT'
+                r'(?P=b64_artist_id)'
+                r'QUFFU'
+                r'[a-zA-Z0-9_-]{10}'
+                r'zNkFJYUFuZHpHQUFxRDJGeWRHbHpkRjl5Wld4bFlYTmxjekN4MU5EbGxfSEo4'
+                r'bkE%3D'
+                r'$'
+            ),
+        ),
+    },
+    {
+        'name': 'ArtistAlbumsContinuation',
+        'patterns': \
+        (
+            (
+                r'^'
+                r'6gPTAUNwc0JDbndLYlFBQVpXNEFBVWRDQUFGSFFnQUJBRVpGYlhWemFXTmZaR'
+                r'1YwWVdsc1gyRnlkR2x6ZEFBQkFBQUJBQUFBQVFBQkFBQUJBUW'
+                r'lY'
+                r'QXhvWVZVT'
+                r'(?P<b64_artist_id>[a-zA-Z0-9_-]{39})'
+                r'Z2dFWVZVT'
+                r'(?P=b64_artist_id)'
+                r'QUFFU'
+                r'[a-zA-Z0-9_-]{10}'
+                r'zNkFJYUFuZHpHQUFxRDJGeWRHbHpkRjl5Wld4bFlYTmxjekN4MU5EbGxfSEo4'
+                r'bkE%3D'
+                r'$'
+            ),
+        ),
+    },
+    {
         'name': 'AlbumId',
         'patterns': \
         (

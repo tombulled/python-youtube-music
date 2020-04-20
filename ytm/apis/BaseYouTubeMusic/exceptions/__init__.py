@@ -10,6 +10,14 @@ class BaseException(Exception):
 
 class InvalidPageConfigurationError(BaseException): pass
 class PageNotFoundError(BaseException): pass
+class ConnectionError(BaseException): pass
+    # def __init__(self, data):
+    #     self.data = data
+    #
+    #     self.message, self.error = self.data
+    #
+    # def __str__(self):
+    #     return self.message
 
 class YouTubeMusicApiError(BaseException):
     def __init__(self, data):

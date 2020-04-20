@@ -1,7 +1,5 @@
-# import re
 from . import parser
 from ... import decorators
-# from ... import exceptions
 from ... import types
 
 __method__ = __name__.split('.')[-1]

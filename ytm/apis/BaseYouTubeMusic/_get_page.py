@@ -6,10 +6,12 @@ import json
 from . import utils
 from . import constants
 from . import exceptions
+from . import decorators
 
 __method__ = __name__.split('.')[-1]
 __all__    = (__method__,)
 
+@decorators.catch
 def _get_page(self: object, endpoint: str, params: dict=None) -> dict:
     '''
     Return a page's configuration data.

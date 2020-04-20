@@ -8,7 +8,7 @@ __all__ = (__parser__,)
 @decorators.catch(__method__)
 def parse(data):
     assert data
-    
+
     header = utils.get_nested \
     (
         data,
@@ -40,6 +40,8 @@ def parse(data):
 
     for item in contents:
         item = utils.first_key(item)
+
+        # return item
 
         item_menu_items = utils.get_nested \
         (

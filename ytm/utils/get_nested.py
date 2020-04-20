@@ -26,6 +26,9 @@ def get_nested \
 
     for key in keys:
         if not isinstance(item, dict):
+            if isinstance(key, int) and key < 0:
+                key += len(item)
+
             item = dict(enumerate(item))
 
         if key not in item:

@@ -1,11 +1,13 @@
 from ... import utils
+from ... import decorators
 
 __parser__ = __name__.split('.')[-1]
+__method__ = __name__.split('.')[-2]
 __all__ = (__parser__,)
 
+@decorators.catch(__method__)
 def parse(data):
-    if not data:
-        return # raise
+    assert data
 
     if 'continuationContents' in data:
         data = utils.get_nested \
@@ -27,6 +29,8 @@ def parse(data):
             'sectionListRenderer',
         )
 
+    assert data
+
     # Insert back into data
     continuation = utils.get_nested \
     (
@@ -45,6 +49,8 @@ def parse(data):
         'contents',
         default = (),
     )[:-1]
+
+    assert shelves
 
     for shelf in shelves:
         shelf = utils.first_key(shelf)

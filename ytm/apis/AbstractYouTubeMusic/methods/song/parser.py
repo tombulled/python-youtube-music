@@ -1,9 +1,14 @@
 from ... import utils
+from ... import decorators
 
 __parser__ = __name__.split('.')[-1]
+__method__ = __name__.split('.')[-2]
 __all__ = (__parser__,)
 
+@decorators.catch(__method__)
 def parse(data):
+    assert data
+
     player_response = utils.get_nested \
     (
         data,
@@ -53,6 +58,14 @@ def parse(data):
         'rows',
         default = (),
     )
+
+    assert player_response
+    assert video_details
+    assert secondary_info
+    assert microformat
+    assert video_owner_renderer
+    assert video_owner_thumbnail
+    assert raw_meta_rows
 
     meta_rows = []
 

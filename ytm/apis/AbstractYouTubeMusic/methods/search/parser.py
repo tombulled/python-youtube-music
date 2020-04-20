@@ -1,8 +1,11 @@
 from ... import utils
+from ... import decorators
 
 __parser__ = __name__.split('.')[-1]
+__method__ = __name__.split('.')[-2]
 __all__ = (__parser__,)
 
+@decorators.catch(__method__)
 def parse(data):
     data = utils.get_nested \
     (
@@ -10,6 +13,8 @@ def parse(data):
         'contents',
         'sectionListRenderer',
     )
+
+    assert data
 
     query = utils.get_nested \
     (
@@ -39,6 +44,8 @@ def parse(data):
         'contents',
         default = (),
     )
+
+    assert shelves
 
     for shelf in shelves:
         shelf = utils.first_key(shelf)

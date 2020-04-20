@@ -34,6 +34,9 @@ def get_nested \
         item = item[key]
 
     if func:
-        item = func(item)
+        try:
+            item = func(item)
+        except:
+            item = default
 
     return item

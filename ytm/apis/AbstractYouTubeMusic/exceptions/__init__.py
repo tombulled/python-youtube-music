@@ -13,3 +13,4 @@ class BaseException(Exception):
 # class InvalidArtistIdError(BaseException): pass
 # class InvalidBrowseIdError(BaseException): pass
 class InvalidIdError(BaseException): pass
+class InvalidResponseError(BaseException): pass

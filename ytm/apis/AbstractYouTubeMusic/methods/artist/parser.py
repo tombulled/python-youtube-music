@@ -1,9 +1,14 @@
 from ... import utils
+from ... import decorators
 
 __parser__ = __name__.split('.')[-1]
+__method__ = __name__.split('.')[-2]
 __all__ = (__parser__,)
 
+@decorators.catch(__method__)
 def parse(data):
+    assert data
+    
     content = utils.get_nested \
     (
         data,
@@ -15,8 +20,7 @@ def parse(data):
         'content',
     )
 
-    if content is None:
-        return # Maybe invalid id, but no data returned
+    assert content
 
     contents = utils.get_nested \
     (
@@ -25,6 +29,8 @@ def parse(data):
         'contents',
         default = (),
     )
+
+    assert contents
 
     shelves = {}
 

@@ -1,9 +1,14 @@
 from ... import utils
+from ... import decorators
 
 __parser__ = __name__.split('.')[-1]
+__method__ = __name__.split('.')[-2]
 __all__ = (__parser__,)
 
+@decorators.catch(__method__)
 def parse(data):
+    assert data
+
     scraped = {}
 
     raw_mutations = utils.get_nested \
@@ -15,8 +20,7 @@ def parse(data):
         default = (),
     )
 
-    if not raw_mutations:
-        return # No data to parse
+    assert raw_mutations
 
     mutations = {}
 

@@ -1,9 +1,14 @@
 from ... import utils
+from ... import decorators
 
 __parser__ = __name__.split('.')[-1]
+__method__ = __name__.split('.')[-2]
 __all__ = (__parser__,)
 
+@decorators.catch(__method__)
 def parse(data):
+    assert data
+
     if 'continuationContents' in data:
         playlist_data = None
 
@@ -43,6 +48,9 @@ def parse(data):
             0,
             'musicPlaylistShelfRenderer',
         )
+
+        assert music_detail_header_renderer
+        assert music_playlist_shelf_renderer
 
         playlist_title = utils.get_nested \
         (
@@ -141,12 +149,16 @@ def parse(data):
             'continuation',
         )
 
+    assert data
+
     raw_tracks = utils.get_nested \
     (
         data,
         'contents',
         default = (),
     )
+
+    assert raw_tracks
 
     tracks = []
 

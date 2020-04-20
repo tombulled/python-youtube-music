@@ -1,9 +1,14 @@
 from ... import utils
+from ... import decorators
 
 __parser__ = __name__.split('.')[-1]
+__method__ = __name__.split('.')[-2]
 __all__ = (__parser__,)
 
+@decorators.catch(__method__)
 def parse(data):
+    assert data
+
     grid_items = utils.get_nested \
     (
         data,
@@ -23,6 +28,8 @@ def parse(data):
         'items',
         default = (),
     )
+
+    assert grid_items
 
     tracks = []
 

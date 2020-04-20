@@ -1,9 +1,23 @@
 from ... import utils
+from ... import decorators
 
 __parser__ = __name__.split('.')[-1]
+__method__ = __name__.split('.')[-2]
 __all__ = (__parser__,)
 
+@decorators.catch(__method__)
 def parse(data):
+    assert data
+    
+    header = utils.get_nested \
+    (
+        data,
+        'header',
+        'musicHeaderRenderer',
+    )
+
+    assert header
+
     contents = utils.get_nested \
     (
         data,
@@ -18,7 +32,10 @@ def parse(data):
         0,
         'musicShelfRenderer',
         'contents',
+        default = (),
     )
+
+    assert contents
 
     albums_data = []
 

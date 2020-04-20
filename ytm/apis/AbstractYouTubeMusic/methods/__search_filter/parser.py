@@ -1,10 +1,15 @@
 from ... import utils
+from ... import decorators
 from ..search import parser as search_parser
 
 __parser__ = __name__.split('.')[-1]
+__method__ = __name__.split('.')[-2]
 __all__ = (__parser__,)
 
+@decorators.catch(__method__)
 def parse(data, filter):
+    assert data
+
     # Compat, so parser knows what each item represents
     shelves = utils.get_nested \
     (
@@ -14,6 +19,8 @@ def parse(data, filter):
         'contents',
         default = (),
     )
+
+    assert shelves
 
     for shelf in shelves:
         shelf = utils.first_key(shelf)

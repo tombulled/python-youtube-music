@@ -64,16 +64,31 @@ def new_id(name, patterns=None):
 def isinstance(object, class_):
     custom_type_names = [custom_type['name'] for custom_type in custom_types]
 
-    if class_.__name__ in custom_type_names:
+    class_name = getattr(class_, '__name__', None) \
+        or getattr(class_.__class__, '__name__')
+
+    if class_name in custom_type_names:
         try:
             class_(str(object))
 
             return True
         except:
-            raise
             return False
     else:
-        return builtins.isinstance(object, class_)
+        # return builtins.isinstance(object, class_)
+        # print(object) #, type(object))
+        # print(class_, type(class_))
+        # print(class_, class_.__mro__)
+        # object_name = getattr(object, '__name__', None) \
+        #     or getattr(object.__class__, '__name__')
+        # print(object.__mro__)
+        mro = getattr(object, '__mro__', None) \
+            or getattr(object.__class__, '__mro__')
+        # print(object, mro)
+        # print(object_name, [resolution.__name__ for resolution in class_.__mro__] + [class_.__name__])
+        # print(object, type(object), class_.__mro__, [resolution.__name__ for resolution in class_.__mro__] + [class_.__name__])
+        # return type(object) in [resolution.__name__ for resolution in class_.__mro__] + [class_.__name__]
+        return class_ in mro
 
 custom_types  = \
 (
@@ -169,9 +184,9 @@ __all__ = \
     'isinstance',
 ]
 
-for custom_type in custom_types:
-    type = new_id(**custom_type)
+for custom_type_spec in custom_types:
+    custom_type = new_id(**custom_type_spec)
 
-    locals()[type.__name__] = type
+    locals()[custom_type.__name__] = custom_type
 
-    __all__.append(type.__name__)
+    __all__.append(custom_type.__name__)

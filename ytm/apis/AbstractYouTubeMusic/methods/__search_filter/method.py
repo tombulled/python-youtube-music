@@ -6,8 +6,9 @@ __function__ = __name__.split('.')[-1]
 __method__   = __name__.split('.')[-2]
 __all__      = (__function__,)
 
-@decorators.enforce()
-@decorators.rename(__method__)
+# @decorators.enforce()
+# @decorators.rename(__method__)
+@decorators.method(__method__)
 def method(self: object, query: str, filter: str) -> list:
     filter = filter.strip().lower()
     query  = query.strip()

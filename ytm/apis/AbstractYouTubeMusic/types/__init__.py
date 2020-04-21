@@ -4,6 +4,7 @@
 import re
 from .. import exceptions
 import types
+import builtins
 
 def new_id(name, patterns=None):
     def __init__(self, id: str):
@@ -49,7 +50,7 @@ def new_id(name, patterns=None):
         for method in methods:
             namespace[method.__name__] = method
 
-        namespace['__module__'] = __builtins__['__name__']
+        namespace['__module__'] = builtins.__name__
 
     class_ = types.new_class \
     (
@@ -61,13 +62,18 @@ def new_id(name, patterns=None):
     return class_
 
 def isinstance(object, class_):
-    try:
-        class_(str(object))
+    custom_type_names = [custom_type['name'] for custom_type in custom_types]
 
-        return True
-    except:
-        raise
-        return False
+    if class_.__name__ in custom_type_names:
+        try:
+            class_(str(object))
+
+            return True
+        except:
+            raise
+            return False
+    else:
+        return builtins.isinstance(object, class_)
 
 custom_types  = \
 (
@@ -99,8 +105,8 @@ custom_types  = \
                 r'Z2dFWVZVT'
                 r'(?P=b64_artist_id)'
                 r'QUFFU'
-                r'[a-zA-Z0-9_-]{10}'
-                r'zNkFJYUFuZHpHQUFxRDJGeWRHbHpkRjl5Wld4bFlYTmxjekN4MU5EbGxfSEo4'
+                r'[a-zA-Z0-9_-]{11}'
+                r'NkFJYUFuZHpHQUFxRDJGeWRHbHpkRjl5Wld4bFlYTmxjekN4MU5EbGxfSEo4'
                 r'bkE%3D'
                 r'$'
             ),
@@ -120,8 +126,8 @@ custom_types  = \
                 r'Z2dFWVZVT'
                 r'(?P=b64_artist_id)'
                 r'QUFFU'
-                r'[a-zA-Z0-9_-]{10}'
-                r'zNkFJYUFuZHpHQUFxRDJGeWRHbHpkRjl5Wld4bFlYTmxjekN4MU5EbGxfSEo4'
+                r'[a-zA-Z0-9_-]{11}'
+                r'NkFJYUFuZHpHQUFxRDJGeWRHbHpkRjl5Wld4bFlYTmxjekN4MU5EbGxfSEo4'
                 r'bkE%3D'
                 r'$'
             ),

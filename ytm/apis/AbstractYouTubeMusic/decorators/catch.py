@@ -10,11 +10,8 @@ __all__       = (__decorator__,)
 
 def catch(method_name):
     def decorator(func: Callable):
-        # method = func.__module__.
-        # print(func.__module__)
-
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any):
             try:
                 resp = func(*args, **kwargs)
             except:

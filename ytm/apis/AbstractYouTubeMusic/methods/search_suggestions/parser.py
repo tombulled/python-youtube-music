@@ -8,7 +8,7 @@ __all__ = (__parser__,)
 @decorators.catch(__method__)
 def parse(data):
     assert data
-    
+
     contents = utils.get_nested \
     (
         data,

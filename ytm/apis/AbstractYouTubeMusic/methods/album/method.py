@@ -1,17 +1,21 @@
 from . import parser
 from ... import utils
 from ... import types
+from ... import decorators
 
-__method__ = __name__.split('.')[-1]
-__all__ = (__method__,)
+__function__ = __name__.split('.')[-1]
+__method__   = __name__.split('.')[-2]
+__all__      = (__function__,)
 
 AlbumId = types.AlbumId
 
-def method(self, id: AlbumId):
+@decorators.enforce()
+@decorators.rename(__method__)
+def method(self: object, id: AlbumId) -> dict:
     '''
     '''
 
-    id = types.AlbumId(id)
+    # id = types.AlbumId(id)
 
     if types.isinstance(id, types.AlbumPlaylistId):
         page = self._base.page_playlist \

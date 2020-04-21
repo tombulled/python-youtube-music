@@ -1,23 +1,32 @@
 from . import parser
 from ... import constants
 from ... import decorators
+from ... import types
+from ...types import PlaylistId, PlaylistContinuation
 
 __function__ = __name__.split('.')[-1]
 __method__   = __name__.split('.')[-2]
 __all__      = (__function__,)
 
-@decorators.enforce(parameters=False, return_value=True)
-@decorators.parse(parser.parse)
-@decorators.enforce(parameters=True, return_value=False)
-@decorators.rename(__method__)
-def method(self: object, playlist_id=None, continuation=None) -> dict:
+@decorators.method(__method__, parser.parse)
+def method \
+        (
+            self:         object,
+            playlist_id:  PlaylistId           = None,
+            continuation: PlaylistContinuation = None,
+        ) -> dict:
+    '''
+    '''
+
+    assert any((playlist_id, continuation)), f'Missing 1 required argument: \'playlist_id\' or \'continuation\''
+
     if playlist_id is not None:
-        if any(playlist_id.startswith(prefix) for prefix in ('RDAO', 'RDEM', 'RDAM', constants.PREFIX_PLAYLIST)):
+        if types.isinstance(playlist_id, types.PlaylistBrowseId):
             prefix = ''
         else:
             prefix = constants.PREFIX_PLAYLIST
 
-        browse_id = f'{prefix}{playlist_id}'
+        browse_id = types.PlaylistBrowseId(f'{prefix}{playlist_id}')
 
         return self._base.browse_playlist \
         (
@@ -28,6 +37,3 @@ def method(self: object, playlist_id=None, continuation=None) -> dict:
         (
             continuation = continuation,
         )
-    else:
-        # Make this a decorator
-        raise TypeError('playlist() missing 1 required argument: \'playlist_id\' or \'continuation\'')

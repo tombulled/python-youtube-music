@@ -48,7 +48,7 @@ def parse(data):
         data,
         'contents',
         default = (),
-    )[:-1]
+    ) # [:-1]
 
     assert shelves
 

@@ -1,21 +1,17 @@
 from . import parser
 from ... import utils
-from ... import types
 from ... import decorators
+from ... import types
+from ...types import AlbumId
 
 __function__ = __name__.split('.')[-1]
 __method__   = __name__.split('.')[-2]
 __all__      = (__function__,)
 
-AlbumId = types.AlbumId
-
-@decorators.enforce()
-@decorators.rename(__method__)
+@decorators.method(__method__, parser.parse)
 def method(self: object, id: AlbumId) -> dict:
     '''
     '''
-
-    # id = types.AlbumId(id)
 
     if types.isinstance(id, types.AlbumPlaylistId):
         page = self._base.page_playlist \
@@ -32,14 +28,12 @@ def method(self: object, id: AlbumId) -> dict:
         )
     elif types.isinstance(id, types.AlbumBrowseId):
         browse_id = id
+    else:
+        raise Exception(f'Invalid album id: {repr(id)}')
 
     browse_id = types.AlbumBrowseId(browse_id)
 
-    data = self._base.browse_album \
+    return self._base.browse_album \
     (
         browse_id = browse_id,
     )
-
-    parsed_data = parser.parse(data)
-
-    return parsed_data

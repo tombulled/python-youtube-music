@@ -1,22 +1,13 @@
 from . import parser
 from ... import decorators
-from ... import types
+from ...types import ArtistId, ArtistSinglesContinuation
 
 __function__ = __name__.split('.')[-1]
 __method__   = __name__.split('.')[-2]
 __all__      = (__function__,)
 
-ArtistId = types.ArtistId
-ArtistSinglesContinuation = types.ArtistSinglesContinuation
-
-@decorators.enforce(parameters=False, return_value=True)
-@decorators.parse(parser.parse)
-@decorators.enforce(parameters=True, return_value=False)
-@decorators.rename(__method__)
+@decorators.method(__method__, parser.parse)
 def method(self: object, artist_id: ArtistId, params: ArtistSinglesContinuation) -> list:
-    # artist_id = types.ArtistId(artist_id)
-    # params    = types.ArtistSinglesContinuation(params)
-
     return self._base.browse \
     (
         browse_id = artist_id,

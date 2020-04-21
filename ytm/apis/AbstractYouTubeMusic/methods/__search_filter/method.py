@@ -6,8 +6,6 @@ __function__ = __name__.split('.')[-1]
 __method__   = __name__.split('.')[-2]
 __all__      = (__function__,)
 
-# @decorators.enforce()
-# @decorators.rename(__method__)
 @decorators.method(__method__)
 def method(self: object, query: str, filter: str) -> list:
     filter = filter.strip().lower()
@@ -24,11 +22,8 @@ def method(self: object, query: str, filter: str) -> list:
 
     param = param_map.get(filter)
 
-    if not query:
-        return # No point
-
-    if not param:
-        return
+    assert query, 'No search query provided'
+    assert param, f'Invalid search filter: {repr(filter)}'
 
     data = self._base.search \
     (

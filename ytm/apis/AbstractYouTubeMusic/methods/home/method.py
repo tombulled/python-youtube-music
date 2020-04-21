@@ -1,20 +1,13 @@
 from . import parser
 from ... import decorators
-from ... import types
+from ...types import HomeContinuation
 
 __function__ = __name__.split('.')[-1]
 __method__   = __name__.split('.')[-2]
 __all__      = (__function__,)
 
-Continuation = types.Continuation
-
-@decorators.enforce(parameters=False, return_value=True)
-@decorators.parse(parser.parse)
-@decorators.enforce(parameters=True, return_value=False)
-@decorators.rename(__method__)
-def method(self: object, continuation: Continuation=None) -> dict:
-    # continuation = Continuation(continuation)
-
+@decorators.method(__method__, parser.parse)
+def method(self: object, continuation: HomeContinuation = None) -> dict:
     if continuation:
         return self._base.browse \
         (

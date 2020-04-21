@@ -1,15 +1,23 @@
 from . import parser
 from ... import decorators
+from ...types import SongId, SongListId, WatchContinuation, Params
 
 __function__ = __name__.split('.')[-1]
 __method__   = __name__.split('.')[-2]
 __all__      = (__function__,)
 
-@decorators.enforce(parameters=False, return_value=True)
-@decorators.parse(parser.parse)
-@decorators.enforce(parameters=True, return_value=False)
-@decorators.rename(__method__)
-def method(self: object, song_id=None, playlist_id=None, params=None, continuation=None) -> dict:
+@decorators.method(__method__, parser.parse)
+def method \
+        (
+            self:         object,
+            song_id:      SongId            = None,
+            playlist_id:  SongListId        = None,
+            params:       Params            = None,
+            continuation: WatchContinuation = None,
+        ) -> dict:
+    '''
+    '''
+
     return self._base.next \
     (
         video_id     = song_id,

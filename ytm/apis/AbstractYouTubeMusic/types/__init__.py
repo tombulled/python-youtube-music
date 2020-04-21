@@ -14,12 +14,15 @@ def new_id(name, patterns=None):
             return
 
         for pattern in patterns:
+            # print(pattern, str(self))
             match = re.match \
             (
                 pattern = pattern,
-                string  = self,
+                string  = str(self),
                 flags   = re.DOTALL,
             )
+
+            # print(match)
 
             if match is not None:
                 break
@@ -67,9 +70,13 @@ def isinstance(object, class_):
     class_name = getattr(class_, '__name__', None) \
         or getattr(class_.__class__, '__name__')
 
+    # print(class_name, custom_type_names)
+
     if class_name in custom_type_names:
         try:
             class_(str(object))
+
+            # print('Created:', class_, 'with', str(object))
 
             return True
         except:
@@ -103,8 +110,66 @@ custom_types  = \
         'name': 'Continuation',
         'patterns': \
         (
-            r'^[a-zA-Z0-9_-]+$',
+            r'^[a-zA-Z0-9_%-]+$',
         ),
+    },
+    {
+        'name': 'Params',
+        'patterns': \
+        (
+            r'^[a-zA-Z0-9_%-]+$',
+        ),
+    },
+    {
+        'name': 'HomeContinuation',
+        'patterns': \
+        (
+            (
+                r'^'
+                r'4qmFsg'
+                r'KM'
+                r'ARIMRkVtdXNpY19ob21lG'
+                r'nxDQU42VkVOcVFVRkJSMVoxUVVGR1NGRm5RVUpTTUVsQlFWRkNSMUpYTVRGak'
+                r'1teHFXREpvZG1KWFZVRkJVVUZCUVZGR1JFRkJRVUpCUVVWQlFVRkZRa0pCUjFSMV'
+                r'[a-zA-Z0-9_%-]{4}'
+                r'JRVUp'
+                r'[a-zA-Z0-9_%-]{15}'
+                r'p2UVdwSlFRJTNEJTNE'
+                r'$'
+            ),
+            (
+                r'^'
+                r'4qmFsg'
+                r'Lb'
+                r'ARIMRkVtdXNpY19ob21lG'
+                r'soBQ0F'
+                r'[a-zA-Z0-9_-]{1}'
+                r'NmtBRkRha0ZCUVVkV2RVRkJSa2hSWjBGQ1VqQkpRVUZSUWtkU1Z6RX'
+                r'hZekpzYWxneWFIWmlWMVZCUVZGQlFVRlJSa1JCUVVGQ1FVRkZRVUZCUlVKQ1FVZFVk'
+                r'[a-zA-Z0-9_-]{4}'
+                r'VVV'
+                r'[a-zA-Z0-9_-]{18}'
+                r'WIwRnFTWFJIYVhSVFVrVk9UVkZWY3pGa1dHeG1Z'
+                r'[a-zA-Z0-9_-]{77}'
+                r'SUzRA%3D%3D'
+                r'$'
+            ),
+        ),
+    },
+    {
+        'name': 'WatchContinuation',
+        'patterns': \
+        {
+            (
+                r'^'
+                r'CBkSMRIL'
+                r'[a-zA-Z0-9_-]{15}'
+                r'iEVJEQU1WT'
+                r'[a-zA-Z0-9_-]{15}'
+                r'MgR3QUVCOBi4AQLQAQHwAQEYCg%3D%3D'
+                r'$'
+            ),
+        },
     },
     {
         'name': 'ArtistSinglesContinuation',
@@ -149,11 +214,61 @@ custom_types  = \
         ),
     },
     {
+        'name': 'PlaylistContinuation',
+        'patterns': \
+        (
+            (
+                r'^'
+                r'4qmFsgJbEi1WTFJEQ0xBSzV1eV9'
+                r'[a-zA-Z0-9_-]{45}'
+                r'KmVoVlFWRHBGWjN'
+                r'[a-zA-Z0-9_-]{28}'
+                r'TQVFNSXVnUSUzRA%3D%3D'
+                r'$'
+            ),
+        ),
+    },
+    {
+        'name': 'PlaylistId',
+        'patterns': \
+        (
+            r'^(VL)?PL[a-zA-Z0-9_-]{32}$',
+            r'^(VL)?RDCLAK5uy_[a-zA-Z0-9_-]{33}$',
+        ),
+    },
+    {
+        'name': 'PlaylistBrowseId',
+        'patterns': \
+        (
+            r'^VLPL[a-zA-Z0-9_-]{32}$',
+            r'^VLRDCLAK5uy_[a-zA-Z0-9_-]{33}$',
+        ),
+    },
+    {
+        'name': 'SongListId',
+        'patterns': \
+        (
+            r'^(RDAMPL)?PL[a-zA-Z0-9_-]{32}$', # Chart or Artist Songs. RDAMPL means its a radio
+            r'^(RDAMPL)?RDCLAK5uy_[a-zA-Z0-9_-]{33}$', # Playlist. RDAMPL means its a radio
+            r'^(RDAMPL)?OLAK5uy_[a-zA-Z0-9_-]{33}$' # Album. RDAMPL means its a radio
+            r'^RDAMVM[a-zA-Z0-9_-]{11}$', # Song radio/shuffle
+            r'^RDAO[a-zA-Z0-9_-]{22}$', # Artist Shuffle
+            r'^RDEM[a-zA-Z0-9_-]{22}$', # Artist Radio
+        ),
+    },
+    {
         'name': 'AlbumId',
         'patterns': \
         (
             r'^OLAK5uy_[a-zA-Z0-9_-]{33}$',
             r'^MPREb_[a-zA-Z0-9_-]{11}$',
+        ),
+    },
+    {
+        'name': 'SongId',
+        'patterns': \
+        (
+            r'^[a-zA-Z0-9_-]{11}$',
         ),
     },
     {

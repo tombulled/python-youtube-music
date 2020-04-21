@@ -70,7 +70,10 @@ def enforce(parameters: bool = True, return_value: bool = True):
                 # parameter_type = type(parameter_value)
                 # parameter_type_name = parameter_type.__name__
 
+                # print(parameter_annotation, is_empty(parameter_annotation), parameter_value, parameter_annotation, types.isinstance(parameter_value, parameter_annotation))
+
                 if not is_empty(parameter_annotation) \
+                        and parameter_value != parameter_default \
                         and not types.isinstance(parameter_value, parameter_annotation):
                     raise TypeError \
                     (

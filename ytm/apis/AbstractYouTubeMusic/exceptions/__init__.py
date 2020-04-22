@@ -12,5 +12,6 @@ class BaseException(Exception):
 # class InvalidAlbumIdError(BaseException): pass
 # class InvalidArtistIdError(BaseException): pass
 # class InvalidBrowseIdError(BaseException): pass
-class InvalidIdError(BaseException): pass
+# class InvalidIdError(BaseException): pass
+# class InvalidTypeError(BaseException): pass
 class InvalidResponseError(BaseException): pass

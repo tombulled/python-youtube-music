@@ -13,10 +13,7 @@ class AbstractYouTubeMusic(object):
     def __init__(self: object):
         '''
         '''
-
-        # This should be _base or __base
-        # ... so not confused with a method when dir(...)
-        # ... Note: Has to be removed from all methods aswell
+        
         self._base = BaseYouTubeMusic()
 
         for method_name, method in methods.items():

@@ -1,15 +1,42 @@
 from .BaseType import BaseType
+from . import utils
+from .ChartPlaylistId import ChartPlaylistId
+from .ChartRadioId import ChartRadioId
+from .ChartShuffleId import ChartShuffleId
+from .ArtistSongsPlaylistId import ArtistSongsPlaylistId
+from .ArtistSongsRadioId import ArtistSongsRadioId
+from .ArtistSongsShuffleId import ArtistSongsShuffleId
+from .ArtistRadioId import ArtistRadioId
+from .ArtistShuffleId import ArtistShuffleId
+from .PlaylistPlaylistId import PlaylistPlaylistId
+from .PlaylistRadioId import PlaylistRadioId
+from .PlaylistShuffleId import PlaylistShuffleId
+from .AlbumPlaylistId import AlbumPlaylistId
+from .AlbumRadioId import AlbumRadioId
+from .AlbumShuffleId import AlbumShuffleId
+from .SongRadioId import SongRadioId
+from .SongShuffleId import SongShuffleId
 
 __type__ = __name__.split('.')[-1]
 __all__  = (__type__,)
 
 class SongListId(BaseType):
-    _patterns = \
+    _patterns = utils.patterns
     (
-        r'^(RDAMPL)?PL[a-zA-Z0-9_-]{32}$',         # ChartPlaylistId, ChartRadioPlaylistId, ArtistSongsId, ArtistSongsRadioPlaylistId
-        r'^(RDAMPL)?RDCLAK5uy_[a-zA-Z0-9_-]{33}$', # PlaylistListId, PlaylistRadioPlaylistBrowseId
-        r'^(RDAMPL)?OLAK5uy_[a-zA-Z0-9_-]{33}$'    # AlbumPlaylistId, AlbumRadioPlaylistBrowseId
-        r'^RDAMVM[a-zA-Z0-9_-]{11}$',              # SongRadioPlaylistBrowseId, SongShufflePlaylistBrowseId
-        r'^RDAO[a-zA-Z0-9_-]{22}$',                # ArtistShufflePlaylistBrowseId
-        r'^RDEM[a-zA-Z0-9_-]{22}$',                # ArtistRadioPlaylistBrowseId
+        ChartPlaylistId,
+        ChartRadioId,
+        ChartShuffleId,
+        ArtistSongsPlaylistId,
+        ArtistSongsRadioId,
+        ArtistSongsShuffleId,
+        ArtistRadioId,
+        ArtistShuffleId,
+        PlaylistPlaylistId,
+        PlaylistRadioId,
+        PlaylistShuffleId,
+        AlbumPlaylistId,
+        AlbumRadioId,
+        AlbumShuffleId,
+        SongRadioId,
+        SongShuffleId,
     )

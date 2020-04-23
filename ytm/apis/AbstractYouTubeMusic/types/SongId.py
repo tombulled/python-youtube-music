@@ -9,6 +9,13 @@ class SongId(BaseType):
     (
         utils.pattern \
         (
+            utils.optional('RDAMVM'),
             utils.entropy(11),
         ),
     )
+
+    @classmethod
+    def _clean(cls, value: str):
+        value = utils.left_strip(value, 'RDAMVM')
+
+        return value

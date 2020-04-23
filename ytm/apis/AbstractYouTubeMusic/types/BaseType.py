@@ -20,20 +20,20 @@ class BuiltinMeta(type):
 class BaseType(str, metaclass=BuiltinMeta):
     _patterns = ()
 
-    __module__ = builtins.__name__
-
-    def __init__(self, value: str):
-        value.__init__(self)
-
-        if not self._validate(value):
+    def __new__(cls, value):
+        if not cls._validate(value):
             raise TypeError \
             (
                 'Invalid {class_name}: {value}'.format \
                 (
-                    class_name = self.__class__.__name__,
-                    value      = super().__repr__(),
+                    class_name = cls.__name__,
+                    value      = value,
                 )
             )
+
+        value = cls._clean(value)
+
+        return str.__new__(cls, value)
 
     def __repr__(self):
         return '<{class_name}({value})>'.format \
@@ -64,3 +64,7 @@ class BaseType(str, metaclass=BuiltinMeta):
             return False
 
         return True
+
+    @classmethod
+    def _clean(cls, value: str):
+        return value

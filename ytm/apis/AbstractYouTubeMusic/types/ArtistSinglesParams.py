@@ -4,7 +4,7 @@ from . import utils
 __type__ = __name__.split('.')[-1]
 __all__  = (__type__,)
 
-class ArtistSinglesContinuation(BaseType):
+class ArtistSinglesParams(BaseType):
     _patterns = \
     (
         utils.pattern \

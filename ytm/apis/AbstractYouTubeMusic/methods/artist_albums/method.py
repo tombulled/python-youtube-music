@@ -1,13 +1,13 @@
 from . import parser
 from ... import decorators
-from ...types import ArtistId, ArtistAlbumsContinuation
+from ...types import ArtistId, ArtistAlbumsParams
 
 __function__ = __name__.split('.')[-1]
 __method__   = __name__.split('.')[-2]
 __all__      = (__function__,)
 
 @decorators.method(__method__, parser.parse)
-def method(self: object, artist_id: ArtistId, params: ArtistAlbumsContinuation) -> list:
+def method(self: object, artist_id: ArtistId, params: ArtistAlbumsParams) -> list:
     return self._base.browse \
     (
         browse_id = artist_id,

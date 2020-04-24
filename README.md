@@ -90,3 +90,29 @@ song_id: L-NbInXED-o
 TypeError: my_func() expected parameter 'song_id' to be of type 'SongId' not 'str'
 >>> 
 ```
+
+## Utilities
+Utility functions
+```python
+>>> from ytm import utils
+>>> 
+>>> # Create a YouTube Music URL
+>>> utils.url('watch', {'v': '0d2llFWvFSM', 'list': 'RDAOazj3phJrB390ewqF8AaC-w'})
+'https://music.youtube.com/watch?v=0d2llFWvFSM&list=RDAOazj3phJrB390ewqF8AaC-w'
+>>> 
+>>> # Create a YouTube URL
+>>> utils.url_yt('playlist', {'list': 'RDCLAK5uy_lZjWT2hQC7Gb_1_Las16IryBLhnCMgdIo'})
+'https://www.youtube.com/playlist?list=RDCLAK5uy_lZjWT2hQC7Gb_1_Las16IryBLhnCMgdIo'
+>>>
+>>> # Filter a dictionary
+>>> utils.filter({'name': 'Gotye', 'id': None}, lambda key, val: val is not None)
+{'name': 'Gotye'}
+>>> 
+>>> # Massively nested iterable
+>>> iterable = {'data': {'results': [{'value': 'Wozniak'}]}}
+>>>
+>>> # Get a specific value from an iterable
+>>> utils.get(iterable, 'data', 'results', 0, 'value')
+'Wozniak'
+>>> 
+```

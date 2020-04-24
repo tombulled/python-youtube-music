@@ -31,7 +31,7 @@ Initialise a YouTubeMusic instance
 ```
 
 ## Types
-Ensure type integrity
+Creating types
 ```python
 >>> from ytm import types
 >>>
@@ -50,12 +50,43 @@ True
 >>> playlist_id
 <PlaylistPlaylistId('RDCLAK5uy_mkLtojKLOUUGwnu3ZnN5AaODijlieB-aQ')>
 >>>
->>> # Create a type with an invalid value
->>> try:
-    playlist_id = types.PlaylistId('invalid')
-except Exception as error:
-    print('Error:', error)
+```
 
-Error: Invalid PlaylistId: 'invalid'
+Creating types with an invalid value
+
+```python
+>>> from ytm import types
+>>>
+>>> playlist_id = types.PlaylistId('invalid')
+TypeError: Invalid PlaylistId: 'invalid'
+>>> 
+```
+
+Enforcing types for a function
+```python
+>>> from ytm import types
+>>> from ytm import decorators
+>>> 
+>>> @decorators.typecheck
+def my_func(song_id: types.SongId):
+	print('song_id:', song_id)
+>>>	
+>>> my_func
+<function my_func at 0x0000028B4319BD30>
+>>> 
+>>> song_id_str = 'L-NbInXED-o'
+>>> song_id_type = types.SongId(song_id_str)
+>>> 
+>>> # Passing a valid string
+>>> my_func(song_id_str)
+song_id: L-NbInXED-o
+>>> 
+>>> # Passing a correct type
+>>> my_func(song_id_type)
+song_id: L-NbInXED-o
+>>> 
+>>> # Passing an invalid string
+>>> my_func('not a valid SongId')
+TypeError: my_func() expected parameter 'song_id' to be of type 'SongId' not 'str'
 >>> 
 ```

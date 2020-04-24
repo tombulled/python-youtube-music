@@ -22,7 +22,40 @@ cd python-youtube-music && python setup.py install
 ## Getting Started
 Initialise a YouTubeMusic instance
 ```python
-import ytm
+>>> import ytm
+>>>
+>>> api = ytm.YouTubeMusic()
+>>> api
+<YouTubeMusic()>
+>>>
+```
 
-api = ytm.YouTubeMusic()
+## Types
+Ensure type integrity
+```python
+>>> from ytm import types
+>>>
+>>> # Today's Biggest Hits
+>>> playlist_id = 'RDCLAK5uy_mkLtojKLOUUGwnu3ZnN5AaODijlieB-aQ'
+>>>
+>>> # Create type object
+>>> playlist_id = playlist_id = types.PlaylistId(playlist_id)
+>>>
+>>> # Check specific type
+>>> types.utils.isinstance(playlist_id, types.PlaylistPlaylistId)
+True
+>>>
+>>> # Convert type
+>>> playlist_id = types.PlaylistPlaylistId(playlist_id)
+>>> playlist_id
+<PlaylistPlaylistId('RDCLAK5uy_mkLtojKLOUUGwnu3ZnN5AaODijlieB-aQ')>
+>>>
+>>> # Create a type with an invalid value
+>>> try:
+    playlist_id = types.PlaylistId('invalid')
+except Exception as error:
+    print('Error:', error)
+
+Error: Invalid PlaylistId: 'invalid'
+>>> 
 ```

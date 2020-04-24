@@ -39,7 +39,7 @@ Ensure type integrity
 >>> playlist_id = 'RDCLAK5uy_mkLtojKLOUUGwnu3ZnN5AaODijlieB-aQ'
 >>>
 >>> # Create type object
->>> playlist_id = playlist_id = types.PlaylistId(playlist_id)
+>>> playlist_id = types.PlaylistId(playlist_id)
 >>>
 >>> # Check specific type
 >>> types.utils.isinstance(playlist_id, types.PlaylistPlaylistId)

@@ -10,7 +10,7 @@ Unofficial Python YouTube Music Web API Client
 Library | optional
 ------- | --------
 [requests](https://github.com/psf/requests) | 
-[youtube_dl](https://github.com/ytdl-org/youtube-dl) | True
+[youtube_dl](https://github.com/ytdl-org/youtube-dl) | true
 
 <!--
 ## Installation

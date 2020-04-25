@@ -2,9 +2,7 @@
 '''
 
 from ..BaseYouTubeMusic import BaseYouTubeMusic
-from .methods import methods
-
-__all__ = __name__.split('.')[-1:]
+from . import methods
 
 class AbstractYouTubeMusic(object):
     '''
@@ -13,10 +11,12 @@ class AbstractYouTubeMusic(object):
     def __init__(self: object):
         '''
         '''
-        
+
         self._base = BaseYouTubeMusic()
 
-        for method_name, method in methods.items():
+        for method_name in methods.__all__:
+            method = getattr(methods, method_name)
+            
             setattr(self.__class__, method_name, method)
 
     def __repr__(self: object) -> str:

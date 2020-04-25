@@ -1,6 +1,3 @@
-'''
-'''
+from ....utils import include as _include
 
-from ....utils import _import
-
-_import(locals())
+__all__ = tuple(_include(__spec__))

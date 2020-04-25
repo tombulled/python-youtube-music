@@ -1,16 +1,3 @@
-from .... import utils
+from ....utils import include as __include
 
-utils._import(locals())
-
-__all__ = tuple \
-(
-    key
-    for key, val in locals().items()
-    if callable(val)
-)
-
-methods = \
-{
-    key: globals()[key]
-    for key in __all__
-}
+__all__ = tuple(__include(__spec__))

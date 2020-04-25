@@ -5,11 +5,6 @@ import functools
 from .. import exceptions
 import requests.exceptions
 import urllib3.exceptions
-# import traceback
-# import sys
-
-__decorator__ = __name__.split('.')[-1]
-__all__       = (__decorator__,)
 
 def catch(func):
     '''
@@ -26,6 +21,7 @@ def catch(func):
         try:
             resp = func(*args, **kwargs)
         except requests.exceptions.ConnectionError as error:
+            # Use str(error) instead ??
             argument = error.args[0]
 
             import sys

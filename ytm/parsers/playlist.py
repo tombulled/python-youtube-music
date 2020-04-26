@@ -112,14 +112,14 @@ def playlist(data: dict):
 
         playlist_data = \
         {
-            'title':       playlist_title,
-            'type':        playlist_type,
-            'subtitle':    playlist_subtitle,
-            'year':        playlist_year,
-            'thubnail':    playlist_thumbnail,
-            'duration':    playlist_duration,
-            'id':          playlist_id,
-            'track_count': playlist_track_count,
+            'name':         playlist_title,
+            'type':         playlist_type,
+            'subtitle':     playlist_subtitle,
+            'year':         playlist_year,
+            'thubnail':     playlist_thumbnail,
+            'duration':     playlist_duration,
+            'id':           playlist_id,
+            'total_tracks': playlist_track_count,
         }
 
         data = utils.get \

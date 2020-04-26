@@ -48,6 +48,7 @@ def hotlist(data: dict):
             'runs',
             -1,
             'text',
+            func = lambda views: views.strip().split(' ')[0]
         )
         track_artist_id = utils.get \
         (
@@ -108,13 +109,18 @@ def hotlist(data: dict):
 
         track_data = \
         {
-            'title':            track_title,
-            'views':            track_views,
-            'artists':          track_artists,
-            'artist_id':        track_artist_id,
-            'thumbnail':        track_thumbnail,
-            'id':               track_id,
-            'music_video_type': track_music_video_type,
+            'id':        track_id,
+            'title':     track_title,
+            'views':     track_views,
+            'artist': \
+            {
+                'id':    track_artist_id,
+                'names': track_artists,
+            },
+            # 'artists':          track_artists,
+            # 'artist_id':        track_artist_id,
+            'thumbnail': track_thumbnail,
+            # 'music_video_type': track_music_video_type,
         }
 
         tracks.append(track_data)

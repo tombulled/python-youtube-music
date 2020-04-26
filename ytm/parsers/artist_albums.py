@@ -224,7 +224,7 @@ def artist_albums(data):
             'type':      item_type,
             'year':      item_year,
             'explicit':  item_explicit,
-            'params':    item_album_params,
+            # 'params':    item_album_params,
             'thumbnail': item_thumbnail,
             'shuffle': \
             {

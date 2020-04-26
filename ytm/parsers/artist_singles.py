@@ -201,7 +201,7 @@ def artist_singles(data):
             'id':        item_id,
             'year':      item_year,
             'explicit':  item_explicit,
-            'params':    item_params,
+            # 'params':    item_params,
             'thumbnail': item_thumbnail,
             'shuffle': \
             {

@@ -262,16 +262,16 @@ def artist(data: dict):
         song_data = \
         {
             'id':        song_video_id,
-            'title':     song_title,
+            'name':     song_title,
             'thumbnail': song_thumbnail,
             'artist': \
             {
-                'title': song_artist_title,
+                'name': song_artist_title,
                 'id':    song_artist_browse_id,
             },
             'album': \
             {
-                'title': song_album_title,
+                'name': song_album_title,
                 'id':    song_album_browse_id,
             },
             'radio': \
@@ -304,6 +304,12 @@ def artist(data: dict):
 
     for field in fields:
         shelves_data.setdefault(field, None)
+
+    # artist_params = \
+    # {
+    #     'abums': None,
+    #     'singles': None,
+    # }
 
     for shelf in shelves:
         shelf_header = utils.get \
@@ -481,7 +487,7 @@ def artist(data: dict):
                     'type':      shelf_item_type,
                     'year':      shelf_item_year,
                     'explicit':  shelf_item_explicit,
-                    'params':    shelf_item_params,
+                    # 'params':    shelf_item_params,
                     'thumbnail': shelf_item_thumbnail,
                     'shuffle': \
                     {
@@ -495,6 +501,8 @@ def artist(data: dict):
                     },
                 }
             elif shelf_identifier == 'singles':
+                # return item ###
+
                 shelf_item_browse_endpoint = utils.get \
                 (
                     item,
@@ -613,14 +621,19 @@ def artist(data: dict):
                 {
                     'thumbnail': shelf_item_thumbnail,
                     'name':      shelf_item_name,
-                    'album_id':  shelf_item_browse_id,
+                    'album': \
+                    {
+                        'id': shelf_item_browse_id,
+                        'playlist_id': shelf_item_playlist_id,
+                    },
+                    # 'album_id':  shelf_item_browse_id,
                     'year':      shelf_item_year,
                     'explicit':  shelf_item_explicit,
-                    'playlist': \
-                    {
-                        'params': shelf_item_playlist_params,
-                        'id':     shelf_item_playlist_id,
-                    },
+                    # 'playlist': \
+                    # {
+                    #     'params': shelf_item_playlist_params,
+                    #     'id':     shelf_item_playlist_id,
+                    # },
                     'shuffle': \
                     {
                         'params':      shelf_item_shuffle_params,
@@ -982,6 +995,9 @@ def artist(data: dict):
                 'params': shelf_params,
                 'items':  items,
             }
+            # shelf_data = items
+
+            # artist_params[shelf_identifier] = shelf_params
 
             # Update to correct artist id
             artist_id = shelf_browse_id
@@ -992,6 +1008,9 @@ def artist(data: dict):
                 'params': shelf_params,
                 'items':  items,
             }
+            # shelf_data = items
+
+            # artist_params[shelf_identifier] = shelf_params
 
             # Update to correct artist id
             artist_id = shelf_browse_id

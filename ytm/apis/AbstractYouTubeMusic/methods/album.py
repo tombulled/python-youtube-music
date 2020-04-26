@@ -1,33 +1,31 @@
-# from . import parser
 from .. import parsers
 from .. import utils
 from .. import decorators
 from .. import types
 from ..types import AlbumId
 
-# @decorators.method(__method__, parser.parse)
 @decorators.method(parsers.album)
-def album(self: object, id: AlbumId) -> dict:
+def album(self: object, album_id: AlbumId) -> dict:
     '''
     '''
 
-    if utils.isinstance(id, types.AlbumPlaylistId):
+    if utils.isinstance(album_id, types.AlbumPlaylistId):
         page = self._base.page_playlist \
         (
-            list = id,
+            list = album_id,
         )
 
-        browse_id = utils.get_nested \
+        browse_id = utils.get \
         (
             page,
             'INITIAL_ENDPOINT',
             'browseEndpoint',
             'browseId',
         )
-    elif utils.isinstance(id, types.AlbumBrowseId):
-        browse_id = id
+    elif utils.isinstance(album_id, types.AlbumBrowseId):
+        browse_id = album_id
     else:
-        raise Exception(f'Invalid album id: {repr(id)}')
+        raise Exception(f'Invalid album id: {repr(album_id)}')
 
     browse_id = types.AlbumBrowseId(browse_id)
 

@@ -122,6 +122,21 @@ def album(data: dict):
 
             album_menu[menu_identifier] = menu_item_data
 
+        # return album_menu ###
+        # return album
+        # return utils.get \
+        # (
+        #     album,
+        #     'subtitle')
+
+        album_subtitle_runs = utils.get \
+        (
+            album,
+            'subtitle',
+            'runs',
+            default = (),
+        )
+
         album_thumbnail = utils.get \
         (
             album,
@@ -141,30 +156,28 @@ def album(data: dict):
         )
         album_type = utils.get \
         (
-            album,
-            'subtitle',
-            'runs',
+            album_subtitle_runs,
             0,
             'text',
         )
-        album_artist_name = utils.get \
-        (
-            album,
-            'subtitle',
-            'runs',
-            2,
-            'text',
-        )
-        album_artist_id = utils.get \
-        (
-            album,
-            'subtitle',
-            'runs',
-            2,
-            'navigationEndpoint',
-            'browseEndpoint',
-            'browseId',
-        )
+        # album_artist_name = utils.get \
+        # (
+        #     album,
+        #     'subtitle',
+        #     'runs',
+        #     2,
+        #     'text',
+        # )
+        # album_artist_id = utils.get \
+        # (
+        #     album,
+        #     'subtitle',
+        #     'runs',
+        #     2,
+        #     'navigationEndpoint',
+        #     'browseEndpoint',
+        #     'browseId',
+        # )
         album_page_type = utils.get \
         (
             album,
@@ -204,24 +217,70 @@ def album(data: dict):
             'watchPlaylistEndpoint',
             'params',
         )
+        album_shuffle_id = utils.get \
+        (
+            album_menu,
+            'shufflePlay',
+            'endpoint',
+            'watchPlaylistEndpoint',
+            'playlistId',
+        )
+        album_shuffle_params = utils.get \
+        (
+            album_menu,
+            'shufflePlay',
+            'endpoint',
+            'watchPlaylistEndpoint',
+            'params',
+        )
+
+        album_artists = []
+
+        for album_artist in album_subtitle_runs[2::2]:
+            album_artist_name = utils.get \
+            (
+                album_artist,
+                'text',
+            )
+            album_artist_id = utils.get \
+            (
+                album_artist,
+                'navigationEndpoint',
+                'browseEndpoint',
+                'browseId',
+            )
+
+            album_artist_data = \
+            {
+                'name': album_artist_name,
+                'id':   album_artist_id,
+            }
+
+            album_artists.append(album_artist_data)
 
         album_data = \
         {
             'name':      album_name,
             'id':        album_id,
-            'params':    album_params,
+            # 'params':    album_params,
             'thumbnail': album_thumbnail,
             'type':      album_type,
+            'artists':   album_artists,
             'radio': \
             {
                 'id':     album_radio_id,
                 'params': album_radio_params,
             },
-            'artist': \
+            'shuffle': \
             {
-                'name': album_artist_name,
-                'id':   album_artist_id,
+                'id':     album_shuffle_id,
+                'params': album_shuffle_params,
             },
+            # 'artist': \
+            # {
+            #     'name': album_artist_name,
+            #     'id':   album_artist_id,
+            # },
         }
 
         other_versions.append(album_data)
@@ -236,6 +295,8 @@ def album(data: dict):
     tracks_data = []
 
     for track in tracks:
+        # return track ###
+
         track_index = utils.get \
         (
             track,
@@ -281,15 +342,16 @@ def album(data: dict):
         track_data = \
         {
             'index':     track_index,
-            'artists':   track_artists,
             'explicit':  track_explicit,
             'length':    track_length,
             'thumbnail': track_thumbnail,
             'title':     track_title,
-            'video_id':  track_id,
+            'id':        track_id,
         }
 
         tracks_data.append(track_data)
+
+    tracks_data = sorted(tracks_data, key=lambda track: track.pop('index'))
 
     artists_data = []
 
@@ -323,6 +385,8 @@ def album(data: dict):
 
         artists_data.append(artist_data)
 
+    # return mutations ###
+
     album_release = utils.get \
     (
         mutations,
@@ -346,6 +410,11 @@ def album(data: dict):
     (
         album_release,
         'radioAutomixPlaylistId',
+    )
+    album_shuffle_id = utils.get \
+    (
+        album_release,
+        'radioPlaylistMixPlaylistId', # These may be the wrong way around?
     )
     album_id = utils.get \
     (
@@ -403,26 +472,40 @@ def album(data: dict):
         'description',
     )
 
+    album_radio_data = None
+    album_shuffle_data = None
+
+    if album_radio_id:
+        album_radio_data = \
+        {
+            'playlist_id': album_radio_id,
+        }
+    if album_shuffle_id:
+        album_shuffle_data = \
+        {
+            'playlist_id': album_shuffle_id,
+        }
+
     album_data = \
     {
-        'name':               album_title,
-        'id':                 album_id,
-        'track_count':        album_track_count,
-        'radio_id':           album_radio_id,
-        'artist_name':        album_artist_name,
-        'explicit':           album_explicit,
-        'duration':           album_duration,
-        'primary_artist_ids': album_primary_artist_ids,
-        'release_date':       album_release_date,
-        'release_type':       album_release_type,
-        'thumbnail':          album_thumbnail,
-        'description':        album_description,
+        'name':          album_title,
+        'id':            album_id,
+        'total_tracks':  album_track_count,
+        'radio':         album_radio_data,
+        'shuffle':       album_shuffle_data,
+        'explicit':      album_explicit,
+        'duration':      album_duration,
+        'date':          album_release_date,
+        'type':          album_release_type,
+        'thumbnail':     album_thumbnail,
+        'description':   album_description,
     }
 
     scraped = \
     {
+        **album_data,
         'artists':  artists_data,
-        'album':    album_data,
+        # 'album':    album_data,
         'tracks':   tracks_data,
         'variants': other_versions,
     }

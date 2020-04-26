@@ -1,4 +1,15 @@
-from ...utils import include
-from ...decorators import *
+from ... import \
+(
+    utils as __utils,
+    decorators as __decorators,
+)
 
-__all__ = tuple(include(__spec__))
+__inherit = __utils.include(__decorators.__spec__)
+
+locals().update(__inherit)
+
+__all__ = \
+(
+    # *tuple(__inherit),
+    *tuple(__utils.include(__spec__)),
+)

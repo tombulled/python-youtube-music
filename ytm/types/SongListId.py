@@ -17,9 +17,6 @@ from .AlbumShuffleId import AlbumShuffleId
 from .SongRadioId import SongRadioId
 from .SongShuffleId import SongShuffleId
 
-__type__ = __name__.split('.')[-1]
-__all__  = (__type__,)
-
 class SongListId(base.BaseType):
     _patterns = utils.patterns \
     (

@@ -1,8 +1,7 @@
-import functools
-from typing import Callable, Any
+from typing import Callable
 
-def _set_attrs(attrs: dict):
-    def decorator(func):
+def _set_attrs(attrs: dict) -> Callable:
+    def decorator(func: Callable) -> Callable:
         for key, val in attrs.items():
             setattr(func, key, val)
 

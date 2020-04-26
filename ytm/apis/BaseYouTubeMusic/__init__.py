@@ -15,12 +15,8 @@ class BaseYouTubeMusic(object):
         '''
         '''
 
-        # self.__methods = []
-
         for method_name in methods.__all__:
             method = getattr(methods, method_name)
-
-            # print(method_name, method)
 
             setattr(self.__class__, method_name, method)
 
@@ -43,9 +39,3 @@ class BaseYouTubeMusic(object):
         (
             class_name = self.__class__.__name__,
         )
-
-    # def __dir__(self: object) -> list:
-    #     '''
-    #     '''
-    #
-    #     return self.__methods

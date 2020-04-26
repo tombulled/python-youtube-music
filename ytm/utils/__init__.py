@@ -1,3 +1,3 @@
-from .include import include
+from .include import include as __include
 
-__all__ = tuple(include(__spec__))
+__all__ = tuple(__include(__spec__))

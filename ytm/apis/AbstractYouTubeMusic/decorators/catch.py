@@ -3,7 +3,7 @@
 
 import functools
 from typing import Callable, Any
-from .. import exceptions
+from .... import exceptions
 
 def catch(func: Callable):
     @functools.wraps(func)

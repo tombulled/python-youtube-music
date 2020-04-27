@@ -87,12 +87,71 @@ def home(data: dict):
         for item in shelf_contents:
             item = utils.first(item)
 
+            item_menu_items = utils.get \
+            (
+                item,
+                'menu',
+                'menuRenderer',
+                'items',
+                default = (),
+            )
+
+            item_menu = {}
+
+            for menu_item in item_menu_items:
+                menu_item = utils.first(menu_item)
+
+                for key, val in menu_item.copy().items():
+                    if not key.startswith('default'):
+                        continue
+
+                    new_key = key.replace('default', '')
+                    new_key = new_key[0].lower() + new_key[1:]
+
+                    menu_item[new_key] = menu_item.pop(key)
+
+                menu_text = utils.get \
+                (
+                    menu_item,
+                    'text',
+                    'runs',
+                    0,
+                    'text',
+                )
+                menu_icon = utils.get \
+                (
+                    menu_item,
+                    'icon',
+                    'iconType',
+                )
+                menu_endpoint = utils.get \
+                (
+                    menu_item,
+                    'navigationEndpoint',
+                )
+
+                if not menu_endpoint:
+                    continue
+
+                menu_identifier = menu_text[0].lower() + menu_text.title()[1:].replace(' ', '') \
+                    if menu_text else None
+
+                menu_item_data = \
+                {
+                    'text':     menu_text,
+                    'icon':     menu_icon,
+                    'endpoint': menu_endpoint,
+                }
+
+                item_menu[menu_identifier] = menu_item_data
+
+            # return item_menu
+
             aspect_ratio = utils.get \
             (
                 item,
                 'aspectRatio',
             )
-
             item_thumbnail = utils.get \
             (
                 item,
@@ -109,6 +168,38 @@ def home(data: dict):
                 'runs',
                 0,
                 'text',
+            )
+            item_shuffle_playlist_id = utils.get \
+            (
+                item_menu,
+                'shufflePlay',
+                'endpoint',
+                'watchPlaylistEndpoint',
+                'playlistId',
+            )
+            item_shuffle_params = utils.get \
+            (
+                item_menu,
+                'shufflePlay',
+                'endpoint',
+                'watchPlaylistEndpoint',
+                'params',
+            )
+            item_radio_playlist_id = utils.get \
+            (
+                item_menu,
+                'startRadio',
+                'endpoint',
+                'watchPlaylistEndpoint',
+                'playlistId',
+            )
+            item_radio_params = utils.get \
+            (
+                item_menu,
+                'startRadio',
+                'endpoint',
+                'watchPlaylistEndpoint',
+                'params',
             )
 
             # Find a better way of distinguishing item types?
@@ -168,6 +259,16 @@ def home(data: dict):
                         'name': item_artist_name,
                         'id':   item_artist_id,
                     },
+                    'shuffle': \
+                    {
+                        'playlist_id': item_shuffle_playlist_id,
+                        'params':      item_shuffle_params,
+                    },
+                    'radio': \
+                    {
+                        'playlist_id': item_radio_playlist_id,
+                        'params':      item_radio_params,
+                    },
                 }
             elif aspect_ratio == 'MUSIC_TWO_ROW_ITEM_THUMBNAIL_ASPECT_RATIO_SQUARE':
                 item_subtitle = utils.get \
@@ -217,18 +318,54 @@ def home(data: dict):
                 if item_title == 'Your Mix':
                     continue # Pointless to process
 
-                item_data = \
-                {
-                    'id':        item_id,
-                    'name':      item_title,
-                    'type':      item_type,
-                    'thumbnail': item_thumbnail,
-                    'artist': \
+                if item_type == 'Playlist':
+                    item_data = \
                     {
-                        'name': item_artist_name,
-                        'id':   item_artist_id,
-                    },
-                }
+                        'id':        item_id,
+                        'name':      item_title,
+                        'type':      item_type,
+                        'thumbnail': item_thumbnail,
+                        # 'artist': \
+                        # {
+                        #     'name': item_artist_name,
+                        #     'id':   item_artist_id,
+                        # },
+                        'shuffle': \
+                        {
+                            'playlist_id': item_shuffle_playlist_id,
+                            'params':      item_shuffle_params,
+                        },
+                        'radio': \
+                        {
+                            'playlist_id': item_radio_playlist_id,
+                            'params':      item_radio_params,
+                        },
+                    }
+                elif item_type in ('Single', 'EP', 'Album'):
+                    item_data = \
+                    {
+                        'id':        item_id,
+                        'name':      item_title,
+                        'type':      item_type,
+                        'thumbnail': item_thumbnail,
+                        'artist': \
+                        {
+                            'name': item_artist_name,
+                            'id':   item_artist_id,
+                        },
+                        'shuffle': \
+                        {
+                            'playlist_id': item_shuffle_playlist_id,
+                            'params':      item_shuffle_params,
+                        },
+                        'radio': \
+                        {
+                            'playlist_id': item_radio_playlist_id,
+                            'params':      item_radio_params,
+                        },
+                    }
+                else:
+                    return # raise
             else:
                 return # raise
 

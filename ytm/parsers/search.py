@@ -115,6 +115,154 @@ def search(data: dict):
 
                 continue
 
+            # return item ###
+
+            item_menu_items = utils.get \
+            (
+                item,
+                'menu',
+                'menuRenderer',
+                'items',
+                default = (),
+            )
+
+            item_menu = {}
+
+            for menu_item in item_menu_items:
+                menu_item = utils.first(menu_item)
+
+                for key, val in menu_item.copy().items():
+                    if not key.startswith('default'):
+                        continue
+
+                    new_key = key.replace('default', '')
+                    new_key = new_key[0].lower() + new_key[1:]
+
+                    menu_item[new_key] = menu_item.pop(key)
+
+                menu_text = utils.get \
+                (
+                    menu_item,
+                    'text',
+                    'runs',
+                    0,
+                    'text',
+                )
+                menu_icon = utils.get \
+                (
+                    menu_item,
+                    'icon',
+                    'iconType',
+                )
+                menu_endpoint = utils.get \
+                (
+                    menu_item,
+                    'navigationEndpoint',
+                )
+
+                if not menu_endpoint:
+                    continue
+
+                menu_identifier = menu_text[0].lower() + menu_text.title()[1:].replace(' ', '') \
+                    if menu_text else None
+
+                menu_item_data = \
+                {
+                    'text':     menu_text,
+                    'icon':     menu_icon,
+                    'endpoint': menu_endpoint,
+                }
+
+                item_menu[menu_identifier] = menu_item_data
+
+            item_radio_endpoint = utils.get \
+            (
+                item_menu,
+                'startRadio',
+                'endpoint',
+            )
+            item_artist_endpoint = utils.get \
+            (
+                item_menu,
+                'startRadio',
+                'endpoint',
+                'browseEndpoint',
+            )
+            item_album_endpoint = utils.get \
+            (
+                item_menu,
+                'startRadio',
+                'endpoint',
+                'browseEndpoint',
+            )
+            item_shuffle_endpoint = utils.get \
+            (
+                item_menu,
+                'shufflePlay',
+                'endpoint',
+            )
+
+            item_radio_playlist_id = utils.get \
+            (
+                item_radio_endpoint,
+                'watchEndpoint',
+                'playlistId',
+            )
+            item_radio_params = utils.get \
+            (
+                item_radio_endpoint,
+                'watchEndpoint',
+                'params',
+            )
+            item_shuffle_playlist_id = utils.get \
+            (
+                item_shuffle_endpoint,
+                'watchEndpoint',
+                'playlistId',
+            )
+            item_shuffle_params = utils.get \
+            (
+                item_shuffle_endpoint,
+                'watchEndpoint',
+                'params',
+            )
+            item_playlist_radio_playlist_id = utils.get \
+            (
+                item_radio_endpoint,
+                'watchPlaylistEndpoint',
+                'playlistId',
+            )
+            item_playlist_radio_params = utils.get \
+            (
+                item_radio_endpoint,
+                'watchPlaylistEndpoint',
+                'params',
+            )
+            item_playlist_shuffle_playlist_id = utils.get \
+            (
+                item_shuffle_endpoint,
+                'watchPlaylistEndpoint',
+                'playlistId',
+            )
+            item_playlist_shuffle_params = utils.get \
+            (
+                item_shuffle_endpoint,
+                'watchPlaylistEndpoint',
+                'params',
+            )
+            item_artist_id = utils.get \
+            (
+                item_artist_endpoint,
+                'browseId',
+            )
+            item_album_id = utils.get \
+            (
+                item_album_endpoint,
+                'browseId',
+            )
+
+            # return item_menu ###
+
             if shelf_key == 'artists':
                 item_tracking_params = utils.get \
                 (
@@ -194,54 +342,78 @@ def search(data: dict):
                     'thumbnails',
                     -1,
                 )
-                item_radio_playlist_id = utils.get \
-                (
-                    item,
-                    'menu',
-                    'menuRenderer',
-                    'items',
-                    0,
-                    'menuNavigationItemRenderer',
-                    'navigationEndpoint',
-                    'watchPlaylistEndpoint',
-                    'playlistId',
-                )
-                item_radio_params = utils.get \
-                (
-                    item,
-                    'menu',
-                    'menuRenderer',
-                    'items',
-                    0,
-                    'menuNavigationItemRenderer',
-                    'navigationEndpoint',
-                    'watchPlaylistEndpoint',
-                    'params',
-                )
-                item_shuffle_playlist_id = utils.get \
-                (
-                    item,
-                    'menu',
-                    'menuRenderer',
-                    'items',
-                    1,
-                    'menuNavigationItemRenderer',
-                    'navigationEndpoint',
-                    'watchPlaylistEndpoint',
-                    'playlistId',
-                )
-                item_shuffle_params = utils.get \
-                (
-                    item,
-                    'menu',
-                    'menuRenderer',
-                    'items',
-                    1,
-                    'menuNavigationItemRenderer',
-                    'navigationEndpoint',
-                    'watchPlaylistEndpoint',
-                    'params',
-                )
+                # item_radio_playlist_id = utils.get \
+                # (
+                #     item,
+                #     'menu',
+                #     'menuRenderer',
+                #     'items',
+                #     0,
+                #     'menuNavigationItemRenderer',
+                #     'navigationEndpoint',
+                #     'watchPlaylistEndpoint',
+                #     'playlistId',
+                # )
+                # item_radio_params = utils.get \
+                # (
+                #     item,
+                #     'menu',
+                #     'menuRenderer',
+                #     'items',
+                #     0,
+                #     'menuNavigationItemRenderer',
+                #     'navigationEndpoint',
+                #     'watchPlaylistEndpoint',
+                #     'params',
+                # )
+                # item_shuffle_playlist_id = utils.get \
+                # (
+                #     item,
+                #     'menu',
+                #     'menuRenderer',
+                #     'items',
+                #     1,
+                #     'menuNavigationItemRenderer',
+                #     'navigationEndpoint',
+                #     'watchPlaylistEndpoint',
+                #     'playlistId',
+                # )
+                # item_shuffle_params = utils.get \
+                # (
+                #     item,
+                #     'menu',
+                #     'menuRenderer',
+                #     'items',
+                #     1,
+                #     'menuNavigationItemRenderer',
+                #     'navigationEndpoint',
+                #     'watchPlaylistEndpoint',
+                #     'params',
+                # )
+                # item_radio_playlist_id = utils.get \
+                # (
+                #     item_radio_endpoint,
+                #     'watchPlaylistEndpoint',
+                #     'playlistId',
+                # )
+                # item_radio_params = utils.get \
+                # (
+                #     item_radio_endpoint,
+                #     'watchPlaylistEndpoint',
+                #     'params',
+                # )
+                # item_shuffle_playlist_id = utils.get \
+                # (
+                #     item_shuffle_endpoint,
+                #     'watchPlaylistEndpoint',
+                #     'playlistId',
+                # )
+                # item_shuffle_params = utils.get \
+                # (
+                #     item_shuffle_endpoint,
+                #     'watchPlaylistEndpoint',
+                #     'params',
+                # )
 
                 item_data = \
                 {
@@ -251,13 +423,13 @@ def search(data: dict):
                     'thumbnail':   item_thumbnail,
                     'radio': \
                     {
-                        'playlist_id': item_radio_playlist_id,
-                        'params': item_radio_params,
+                        'playlist_id': item_playlist_radio_playlist_id,
+                        'params':      item_playlist_radio_params,
                     },
                     'shuffle': \
                     {
-                        'playlist_id': item_shuffle_playlist_id,
-                        'params': item_shuffle_params,
+                        'playlist_id': item_playlist_shuffle_playlist_id,
+                        'params':      item_playlist_shuffle_params,
                     },
                 }
             elif shelf_key == 'songs':
@@ -354,30 +526,30 @@ def search(data: dict):
                     'browseEndpoint',
                     'browseId',
                 )
-                item_radio_playlist_id = utils.get \
-                (
-                    item,
-                    'menu',
-                    'menuRenderer',
-                    'items',
-                    5,
-                    'menuNavigationItemRenderer',
-                    'navigationEndpoint',
-                    'watchEndpoint',
-                    'playlistId',
-                )
-                item_radio_params = utils.get \
-                (
-                    item,
-                    'menu',
-                    'menuRenderer',
-                    'items',
-                    5,
-                    'menuNavigationItemRenderer',
-                    'navigationEndpoint',
-                    'watchEndpoint',
-                    'params',
-                )
+                # item_radio_playlist_id = utils.get \
+                # (
+                #     item,
+                #     'menu',
+                #     'menuRenderer',
+                #     'items',
+                #     5,
+                #     'menuNavigationItemRenderer',
+                #     'navigationEndpoint',
+                #     'watchEndpoint',
+                #     'playlistId',
+                # )
+                # item_radio_params = utils.get \
+                # (
+                #     item,
+                #     'menu',
+                #     'menuRenderer',
+                #     'items',
+                #     5,
+                #     'menuNavigationItemRenderer',
+                #     'navigationEndpoint',
+                #     'watchEndpoint',
+                #     'params',
+                # )
 
                 raw_item_artists = utils.get \
                 (
@@ -515,54 +687,54 @@ def search(data: dict):
                     'accessibilityData',
                     'label',
                 ) == 'Explicit' # is not None
-                item_shuffle_playlist_id = utils.get \
-                (
-                    item,
-                    'menu',
-                    'menuRenderer',
-                    'items',
-                    0,
-                    'menuNavigationItemRenderer',
-                    'navigationEndpoint',
-                    'watchPlaylistEndpoint',
-                    'playlistId',
-                )
-                item_shuffle_params = utils.get \
-                (
-                    item,
-                    'menu',
-                    'menuRenderer',
-                    'items',
-                    0,
-                    'menuNavigationItemRenderer',
-                    'navigationEndpoint',
-                    'watchPlaylistEndpoint',
-                    'params',
-                )
-                item_radio_playlist_id = utils.get \
-                (
-                    item,
-                    'menu',
-                    'menuRenderer',
-                    'items',
-                    1,
-                    'menuNavigationItemRenderer',
-                    'navigationEndpoint',
-                    'watchPlaylistEndpoint',
-                    'playlistId',
-                )
-                item_radio_params = utils.get \
-                (
-                    item,
-                    'menu',
-                    'menuRenderer',
-                    'items',
-                    1,
-                    'menuNavigationItemRenderer',
-                    'navigationEndpoint',
-                    'watchPlaylistEndpoint',
-                    'params',
-                )
+                # item_shuffle_playlist_id = utils.get \
+                # (
+                #     item,
+                #     'menu',
+                #     'menuRenderer',
+                #     'items',
+                #     0,
+                #     'menuNavigationItemRenderer',
+                #     'navigationEndpoint',
+                #     'watchPlaylistEndpoint',
+                #     'playlistId',
+                # )
+                # item_shuffle_params = utils.get \
+                # (
+                #     item,
+                #     'menu',
+                #     'menuRenderer',
+                #     'items',
+                #     0,
+                #     'menuNavigationItemRenderer',
+                #     'navigationEndpoint',
+                #     'watchPlaylistEndpoint',
+                #     'params',
+                # )
+                # item_radio_playlist_id = utils.get \
+                # (
+                #     item,
+                #     'menu',
+                #     'menuRenderer',
+                #     'items',
+                #     1,
+                #     'menuNavigationItemRenderer',
+                #     'navigationEndpoint',
+                #     'watchPlaylistEndpoint',
+                #     'playlistId',
+                # )
+                # item_radio_params = utils.get \
+                # (
+                #     item,
+                #     'menu',
+                #     'menuRenderer',
+                #     'items',
+                #     1,
+                #     'menuNavigationItemRenderer',
+                #     'navigationEndpoint',
+                #     'watchPlaylistEndpoint',
+                #     'params',
+                # )
                 item_id = utils.get \
                 (
                     item,
@@ -591,13 +763,13 @@ def search(data: dict):
                     'thumbnail': item_thumbnail,
                     'shuffle': \
                     {
-                        'playlist_id': item_shuffle_playlist_id,
-                        'params':      item_shuffle_params,
+                        'playlist_id': item_playlist_shuffle_playlist_id,
+                        'params':      item_playlist_shuffle_params,
                     },
                     'radio': \
                     {
-                        'playlist_id': item_radio_playlist_id,
-                        'params':      item_radio_params,
+                        'playlist_id': item_playlist_radio_playlist_id,
+                        'params':      item_playlist_radio_params,
                     },
                 }
             elif shelf_key == 'videos':
@@ -672,30 +844,30 @@ def search(data: dict):
                     'thumbnails',
                     -1,
                 )
-                item_radio_playlist_id = utils.get \
-                (
-                    item,
-                    'menu',
-                    'menuRenderer',
-                    'items',
-                    5,
-                    'menuNavigationItemRenderer',
-                    'navigationEndpoint',
-                    'watchEndpoint',
-                    'playlistId',
-                )
-                item_radio_params = utils.get \
-                (
-                    item,
-                    'menu',
-                    'menuRenderer',
-                    'items',
-                    5,
-                    'menuNavigationItemRenderer',
-                    'navigationEndpoint',
-                    'watchEndpoint',
-                    'params',
-                )
+                # item_radio_playlist_id = utils.get \
+                # (
+                #     item,
+                #     'menu',
+                #     'menuRenderer',
+                #     'items',
+                #     5,
+                #     'menuNavigationItemRenderer',
+                #     'navigationEndpoint',
+                #     'watchEndpoint',
+                #     'playlistId',
+                # )
+                # item_radio_params = utils.get \
+                # (
+                #     item,
+                #     'menu',
+                #     'menuRenderer',
+                #     'items',
+                #     5,
+                #     'menuNavigationItemRenderer',
+                #     'navigationEndpoint',
+                #     'watchEndpoint',
+                #     'params',
+                # )
 
                 raw_item_artists = utils.get \
                 (
@@ -806,54 +978,54 @@ def search(data: dict):
                     'thumbnails',
                     -1,
                 )
-                item_shuffle_playlist_id = utils.get \
-                (
-                    item,
-                    'menu',
-                    'menuRenderer',
-                    'items',
-                    0,
-                    'menuNavigationItemRenderer',
-                    'navigationEndpoint',
-                    'watchPlaylistEndpoint',
-                    'playlistId',
-                )
-                item_shuffle_params = utils.get \
-                (
-                    item,
-                    'menu',
-                    'menuRenderer',
-                    'items',
-                    0,
-                    'menuNavigationItemRenderer',
-                    'navigationEndpoint',
-                    'watchPlaylistEndpoint',
-                    'params',
-                )
-                item_radio_playlist_id = utils.get \
-                (
-                    item,
-                    'menu',
-                    'menuRenderer',
-                    'items',
-                    1,
-                    'menuNavigationItemRenderer',
-                    'navigationEndpoint',
-                    'watchPlaylistEndpoint',
-                    'playlistId',
-                )
-                item_radio_params = utils.get \
-                (
-                    item,
-                    'menu',
-                    'menuRenderer',
-                    'items',
-                    1,
-                    'menuNavigationItemRenderer',
-                    'navigationEndpoint',
-                    'watchPlaylistEndpoint',
-                    'params',
-                )
+                # item_shuffle_playlist_id = utils.get \
+                # (
+                #     item,
+                #     'menu',
+                #     'menuRenderer',
+                #     'items',
+                #     0,
+                #     'menuNavigationItemRenderer',
+                #     'navigationEndpoint',
+                #     'watchPlaylistEndpoint',
+                #     'playlistId',
+                # )
+                # item_shuffle_params = utils.get \
+                # (
+                #     item,
+                #     'menu',
+                #     'menuRenderer',
+                #     'items',
+                #     0,
+                #     'menuNavigationItemRenderer',
+                #     'navigationEndpoint',
+                #     'watchPlaylistEndpoint',
+                #     'params',
+                # )
+                # item_radio_playlist_id = utils.get \
+                # (
+                #     item,
+                #     'menu',
+                #     'menuRenderer',
+                #     'items',
+                #     1,
+                #     'menuNavigationItemRenderer',
+                #     'navigationEndpoint',
+                #     'watchPlaylistEndpoint',
+                #     'playlistId',
+                # )
+                # item_radio_params = utils.get \
+                # (
+                #     item,
+                #     'menu',
+                #     'menuRenderer',
+                #     'items',
+                #     1,
+                #     'menuNavigationItemRenderer',
+                #     'navigationEndpoint',
+                #     'watchPlaylistEndpoint',
+                #     'params',
+                # )
 
                 item_data = \
                 {
@@ -864,13 +1036,13 @@ def search(data: dict):
                     'thumbnail':    item_thumbnail,
                     'shuffle': \
                     {
-                        'playlist_id': item_shuffle_playlist_id,
-                        'params':      item_shuffle_params,
+                        'playlist_id': item_playlist_shuffle_playlist_id,
+                        'params':      item_playlist_shuffle_params,
                     },
                     'radio': \
                     {
-                        'playlist_id': item_radio_playlist_id,
-                        'params':      item_radio_params,
+                        'playlist_id': item_playlist_radio_playlist_id,
+                        'params':      item_playlist_radio_params,
                     },
                 }
             else:

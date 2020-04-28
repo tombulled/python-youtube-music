@@ -24,8 +24,8 @@ def catch(func):
             # Use str(error) instead ??
             argument = error.args[0]
 
-            import sys
-            sys._x = argument
+            # import sys
+            # sys._x = argument
 
             if isinstance(argument, str):
                 exception_message = argument
@@ -45,6 +45,11 @@ def catch(func):
                 url = f'{protocol}://{host}:{port}{endpoint}'
 
                 exception_message = f'{error_name} - {reason_message} ({repr(url)})'
+            elif isinstance(argument, urllib3.exceptions.ProtocolError):
+                error_name = argument.__class__.__name__
+                error_message = argument.args[0]
+
+                exception_message = f'{error_name} - {error_message}'
             else:
                 exception_message = str(error)
 

@@ -1,5 +1,6 @@
 from .. import utils
 from . import decorators
+from . import cleansers
 
 @decorators.enforce_parameters
 @decorators.catch
@@ -36,10 +37,72 @@ def watch(data: dict):
 
     playlist_tracks = []
 
+    # return data ###
+
     for track in tracks:
         track = utils.first(track)
 
         assert track
+
+        track_menu_items = utils.get \
+        (
+            track,
+            'menu',
+            'menuRenderer',
+            'items',
+            default = (),
+        )
+
+        track_menu = {}
+
+        for menu_item in track_menu_items:
+            menu_item = utils.first(menu_item)
+
+            for key, val in menu_item.copy().items():
+                if not key.startswith('default'):
+                    continue
+
+                new_key = key.replace('default', '')
+                new_key = new_key[0].lower() + new_key[1:]
+
+                menu_item[new_key] = menu_item.pop(key)
+
+            menu_text = utils.get \
+            (
+                menu_item,
+                'text',
+                'runs',
+                0,
+                'text',
+            )
+            menu_icon = utils.get \
+            (
+                menu_item,
+                'icon',
+                'iconType',
+            )
+            menu_endpoint = utils.get \
+            (
+                menu_item,
+                'navigationEndpoint',
+            )
+
+            if not menu_endpoint:
+                continue
+
+            menu_identifier = menu_text[0].lower() + menu_text.title()[1:].replace(' ', '') \
+                if menu_text else None
+
+            menu_item_data = \
+            {
+                'text':     menu_text,
+                'icon':     menu_icon,
+                'endpoint': menu_endpoint,
+            }
+
+            track_menu[menu_identifier] = menu_item_data
+
+        # return track_menu ###
 
         track_watch_endpoint = utils.get \
         (
@@ -49,35 +112,23 @@ def watch(data: dict):
         )
         track_radio_watch_endpoint = utils.get \
         (
-            track,
-            'menu',
-            'menuRenderer',
-            'items',
-            6,
-            'menuNavigationItemRenderer',
-            'navigationEndpoint',
+            track_menu,
+            'startRadio',
+            'endpoint',
             'watchEndpoint',
         )
         track_artist_browse_endpoint = utils.get \
         (
-            track,
-            'menu',
-            'menuRenderer',
-            'items',
-            7,
-            'menuNavigationItemRenderer',
-            'navigationEndpoint',
+            track_menu,
+            'goToArtist',
+            'endpoint',
             'browseEndpoint',
         )
         track_album_browse_endpoint = utils.get \
         (
-            track,
-            'menu',
-            'menuRenderer',
-            'items',
-            8,
-            'menuNavigationItemRenderer',
-            'navigationEndpoint',
+            track_menu,
+            'goToAlbum',
+            'endpoint',
             'browseEndpoint',
         )
 
@@ -128,6 +179,7 @@ def watch(data: dict):
             'runs',
             0,
             'text',
+            func = cleansers.iso_time,
         )
         track_artist_name = utils.get \
         (
@@ -165,14 +217,18 @@ def watch(data: dict):
             'browseId',
         )
 
+        # return track ###
+
         track_data = \
         {
             'name':      track_name,
             'duration':  track_duration,
-            'params':    track_params, # Same for all
             'id':        track_id,
-            'album_id':  track_album_id,
             'thumbnail': track_thumbnail,
+            'album': \
+            {
+                'id': track_album_id,
+            },
             'radio': \
             {
                 'playlist_id': track_radio_playlist_id,
@@ -258,6 +314,37 @@ def watch(data: dict):
         0,
         'likeButtonRenderer',
     )
+    current_artist_runs = utils.get \
+    (
+        current_metadata_renderer,
+        'byline',
+        'runs',
+        default = (),
+    )[:-4:2]
+
+    current_artists = []
+
+    for current_artist_run in current_artist_runs:
+        current_artist_name = utils.get \
+        (
+            current_artist_run,
+            'text',
+        )
+        current_artist_id = utils.get \
+        (
+            current_artist_run,
+            'navigationEndpoint',
+            'browseEndpoint',
+            'browseId',
+        )
+
+        current_artist_data = \
+        {
+            'name': current_artist_name,
+            'id':   current_artist_id,
+        }
+
+        current_artists.append(current_artist_data)
 
     current_index = utils.get \
     (
@@ -269,20 +356,30 @@ def watch(data: dict):
         current_watch_endpoint,
         'videoId',
     )
-    current_artist_name = utils.get \
-    (
-        current_metadata_renderer,
-        'byline',
-        'runs',
-        0,
-        'text',
-    )
+    # current_artist_name = utils.get \
+    # (
+    #     current_metadata_renderer,
+    #     'byline',
+    #     'runs',
+    #     0,
+    #     'text',
+    # )
+    # current_artist_id = utils.get \
+    # (
+    #     current_metadata_renderer,
+    #     'byline',
+    #     'runs',
+    #     0,
+    #     'navigationEndpoint',
+    #     'browseEndpoint',
+    #     'browseId',
+    # )
     current_year = utils.get \
     (
         current_metadata_renderer,
         'byline',
         'runs',
-        4,
+        -1,
         'text',
         func = int,
     )
@@ -293,6 +390,16 @@ def watch(data: dict):
         'runs',
         0,
         'text',
+    )
+    current_album_id = utils.get \
+    (
+        current_metadata_renderer,
+        'byline',
+        'runs',
+        -3,
+        'navigationEndpoint',
+        'browseEndpoint',
+        'browseId',
     )
     current_song_name = utils.get \
     (
@@ -322,27 +429,39 @@ def watch(data: dict):
         'dislikeCount',
     )
 
+    # return {'a':utils.get \
+    # (
+    #     current_metadata_renderer,
+    #     'byline',
+    #     'runs',)}
+
     # Make this None if its a continuation
     current_data = \
     {
-        'index':       current_index,
-        'artist_name': current_artist_name,
-        'album_name':  current_album_name,
-        'year':        current_year,
-        'song': \
-        {
-            'id':   current_song_id,
-            'name': current_song_name,
-        },
+        'id':       current_song_id,
+        'name':     current_song_name,
+        'index':    current_index,
+        'year':     current_year,
         'views':    current_views,
         'likes':    current_likes,
         'dislikes': current_dislikes,
+        'artists':  current_artists,
+        # 'artist': \
+        # {
+        #     'name': current_artist_name,
+        #     'id':   current_artist_id,
+        # },
+        'album': \
+        {
+            'name': current_album_name,
+            'id':   current_album_id,
+        },
     }
 
     scraped = \
     {
-        'playlist': playlist_data,
-        'current':  current_data,
+        'playlist':     playlist_data,
+        'current_song': current_data,
     }
 
     return scraped

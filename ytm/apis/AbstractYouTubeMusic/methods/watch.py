@@ -16,9 +16,6 @@ def watch \
     '''
     '''
 
-    print('watch:', self, song_id, playlist_id, params, continuation)
-
-
     return self._base.next \
     (
         video_id     = song_id,

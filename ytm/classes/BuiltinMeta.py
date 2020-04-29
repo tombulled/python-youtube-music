@@ -1,5 +1,14 @@
+'''
+'''
+
 class BuiltinMeta(type):
-    def __new__(cls, name, bases, attrs):
+    '''
+    '''
+
+    def __new__(cls: type, name: str, bases: tuple, attrs: dict) -> object:
+        '''
+        '''
+
         return super().__new__ \
         (
             cls,

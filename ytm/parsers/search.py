@@ -1,5 +1,6 @@
 from .. import utils
 from . import decorators
+from . import cleansers
 
 @decorators.enforce_parameters
 @decorators.catch
@@ -184,14 +185,14 @@ def search(data: dict):
             item_artist_endpoint = utils.get \
             (
                 item_menu,
-                'startRadio',
+                'goToArtist',
                 'endpoint',
                 'browseEndpoint',
             )
             item_album_endpoint = utils.get \
             (
                 item_menu,
-                'startRadio',
+                'goToAlbum', # Check this
                 'endpoint',
                 'browseEndpoint',
             )
@@ -262,6 +263,7 @@ def search(data: dict):
             )
 
             # return item_menu ###
+            # print(item_menu.keys()) ###
 
             if shelf_key == 'artists':
                 item_tracking_params = utils.get \
@@ -492,6 +494,7 @@ def search(data: dict):
                     'runs',
                     0,
                     'text',
+                    func = cleansers.iso_time,
                 )
                 item_thumbnail = utils.get \
                 (
@@ -620,6 +623,13 @@ def search(data: dict):
                     'browseEndpointContextMusicConfig',
                     'pageType',
                 )
+                # item_album_id = utils.get \
+                # (
+                #     item,
+                #     'navigationEndpoint',
+                #     'browseEndpoint',
+                #     'browseId',
+                # )
                 item_share_entity = utils.get \
                 (
                     item,
@@ -654,7 +664,7 @@ def search(data: dict):
                     0,
                     'text',
                 )
-                item_artist = utils.get \
+                item_artist_name = utils.get \
                 (
                     item,
                     'flexColumns',
@@ -752,15 +762,26 @@ def search(data: dict):
                     -1,
                 )
 
+                # print(item_album_id)
+                # return item ###
+                # print(item_artist_endpoint)
+                # print(item_artist_id)
+                # print()
+                # return item_menu
+
                 item_data = \
                 {
                     'id':        item_id,
                     'name':      item_name,
                     'type':      item_type,
-                    'artist':    item_artist,
                     'year':      item_year,
                     'explicit':  item_explicit,
                     'thumbnail': item_thumbnail,
+                    'artist': \
+                    {
+                        'id':   item_artist_id,
+                        'name': item_artist_name,
+                    },
                     'shuffle': \
                     {
                         'playlist_id': item_playlist_shuffle_playlist_id,
@@ -834,6 +855,7 @@ def search(data: dict):
                     'runs',
                     0,
                     'text',
+                    func = cleansers.iso_time,
                 )
                 item_thumbnail = utils.get \
                 (
@@ -869,7 +891,7 @@ def search(data: dict):
                 #     'params',
                 # )
 
-                raw_item_artists = utils.get \
+                item_artist_name = utils.get \
                 (
                     item,
                     'flexColumns',
@@ -877,19 +899,24 @@ def search(data: dict):
                     'musicResponsiveListItemFlexColumnRenderer',
                     'text',
                     'runs',
-                    default = (),
+                    0,
+                    'text',
                 )
 
-                item_artists = []
+                # print(raw_item_artists)
+                #
+                # item_artists = []
+                #
+                # for item_artist in raw_item_artists:
+                #     item_artist_name = utils.get \
+                #     (
+                #         item_artist,
+                #         'text',
+                #     )
+                #
+                #     item_artists.append(item_artist_name)
 
-                for item_artist in raw_item_artists:
-                    item_artist_name = utils.get \
-                    (
-                        item_artist,
-                        'text',
-                    )
-
-                    item_artists.append(item_artist_name)
+                # print(item_artist_name, item_artist_id) ###
 
                 item_data = \
                 {
@@ -898,7 +925,12 @@ def search(data: dict):
                     'views':     item_views,
                     'duration':  item_duration,
                     'thumbnail': item_thumbnail,
-                    'artists':   item_artists,
+                    'artist': \
+                    {
+                        'id': item_artist_id,
+                        'name': item_artist_name,
+                    },
+                    # 'artists':   item_artists,
                     'radio': \
                     {
                         'playlist_id': item_radio_playlist_id,
@@ -945,7 +977,7 @@ def search(data: dict):
                     0,
                     'text',
                 )
-                item_artist = utils.get \
+                item_artist_name = utils.get \
                 (
                     item,
                     'flexColumns',
@@ -1031,7 +1063,11 @@ def search(data: dict):
                 {
                     'id':           item_id,
                     'name':         item_name,
-                    'artist':       item_artist,
+                    # 'artist':       item_artist,
+                    'artist': \
+                    {
+                        'name': item_artist_name,
+                    },
                     'total_tracks': item_total_tracks,
                     'thumbnail':    item_thumbnail,
                     'shuffle': \

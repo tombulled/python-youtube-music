@@ -1,15 +1,12 @@
 '''
 '''
 
-from typing import Callable
-
-__util__ = __name__.split('.')[-1]
-__all__  = (__util__,)
+from typing import Callable, Iterable
 
 def filter \
         (
-            iterable,
-            func: Callable = None,
+            iterable: Iterable,
+            func:     Callable = None,
         ) -> dict:
     '''
     '''

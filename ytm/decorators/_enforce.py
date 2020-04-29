@@ -1,23 +1,32 @@
+'''
+'''
+
 import functools
 from typing import Callable, Any
 import inspect
 from ..utils import isinstance
 
-__decorator__ = __name__.split('.')[-1]
-__all__       = (__decorator__,)
+def _enforce(parameters: bool = True, return_value: bool = True) -> Callable:
+    '''
+    '''
 
-def _enforce(parameters: bool = True, return_value: bool = True):
     enforce_parameters = parameters
     enforce_return = return_value
 
-    def decorator(func: Callable):
+    def decorator(func: Callable) -> Callable:
+        '''
+        '''
+
         signature = inspect.signature(func)
         argument_keys = list(signature.parameters)
 
         is_empty = lambda object: getattr(object, '__name__', None) == inspect._empty.__name__
 
         @functools.wraps(func)
-        def wrapper(*args: Any, **kwargs: Any):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
+            '''
+            '''
+
             arguments = {**dict(zip(argument_keys, args)), **kwargs}
 
             parameters = signature.parameters \

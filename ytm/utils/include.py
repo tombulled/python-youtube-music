@@ -1,8 +1,13 @@
+'''
+'''
+
 import pkgutil
 import importlib
 import sys
+from typing import Callable
+from _frozen_importlib import ModuleSpec
 
-def include(spec, callback=None):
+def include(spec: ModuleSpec, callback: Callable = None) -> dict:
     '''
     '''
 
@@ -19,7 +24,7 @@ def include(spec, callback=None):
 
     for sub_module in sub_modules:
         sub_module_name = sub_module.name
-        
+
         if not callback(sub_module_name): continue
 
         sub_module = importlib.import_module \

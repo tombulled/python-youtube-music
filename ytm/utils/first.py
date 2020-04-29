@@ -1,9 +1,9 @@
 '''
 '''
 
-from typing import Any
+from typing import Any, Iterable
 
-def first(iterable, default: Any = None) -> Any:
+def first(iterable: Iterable, default: Any = None) -> Any:
     '''
     '''
 

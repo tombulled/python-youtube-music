@@ -4,9 +4,6 @@
 from collections.abc import Iterable
 from typing import Any, Callable
 
-__util__ = __name__.split('.')[-1]
-__all__  = (__util__,)
-
 def get \
         (
             iterable: Iterable,

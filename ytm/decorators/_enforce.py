@@ -1,20 +1,53 @@
 '''
+Module containing the decorator: _enforce
 '''
 
 import functools
-from typing import Callable, Any
 import inspect
+from typing import Callable, Any
 from ..utils import isinstance
 
 def _enforce(parameters: bool = True, return_value: bool = True) -> Callable:
     '''
+    Enforce parameter and return value types.
+
+    Ensure arguments passed to a function and the function return value are of
+    the type specified by the function type hints
+
+    Args:
+        parameters: Whether to enforce arguments types
+        return_value: Whether to enforce the return value type
+
+    Returns:
+        The enforcing decorator
+
+    Example:
+        >>> @_enforce()
+        def foo(x: int) -> str:
+        	return 'It worked!'
+        >>>
+        >>> # Acceptable
+        >>> foo(1)
+        'It worked!'
+        >>>
+        >>> # Unacceptable
+        >>> foo('a')
+        TypeError: Expected argument 'x' to be of type 'int' not 'str'
+        >>>
     '''
 
     enforce_parameters = parameters
-    enforce_return = return_value
+    enforce_return     = return_value
 
     def decorator(func: Callable) -> Callable:
         '''
+        Decorate func to enforce types.
+
+        Args:
+            func: Function to decorate
+
+        Returns:
+            The decorated func
         '''
 
         signature = inspect.signature(func)
@@ -25,6 +58,14 @@ def _enforce(parameters: bool = True, return_value: bool = True) -> Callable:
         @functools.wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             '''
+            Wrap func to enforce types as previously specified
+
+            Args:
+                *args: Function arguments
+                **kwargs: Function keyword arguments
+
+            Returns:
+                The wrapped functions return value
             '''
 
             arguments = {**dict(zip(argument_keys, args)), **kwargs}

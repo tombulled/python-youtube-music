@@ -1,3 +1,11 @@
-from ..utils import include
+from .. import utils as __utils
+import types as __types
 
-__all__ = tuple(include(__spec__))
+__all__ = tuple \
+(
+    __utils.include \
+    (
+        __spec__,
+        lambda object: not isinstance(object, __types.ModuleType),
+    ),
+)

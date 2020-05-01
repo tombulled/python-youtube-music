@@ -1,6 +1,6 @@
-from .PlaylistPlaylistId import PlaylistPlaylistId
+from .PlaylistId import PlaylistId
 
-class PlaylistRadioId(PlaylistPlaylistId):
+class PlaylistRadioId(PlaylistId):
     @classmethod
     def _clean(cls, value: str):
         value = super()._clean(value)

@@ -1,4 +1,14 @@
 '''
+Package containing constants.
+
+These constants help the super package achieve general tasks.
+
+Example:
+    >>> from ytm import constants
+    >>>
+    >>> constants.__all__
+    ...
+    >>>
 '''
 
 # Params

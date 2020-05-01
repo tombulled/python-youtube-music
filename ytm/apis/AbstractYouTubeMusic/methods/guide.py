@@ -1,8 +1,6 @@
-# from . import parser
-from .. import parsers
 from .. import decorators
+from .... import parsers
 
-# @decorators.method(__method__, parser.parse)
 @decorators.method(parsers.guide)
 def guide(self: object) -> dict:
     return self._base.guide()

@@ -1,4 +1,4 @@
-from .AlbumId import AlbumId
+from .ArtistId import ArtistId
 
-class AlbumBrowseId(AlbumId):
+class ArtistBrowseId(ArtistId):
     pass

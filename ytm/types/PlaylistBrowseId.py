@@ -1,13 +1,10 @@
-from . import base
-from .ChartPlaylistBrowseId import ChartPlaylistBrowseId
-from .ArtistSongsPlaylistBrowseId import ArtistSongsPlaylistBrowseId
-from .PlaylistPlaylistBrowseId import PlaylistPlaylistBrowseId
-from . import utils
+from .PlaylistId import PlaylistId
 
-class PlaylistBrowseId(base.BaseType):
-    _patterns = utils.patterns \
-    (
-        ChartPlaylistBrowseId,
-        ArtistSongsPlaylistBrowseId,
-        PlaylistPlaylistBrowseId,
-    )
+class PlaylistBrowseId(PlaylistId):
+    @classmethod
+    def _clean(cls, value: str):
+        value = super()._clean(value)
+
+        value = 'VL' + value
+
+        return value

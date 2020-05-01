@@ -1,4 +1,4 @@
-from .PlaylistPlaylistId import PlaylistPlaylistId
+from .PlaylistId import PlaylistId
 
-class PlaylistShuffleId(PlaylistPlaylistId):
+class PlaylistShuffleId(PlaylistId):
     pass

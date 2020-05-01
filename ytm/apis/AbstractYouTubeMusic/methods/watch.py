@@ -1,9 +1,7 @@
-# from . import parser
-from .. import parsers
 from .. import decorators
-from ..types import SongId, SongListId, WatchContinuation, Params
+from .... import parsers
+from ....types import SongId, SongListId, WatchContinuation, Params
 
-# @decorators.method(__method__, parser.parse)
 @decorators.method(parsers.watch)
 def watch \
         (

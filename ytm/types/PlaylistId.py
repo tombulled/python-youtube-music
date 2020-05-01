@@ -1,13 +1,24 @@
 from . import base
-from .ChartPlaylistId import ChartPlaylistId
-from .ArtistSongsPlaylistId import ArtistSongsPlaylistId
-from .PlaylistPlaylistId import PlaylistPlaylistId
 from . import utils
 
 class PlaylistId(base.BaseType):
-    _patterns = utils.patterns \
+    _patterns = \
     (
-        ChartPlaylistId,
-        ArtistSongsPlaylistId,
-        PlaylistPlaylistId,
+        utils.pattern \
+        (
+            utils.optional
+            (
+                'VL',
+                'RDAMPL',
+            ),
+            'RDCLAK5uy_',
+            utils.entropy(33),
+        ),
     )
+
+    @classmethod
+    def _clean(cls, value: str):
+        value = utils.lstrip(value, 'VL')
+        value = utils.lstrip(value, 'RDAMPL')
+
+        return value

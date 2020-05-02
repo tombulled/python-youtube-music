@@ -11,7 +11,14 @@ class BaseUnion():
             types      = ', '.join(type.__name__ for type in self._types)
         )
 
-    def _validate(self: object, value: object) -> bool:
+    # def _validate(self: object, value: object) -> bool:
+    #     for type in self._types:
+    #         if utils.isinstance(value, type):
+    #             return True
+    #
+    #     return False
+
+    def _isinstance(self: object, value: object) -> bool:
         for type in self._types:
             if utils.isinstance(value, type):
                 return True

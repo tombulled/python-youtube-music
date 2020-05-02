@@ -77,8 +77,12 @@ def _enforce(parameters: bool = True, return_value: bool = True) -> Callable:
             for parameter_name, parameter in parameters.items() \
                     if parameters else ():
                 parameter_annotation = parameter.annotation
-                parameter_annotation_name = getattr(parameter_annotation, '__name__', None) \
-                    or getattr(parameter_annotation.__class__, '__name__')
+                # parameter_annotation_name = getattr(parameter_annotation, '__name__', None) \
+                #     or repr(parameter_annotation)
+                    # or getattr(parameter_annotation.__class__, '__name__')
+                parameter_annotation_name = parameter_annotation.__name__ \
+                    if isinstance(parameter_annotation, type) \
+                    else repr(parameter_annotation)
                 parameter_default = parameter.default
                 parameter_value = arguments.get(parameter_name)
                 parameter_type = type(parameter_value)

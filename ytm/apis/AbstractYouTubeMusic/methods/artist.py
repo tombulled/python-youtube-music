@@ -1,6 +1,5 @@
 from .. import decorators
 from .... import parsers
-# from ....types import ArtistId
 from .... import types
 from ....types import \
 (

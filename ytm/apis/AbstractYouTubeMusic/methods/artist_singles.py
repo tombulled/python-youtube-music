@@ -1,6 +1,5 @@
 from .. import decorators
 from .... import parsers
-# from ....types import ArtistId, ArtistSinglesParams
 from .... import types
 from ....types import \
 (
@@ -21,11 +20,6 @@ def artist_singles \
             ),
             params:    ArtistSinglesParams,
         ) -> list:
-        # (
-        #     self:      object,
-        #     artist_id: ArtistId,
-        #     params:    ArtistSinglesParams,
-        # ) -> list:
     '''
     '''
 

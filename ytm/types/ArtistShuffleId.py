@@ -6,7 +6,20 @@ class ArtistShuffleId(base.BaseType):
     (
         utils.pattern \
         (
-            'RDAO',
+            utils.optional \
+            (
+                'RDEM',
+                'RDAO',
+            ),
             utils.entropy(22),
         ),
     )
+
+    @classmethod
+    def _clean(cls, value: str):
+        value = utils.lstrip(value, 'RDEM')
+        value = utils.lstrip(value, 'RDAO')
+
+        value = 'RDAO' + value
+
+        return value

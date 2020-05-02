@@ -6,7 +6,20 @@ class ArtistRadioId(base.BaseType):
     (
         utils.pattern \
         (
-            'RDEM',
+            utils.optional \
+            (
+                'RDEM',
+                'RDAO',
+            ),
             utils.entropy(22),
         ),
     )
+
+    @classmethod
+    def _clean(cls, value: str):
+        value = utils.lstrip(value, 'RDEM')
+        value = utils.lstrip(value, 'RDAO')
+
+        value = 'RDEM' + value
+
+        return value

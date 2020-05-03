@@ -1,41 +1,38 @@
 '''
+Module containing the method: _get_page
 '''
 
 import re
 import json
 from .. import utils
 from .. import constants
-from .. import exceptions
 from .. import decorators
+from .... import exceptions
 
 @decorators.catch
-def _get_page(self: object, *endpoints: str, params: dict=None) -> dict:
+def _get_page(self: object, *endpoints: str, params: dict = None) -> dict:
     '''
     Return a page's configuration data.
 
     Fetches the page at https://music.youtube.com/{endpoint} and
     extracts the configuration dictionary
 
-    Parameters:
-        self:
-            <BaseYouTubeMusic> class instance
-        endpoints:
-            Page endpoints. Get joined by '/'
-            E.g. 'hotlist', 'playlist'
-        params:
-            Params to be used for the GET request
-            E.g. {'q': 'search query'}
+    Args:
+        self: Class instance
+        endpoints: Page endpoints. Get joined by '/'
+            Example: 'hotlist', 'playlist'
+        params: Params to be used for the GET request
+            Example: {'q': 'search query'}
 
     Returns:
-        dict:
-            Page configuration dictionary
+        Page configuration dictionary
 
     Example:
         >>> api = ytm.BaseYouTubeMusic()
         >>>
         >>> data = api._get_page \
         (
-            endpoint = 'search',
+            'search',
             params   = {'q': 'foo fighters'},
         )
         >>>
@@ -44,10 +41,8 @@ def _get_page(self: object, *endpoints: str, params: dict=None) -> dict:
         >>>
 
     Raises:
-        InvalidPageConfigurationError:
-            Page has no configuration data
-        PageNotFoundError:
-            Page not found
+        InvalidPageConfigurationError: Page has no configuration data
+        PageNotFoundError: Page not found
     '''
 
     endpoint = '/'.join(map(str.strip, endpoints))

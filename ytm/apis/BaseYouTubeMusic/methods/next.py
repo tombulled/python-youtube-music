@@ -1,6 +1,8 @@
 '''
+Module containing the method: next
 '''
 
+import copy
 from .. import constants
 from .. import decorators
 
@@ -18,21 +20,63 @@ def next \
             continuation:        str    = None,
         ) -> dict:
     '''
+    Return next data.
+
+    Next data is used when listening to a song/playlist and returns the
+    tracks in the queue
+
+    Args:
+        self: Class instance
+        video_id: Video Id
+            Example: '-yDWjtrgkb0'
+        playlist_id: Playlist Id
+            Example: 'PL4fGSI1pDJn5kI81J1fYWK5eZRl1zJ5kM'
+            Note: This is *not* a browse id
+        index: Video index
+            Example: 1
+            Note: This is zero-based
+        music_video_type: Music video type
+            Example: 'MUSIC_VIDEO_TYPE_OMV'
+        params: Params
+            Example: 'OAHyAQIIAQ%3D%3D'
+        tuner_setting_value: Tuner settings value
+            Example: 'AUTOMIX_SETTING_NORMAL'
+        player_params: Player params
+            Example: 'igMDCNgE'
+        continuation: Continuation
+            Example: 'CDISPBILdUxIcXBqVzNhRHMiIlBMNGZHU0kxcERKbjVrSTgxSjFmWV...'
+
+    Returns:
+        Next data
+
+    Example:
+        >>> api = ytm.BaseYouTubeMusic()
+        >>>
+        >>> data = api.next \
+        (
+        	video_id = 'l0U7SxXHkPY',
+        	playlist_id = 'PL4fGSI1pDJn5kI81J1fYWK5eZRl1zJ5kM',
+        	tuner_setting_value = 'AUTOMIX_SETTING_NORMAL',
+        	music_video_type = 'MUSIC_VIDEO_TYPE_OMV',
+        )
+        >>>
+        >>> data['currentVideoEndpoint']['watchEndpoint']
+        {'videoId': 'l0U7SxXHkPY', 'playlistId': 'PL4fGSI1pDJn5kI81J1fYWK5eZRl1zJ5kM', 'index': 0}
+        >>>
     '''
 
     url = self._url_api(constants.ENDPOINT_YTM_API_NEXT)
 
-    url_params = constants.URL_PARAMS
-
-    payload = constants.PAYLOAD
+    url_params = copy.deepcopy(constants.URL_PARAMS)
+    payload    = copy.deepcopy(constants.PAYLOAD)
 
     payload.update \
     (
         {
             'enablePersistentPlaylistPanel': True,
             'isAudioOnly': True,
-            'params': params or 'wAEB',
-            'tunerSettingValue': tuner_setting_value or 'AUTOMIX_SETTING_NORMAL',
+            'params': params or constants.PARAMS_WATCH,
+            'tunerSettingValue': tuner_setting_value or constants.AUTOMIX_SETTING_NORMAL,
         }
     )
 
@@ -49,7 +93,7 @@ def next \
                     'watchEndpointMusicConfig': \
                     {
                         'hasPersistentPlaylistPanel': True,
-                        'musicVideoType': music_video_type or 'MUSIC_VIDEO_TYPE_OMV',
+                        'musicVideoType': music_video_type or constants.MUSIC_VIDEO_TYPE_OMV,
                     },
                 },
             }

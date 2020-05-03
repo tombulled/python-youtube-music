@@ -1,6 +1,8 @@
 '''
+Module containing the method: search
 '''
 
+import copy
 from .. import constants
 from .. import decorators
 
@@ -13,12 +15,47 @@ def search \
             continuation: str = None,
         ) -> dict:
     '''
+    Return search data.
+
+    Returns results for a search
+
+    Args:
+        self: Class instance
+        query: Search query string
+            Example: 'coldplay'
+        params: Search params
+            Example: 'Eg-KAQwIABAAGAAgASgAMABqChAKEAMQCRAEEAU%3D'
+            Note: These are used to filter search results, e.g. only artists
+        continuation: Search continuation
+            Example: 'Eo0GEghjb2xkcGxheRqABkVnLUtBUXdJQUJBQUdBQWdBU2d...'
+
+    Returns:
+        Search data
+
+    Example:
+        >>> api = ytm.BaseYouTubeMusic()
+        >>>
+        >>> data = api.search('foo f')
+        >>>
+        >>> shelves = data['contents']['sectionListRenderer']['contents']
+        >>>
+        >>> for shelf in shelves:
+        	shelf = shelf['musicShelfRenderer']
+        	print(shelf['title'])
+
+        {'runs': [{'text': 'Top result'}]}
+        {'runs': [{'text': 'Songs'}]}
+        {'runs': [{'text': 'Albums'}]}
+        {'runs': [{'text': 'Videos'}]}
+        {'runs': [{'text': 'Playlists'}]}
+        {'runs': [{'text': 'Artists'}]}
+        >>>
     '''
 
     url = self._url_api(constants.ENDPOINT_YTM_API_SEARCH)
 
-    url_params = constants.URL_PARAMS
-    payload    = constants.PAYLOAD
+    url_params = copy.deepcopy(constants.URL_PARAMS)
+    payload    = copy.deepcopy(constants.PAYLOAD)
 
     if continuation:
         url_params['continuation'] = continuation

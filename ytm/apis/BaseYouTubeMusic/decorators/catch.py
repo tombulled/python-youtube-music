@@ -1,18 +1,52 @@
 '''
+Module containing the decorator: catch
 '''
 
 import functools
-from .. import exceptions
 import requests.exceptions
 import urllib3.exceptions
+from .... import exceptions
 
 def catch(func):
     '''
+    Catch method errors and re-raise them appropriately.
+
+    Methods can raise exceptions when something goes wrong,
+    this decorator re-raises them.
+
+    Args:
+        func: Function to decorate
+
+    Returns:
+        Decorated func
+
+    Raises:
+        ConnectionError: Failed to connect to host
+        YouTubeMusicApiError: YouTube Music Api Error
+        YouTubeApiError: YouTube Api Error
+        MethodError: Method encountered an error
+
+    Example:
+        >>> @catch
+        def foo():
+        	raise Exception('An error occured!')
+
+        >>> foo()
+        MethodError: An error occured!
+        >>>
     '''
 
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         '''
+        Wrap func to re-raise exceptions.
+
+        Args:
+            *args: Function arguments
+            **kwargs: Function keyword arguments
+
+        Returns:
+            The wrapped functions return value
         '''
 
         exception = None
@@ -21,11 +55,7 @@ def catch(func):
         try:
             resp = func(*args, **kwargs)
         except requests.exceptions.ConnectionError as error:
-            # Use str(error) instead ??
             argument = error.args[0]
-
-            # import sys
-            # sys._x = argument
 
             if isinstance(argument, str):
                 exception_message = argument
@@ -54,6 +84,10 @@ def catch(func):
                 exception_message = str(error)
 
             exception = exceptions.ConnectionError
+        except Exception as error:
+            exception_message = str(error)
+
+            exception = exceptions.MethodError
 
         if exception:
             raise exception(exception_message)

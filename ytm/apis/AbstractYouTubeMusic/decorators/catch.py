@@ -1,5 +1,5 @@
 '''
-Module containing the decorator: _enforce
+Module containing the decorator: catch
 '''
 
 import functools

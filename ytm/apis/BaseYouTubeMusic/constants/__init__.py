@@ -1,3 +1,9 @@
+'''
+Package containing constants.
+
+These constants help the super package achieve general tasks.
+'''
+
 from ....constants import *
 
 # Headers

@@ -80,6 +80,7 @@ def home(data: dict):
             'runs',
             0,
             'text',
+            func = lambda strapline: strapline.strip() or None
         )
 
         shelf_items = []
@@ -169,36 +170,71 @@ def home(data: dict):
                 0,
                 'text',
             )
-            item_shuffle_playlist_id = utils.get \
+            # item_shuffle_playlist_id = utils.get \
+            # (
+            #     item_menu,
+            #     'shufflePlay',
+            #     'endpoint',
+            #     'watchPlaylistEndpoint',
+            #     'playlistId',
+            # )
+            # item_shuffle_params = utils.get \
+            # (
+            #     item_menu,
+            #     'shufflePlay',
+            #     'endpoint',
+            #     'watchPlaylistEndpoint',
+            #     'params',
+            # )
+            # item_radio_playlist_id = utils.get \
+            # (
+            #     item_menu,
+            #     'startRadio',
+            #     'endpoint',
+            #     'watchPlaylistEndpoint',
+            #     'playlistId',
+            # )
+            # item_radio_params = utils.get \
+            # (
+            #     item_menu,
+            #     'startRadio',
+            #     'endpoint',
+            #     'watchPlaylistEndpoint',
+            #     'params',
+            # )
+            item_shuffle_endpoint = utils.get \
             (
                 item_menu,
                 'shufflePlay',
                 'endpoint',
-                'watchPlaylistEndpoint',
+                func = lambda endpoint: utils.first(dict((endpoint.popitem(),))),
+            )
+            item_radio_endpoint = utils.get \
+            (
+                item_menu,
+                'startRadio',
+                'endpoint',
+                func = lambda endpoint: utils.first(dict((endpoint.popitem(),))),
+            )
+
+            item_shuffle_playlist_id = utils.get \
+            (
+                item_shuffle_endpoint,
                 'playlistId',
             )
             item_shuffle_params = utils.get \
             (
-                item_menu,
-                'shufflePlay',
-                'endpoint',
-                'watchPlaylistEndpoint',
+                item_shuffle_endpoint,
                 'params',
             )
             item_radio_playlist_id = utils.get \
             (
-                item_menu,
-                'startRadio',
-                'endpoint',
-                'watchPlaylistEndpoint',
+                item_radio_endpoint,
                 'playlistId',
             )
             item_radio_params = utils.get \
             (
-                item_menu,
-                'startRadio',
-                'endpoint',
-                'watchPlaylistEndpoint',
+                item_radio_endpoint,
                 'params',
             )
 
@@ -229,6 +265,7 @@ def home(data: dict):
                     'runs',
                     2,
                     'text',
+                    func = lambda views: views.strip().split(' ')[0],
                 )
                 item_playlist_id = utils.get \
                 (
@@ -252,17 +289,11 @@ def home(data: dict):
                     'name':        item_title,
                     'type':        item_type,
                     'views':       item_views,
-                    'playlist_id': item_playlist_id,
                     'thumbnail':   item_thumbnail,
                     'artist': \
                     {
                         'name': item_artist_name,
                         'id':   item_artist_id,
-                    },
-                    'shuffle': \
-                    {
-                        'playlist_id': item_shuffle_playlist_id,
-                        'params':      item_shuffle_params,
                     },
                     'radio': \
                     {

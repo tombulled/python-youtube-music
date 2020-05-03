@@ -1,4 +1,5 @@
 '''
+Module containing the method: video_info
 '''
 
 from .. import constants
@@ -12,6 +13,27 @@ import json
 @decorators.catch
 def video_info(self: object, video_id: str) -> dict:
     '''
+    Retrieve video info data.
+
+    Unlike other methods, this relies on YouTube instead of YouTube Music.
+    YouTube Music itself uses this to get further information about videos.
+
+    Args:
+        self: Class instance
+        video_id: Video id
+            Example: 'CkOP828oL30'
+
+    Returns:
+        Video info data
+
+    Example:
+        >>> api = ytm.BaseYouTubeMusic()
+        >>>
+        >>> data = api.video_info('CkOP828oL30')
+        >>>
+        >>> data['player_response']['videoDetails']['title']
+        'Passenger | Bullets (Official Album Audio)'
+        >>>
     '''
 
     resp = self.session.get \

@@ -1,5 +1,6 @@
 from . import base
 from . import utils
+from . import constants
 
 class Params(base.BaseType):
     _patterns = \
@@ -8,7 +9,7 @@ class Params(base.BaseType):
         (
             utils.entropy \
             (
-                extra  = '%',
+                chars  = constants.CHARS_PARAM,
                 repeat = '+',
             ),
         ),

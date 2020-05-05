@@ -1,5 +1,19 @@
 from .. import decorators
+from ....types import SearchContinuation
 
 @decorators.method()
-def search_playlists(self: object, query: str) -> list:
-    return self._search_filter(query, 'playlists')
+def search_playlists \
+        (
+            self:         object,
+            query:        str                = None,
+            continuation: SearchContinuation = None,
+        ) -> dict:
+    '''
+    '''
+
+    return self._search_filter \
+    (
+        filter       = 'playlists',
+        query        = query,
+        continuation = continuation,
+    )

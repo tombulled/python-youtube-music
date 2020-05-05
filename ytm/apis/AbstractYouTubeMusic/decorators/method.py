@@ -9,7 +9,7 @@ from .... import decorators
 
 def method(parser: Callable = None) -> Callable:
     '''
-    Yields a decorator linking a method to a parser.
+    Returns a decorator linking a method to a parser.
 
     Returns a decorator which will perform the following:
         * Enforce return value type

@@ -1,29 +1,52 @@
-from .. import constants
 from .. import decorators
+from .... import constants
 from .... import parsers
+from ....types import SearchContinuation
 
 @decorators.method()
-def _search_filter(self: object, query: str, filter: str) -> list:
+def _search_filter \
+        (
+            self:         object,
+            filter:       str,
+            query:        str                = None,
+            continuation: SearchContinuation = None,
+        ) -> dict:
+    '''
+    '''
+
     filter = filter.strip().lower()
-    query  = query.strip()
 
     param = constants.SEARCH_PARAMS_MAP.get(filter)
 
-    assert query,  'No search query provided'
     assert param, f'Invalid search filter: {repr(filter)}'
 
-    data = self._base.search \
-    (
-        query  = query,
-        params = ''.join \
+    if query:
+        query  = query.strip()
+
+        assert query,  'No search query provided'
+
+        data = self._base.search \
         (
+            query  = query,
+            params = ''.join \
             (
-                constants.SEARCH_PARAM_PREFIX,
-                param,
-                constants.SEARCH_PARAM_SUFFIX,
+                (
+                    constants.SEARCH_PARAM_PREFIX,
+                    param,
+                    constants.SEARCH_PARAM_SUFFIX,
+                ),
             ),
-        ),
-    )
+        )
+    elif continuation:
+        data = self._base.search \
+        (
+            continuation = continuation,
+        )
+    else:
+        raise Exception \
+        (
+            'Missing 1 required argument: \'query\' or \'continuation\''
+        )
 
     parsed_data = parsers._search_filter(data, filter)
 

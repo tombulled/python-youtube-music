@@ -7,15 +7,6 @@ from . import cleansers
 def _search(data: dict):
     assert data, 'No data to parse'
 
-    # if 'continuationContents' in data:
-    #     # data = utils.get \
-    #     # (
-    #     #
-    #     # )
-    #     contents = data['continuationContents']['musicShelfContinuation']['contents']
-    #
-    #     continuation = data['continuationContents']['musicShelfContinuation']['continuations'][0]['nextContinuationData']['continuation']
-
     data = utils.get \
     (
         data,
@@ -23,7 +14,7 @@ def _search(data: dict):
         'sectionListRenderer',
     )
 
-    assert data
+    assert data, 'Invalid search data'
 
     query = utils.get \
     (
@@ -54,7 +45,7 @@ def _search(data: dict):
         default = (),
     )
 
-    assert shelves
+    assert shelves, 'No search shelves'
 
     for shelf in shelves:
         shelf = utils.first(shelf)
@@ -1028,60 +1019,11 @@ def _search(data: dict):
                     'thumbnails',
                     -1,
                 )
-                # item_shuffle_playlist_id = utils.get \
-                # (
-                #     item,
-                #     'menu',
-                #     'menuRenderer',
-                #     'items',
-                #     0,
-                #     'menuNavigationItemRenderer',
-                #     'navigationEndpoint',
-                #     'watchPlaylistEndpoint',
-                #     'playlistId',
-                # )
-                # item_shuffle_params = utils.get \
-                # (
-                #     item,
-                #     'menu',
-                #     'menuRenderer',
-                #     'items',
-                #     0,
-                #     'menuNavigationItemRenderer',
-                #     'navigationEndpoint',
-                #     'watchPlaylistEndpoint',
-                #     'params',
-                # )
-                # item_radio_playlist_id = utils.get \
-                # (
-                #     item,
-                #     'menu',
-                #     'menuRenderer',
-                #     'items',
-                #     1,
-                #     'menuNavigationItemRenderer',
-                #     'navigationEndpoint',
-                #     'watchPlaylistEndpoint',
-                #     'playlistId',
-                # )
-                # item_radio_params = utils.get \
-                # (
-                #     item,
-                #     'menu',
-                #     'menuRenderer',
-                #     'items',
-                #     1,
-                #     'menuNavigationItemRenderer',
-                #     'navigationEndpoint',
-                #     'watchPlaylistEndpoint',
-                #     'params',
-                # )
 
                 item_data = \
                 {
                     'id':           item_id,
                     'name':         item_name,
-                    # 'artist':       item_artist,
                     'artist': \
                     {
                         'name': item_artist_name,

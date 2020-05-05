@@ -1,69 +1,65 @@
-import builtins
-import re
+'''
+'''
+
 from ... import classes
 
-class BaseType(str, metaclass=classes.BuiltinMeta):
-    _patterns = ()
+import re
 
-    def __new__(cls, value):
+class BaseType(str, metaclass = classes.BuiltinMeta):
+    '''
+    '''
+
+    _patterns = ()
+    _pattern = None
+
+    def __new__(cls: type, value: str) -> object:
+        '''
+        '''
+
         if not cls._match(value):
             raise TypeError \
             (
                 'Invalid {class_name}: {value}'.format \
                 (
                     class_name = cls.__name__,
-                    value = repr(str(value)),
+                    value      = repr(str(value)),
                 )
             )
 
         value = cls._clean(value)
 
-        return str.__new__(cls, value)
+        return super().__new__(cls, value)
 
-    def __repr__(self):
+    def __repr__(self: object) -> str:
+        '''
+        '''
+
         return '<{class_name}({value})>'.format \
         (
             class_name = self.__class__.__name__,
-            value = super().__repr__(),
+            value      = super().__repr__(),
         )
 
-    # @classmethod
-    # def _validate(cls, value: str):
-    #     if not cls._patterns:
-    #         return True
-    #
-    #     if not builtins.isinstance(value, str):
-    #         return False
-    #
-    #     for pattern in cls._patterns:
-    #         match = re.match \
-    #         (
-    #             pattern = pattern,
-    #             string  = value,
-    #             flags   = re.DOTALL,
-    #         )
-    #
-    #         if match is not None:
-    #             break
-    #     else:
-    #         return False
-    #
-    #     return True
-
     @classmethod
-    def _match(cls, value: str):
-        # print('_match:', cls, value)
+    def _match(cls: type, value: str) -> bool:
+        '''
+        '''
 
-        if not builtins.isinstance(value, str):
+        if not isinstance(value, str):
             return False
 
-        if builtins.isinstance(value, cls):
+        if isinstance(value, cls):
             return True
 
-        if not cls._patterns:
+        if cls._pattern:
+            patterns = (cls._pattern,)
+        else:
+            patterns = cls._patterns
+
+        if not patterns:
             return True
 
-        for pattern in cls._patterns:
+        for pattern in patterns:
             match = re.match \
             (
                 pattern = pattern,
@@ -79,37 +75,15 @@ class BaseType(str, metaclass=classes.BuiltinMeta):
         return True
 
     @classmethod
-    def _isinstance(cls, value: str):
-        # print('_isinstance:', cls, value, '| match =', cls._match(value))
-
-        # return None
+    def _isinstance(cls: type, value: str) -> bool:
+        '''
+        '''
 
         return cls._match(value) and cls._clean(value) == value
 
-        # if not builtins.isinstance(value, str):
-        #     return False
-        #
-        # if builtins.isinstance(value, cls):
-        #     return True
-        #
-        # if not cls._patterns:
-        #     return True
-        #
-        # for pattern in cls._patterns:
-        #     match = re.match \
-        #     (
-        #         pattern = pattern,
-        #         string  = value,
-        #         flags   = re.DOTALL,
-        #     )
-        #
-        #     if match is not None:
-        #         break
-        # else:
-        #     return False
-        #
-        # return True
-
     @classmethod
-    def _clean(cls, value: str):
+    def _clean(cls: type, value: str) -> str:
+        '''
+        '''
+
         return value

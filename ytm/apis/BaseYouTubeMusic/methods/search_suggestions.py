@@ -2,7 +2,6 @@
 Module containing the method: search_suggestions
 '''
 
-import copy
 from .. import constants
 from .. import decorators
 from typing import List
@@ -41,18 +40,15 @@ def search_suggestions(self: object, query: str = None) -> List[str]:
         >>>
     '''
 
-    url = self._url_api(constants.ENDPOINT_YTM_API_SEARCH_SUGGESTIONS)
-
-    params  = copy.deepcopy(constants.URL_PARAMS)
-    payload = copy.deepcopy(constants.PAYLOAD)
-
-    payload['input'] = query or ''
-
     resp = self.session.post \
     (
-        url    = url,
-        params = params,
-        json   = payload,
+        url    = self._url_api(constants.ENDPOINT_YTM_API_SEARCH_SUGGESTIONS),
+        params = constants.URL_PARAMS,
+        json   = \
+        {
+            **constants.PAYLOAD,
+            'input': query or '',
+        },
     )
 
     data = resp.json()

@@ -11,9 +11,15 @@ class YouTubeMusicApiError(base.BaseException):
     Attributes:
         data: YouTube Music Api error data
         code: Error code
+            Example: 500
         errors: Errors
+            Example: [{'domain': 'global',
+                        'message': 'Unknown Error.',
+                        'reason': 'backendError'}]
         message: Error message
+            Example: 'Unknown Error.'
         status: Error status
+            Example: 'UNKNOWN'
     '''
 
     data:    dict = None

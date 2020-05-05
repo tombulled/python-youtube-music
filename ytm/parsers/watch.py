@@ -37,8 +37,6 @@ def watch(data: dict):
 
     playlist_tracks = []
 
-    # return data ###
-
     for track in tracks:
         track = utils.first(track)
 
@@ -101,8 +99,6 @@ def watch(data: dict):
             }
 
             track_menu[menu_identifier] = menu_item_data
-
-        # return track_menu ###
 
         track_watch_endpoint = utils.get \
         (
@@ -291,177 +287,170 @@ def watch(data: dict):
         'currentVideoEndpoint',
         'watchEndpoint',
     )
-    current_metadata_renderer = utils.get \
-    (
-        data,
-        'contents',
-        'singleColumnMusicWatchNextResultsRenderer',
-        'metadataScreen',
-        'sectionListRenderer',
-        'contents',
-        0,
-        'itemSectionRenderer',
-        'contents',
-        0,
-        'musicWatchMetadataRenderer',
-    )
-    current_like_button_renderer = utils.get \
-    (
-        data,
-        'playerOverlays',
-        'playerOverlayRenderer',
-        'actions',
-        0,
-        'likeButtonRenderer',
-    )
-    current_artist_runs = utils.get \
-    (
-        current_metadata_renderer,
-        'byline',
-        'runs',
-        default = (),
-    )[:-4:2]
 
-    current_artists = []
+    current_data = None
 
-    for current_artist_run in current_artist_runs:
-        current_artist_name = utils.get \
+    if current_watch_endpoint is not None:
+        current_metadata_renderer = utils.get \
         (
-            current_artist_run,
+            data,
+            'contents',
+            'singleColumnMusicWatchNextResultsRenderer',
+            'metadataScreen',
+            'sectionListRenderer',
+            'contents',
+            0,
+            'itemSectionRenderer',
+            'contents',
+            0,
+            'musicWatchMetadataRenderer',
+        )
+        current_like_button_renderer = utils.get \
+        (
+            data,
+            'playerOverlays',
+            'playerOverlayRenderer',
+            'actions',
+            0,
+            'likeButtonRenderer',
+        )
+        current_artist_runs = utils.get \
+        (
+            current_metadata_renderer,
+            'byline',
+            'runs',
+            default = (),
+        )[:-4:2]
+
+        current_artists = []
+
+        for current_artist_run in current_artist_runs:
+            current_artist_name = utils.get \
+            (
+                current_artist_run,
+                'text',
+            )
+            current_artist_id = utils.get \
+            (
+                current_artist_run,
+                'navigationEndpoint',
+                'browseEndpoint',
+                'browseId',
+            )
+
+            current_artist_data = \
+            {
+                'name': current_artist_name,
+                'id':   current_artist_id,
+            }
+
+            current_artists.append(current_artist_data)
+
+        current_index = utils.get \
+        (
+            current_watch_endpoint,
+            'index',
+        )
+        current_song_id = utils.get \
+        (
+            current_watch_endpoint,
+            'videoId',
+        )
+        # current_artist_name = utils.get \
+        # (
+        #     current_metadata_renderer,
+        #     'byline',
+        #     'runs',
+        #     0,
+        #     'text',
+        # )
+        # current_artist_id = utils.get \
+        # (
+        #     current_metadata_renderer,
+        #     'byline',
+        #     'runs',
+        #     0,
+        #     'navigationEndpoint',
+        #     'browseEndpoint',
+        #     'browseId',
+        # )
+        current_year = utils.get \
+        (
+            current_metadata_renderer,
+            'byline',
+            'runs',
+            -1,
+            'text',
+            func = int,
+        )
+        current_album_name = utils.get \
+        (
+            current_metadata_renderer,
+            'albumName',
+            'runs',
+            0,
             'text',
         )
-        current_artist_id = utils.get \
+        current_album_id = utils.get \
         (
-            current_artist_run,
+            current_metadata_renderer,
+            'byline',
+            'runs',
+            -3,
             'navigationEndpoint',
             'browseEndpoint',
             'browseId',
         )
+        current_song_name = utils.get \
+        (
+            current_metadata_renderer,
+            'title',
+            'runs',
+            0,
+            'text',
+        )
+        current_views = utils.get \
+        (
+            current_metadata_renderer,
+            'viewCountText',
+            'runs',
+            0,
+            'text',
+            func = lambda views: int(views.strip().split(' ')[0].replace(',', '')),
+        )
+        current_likes = utils.get \
+        (
+            current_like_button_renderer,
+            'likeCount',
+        )
+        current_dislikes = utils.get \
+        (
+            current_like_button_renderer,
+            'dislikeCount',
+        )
 
-        current_artist_data = \
+        # Make this None if its a continuation
+        current_data = \
         {
-            'name': current_artist_name,
-            'id':   current_artist_id,
+            'id':       current_song_id,
+            'name':     current_song_name,
+            'index':    current_index,
+            'year':     current_year,
+            'views':    current_views,
+            'likes':    current_likes,
+            'dislikes': current_dislikes,
+            'artists':  current_artists,
+            'album': \
+            {
+                'name': current_album_name,
+                'id':   current_album_id,
+            },
         }
-
-        current_artists.append(current_artist_data)
-
-    current_index = utils.get \
-    (
-        current_watch_endpoint,
-        'index',
-    )
-    current_song_id = utils.get \
-    (
-        current_watch_endpoint,
-        'videoId',
-    )
-    # current_artist_name = utils.get \
-    # (
-    #     current_metadata_renderer,
-    #     'byline',
-    #     'runs',
-    #     0,
-    #     'text',
-    # )
-    # current_artist_id = utils.get \
-    # (
-    #     current_metadata_renderer,
-    #     'byline',
-    #     'runs',
-    #     0,
-    #     'navigationEndpoint',
-    #     'browseEndpoint',
-    #     'browseId',
-    # )
-    current_year = utils.get \
-    (
-        current_metadata_renderer,
-        'byline',
-        'runs',
-        -1,
-        'text',
-        func = int,
-    )
-    current_album_name = utils.get \
-    (
-        current_metadata_renderer,
-        'albumName',
-        'runs',
-        0,
-        'text',
-    )
-    current_album_id = utils.get \
-    (
-        current_metadata_renderer,
-        'byline',
-        'runs',
-        -3,
-        'navigationEndpoint',
-        'browseEndpoint',
-        'browseId',
-    )
-    current_song_name = utils.get \
-    (
-        current_metadata_renderer,
-        'title',
-        'runs',
-        0,
-        'text',
-    )
-    current_views = utils.get \
-    (
-        current_metadata_renderer,
-        'viewCountText',
-        'runs',
-        0,
-        'text',
-        func = lambda views: int(views.strip().split(' ')[0].replace(',', '')),
-    )
-    current_likes = utils.get \
-    (
-        current_like_button_renderer,
-        'likeCount',
-    )
-    current_dislikes = utils.get \
-    (
-        current_like_button_renderer,
-        'dislikeCount',
-    )
-
-    # return {'a':utils.get \
-    # (
-    #     current_metadata_renderer,
-    #     'byline',
-    #     'runs',)}
-
-    # Make this None if its a continuation
-    current_data = \
-    {
-        'id':       current_song_id,
-        'name':     current_song_name,
-        'index':    current_index,
-        'year':     current_year,
-        'views':    current_views,
-        'likes':    current_likes,
-        'dislikes': current_dislikes,
-        'artists':  current_artists,
-        # 'artist': \
-        # {
-        #     'name': current_artist_name,
-        #     'id':   current_artist_id,
-        # },
-        'album': \
-        {
-            'name': current_album_name,
-            'id':   current_album_id,
-        },
-    }
 
     scraped = \
     {
-        'playlist':     playlist_data,
-        'current_song': current_data,
+        **playlist_data,
+        'current': current_data,
     }
 
     return scraped

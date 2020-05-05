@@ -107,6 +107,8 @@ class SearchContinuation(base.BaseType):
             if len(segment) != id_len + 1:
                 return False
 
+            # Check ID is valid format here
+
             ids.append(id)
 
         return True

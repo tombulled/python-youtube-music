@@ -40,7 +40,6 @@ def browse \
         	browse_id = 'VLPL4fGSI1pDJn5kI81J1fYWK5eZRl1zJ5kM',
         	page_type = 'MUSIC_PAGE_TYPE_PLAYLIST',
         )
-
         >>>
         >>> data['header']['musicDetailHeaderRenderer']['title']
         {'runs': [{'text': 'Top 100 Music Videos Global'}]}
@@ -49,13 +48,12 @@ def browse \
 
     url = self._url_api(constants.ENDPOINT_YTM_API_BROWSE)
 
-    request_params = copy.deepcopy(constants.URL_PARAMS)
+    url_params = copy.deepcopy(constants.URL_PARAMS)
+    payload    = copy.deepcopy(constants.PAYLOAD)
 
     if continuation:
-        request_params['continuation'] = continuation
-        request_params['ctoken']       = continuation
-
-    payload = copy.deepcopy(constants.PAYLOAD)
+        url_params['continuation'] = continuation
+        url_params['ctoken']       = continuation
 
     if browse_id:
         payload['browseId'] = browse_id
@@ -75,7 +73,7 @@ def browse \
     resp = self.session.post \
     (
         url    = url,
-        params = request_params,
+        params = url_params,
         json   = payload,
     )
 

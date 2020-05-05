@@ -1,4 +1,10 @@
+'''
+'''
+
 def pattern(*segments: str) -> str:
+    '''
+    '''
+    
     prefix = '^'
     suffix = '$'
     sep    = ''

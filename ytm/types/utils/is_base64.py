@@ -1,7 +1,13 @@
+'''
+'''
+
 import string
 import re
 
 def is_base64(data: str) -> bool:
+    '''
+    '''
+    
     characters    = string.ascii_letters + string.digits + '+/'
     character_pad = '='
 

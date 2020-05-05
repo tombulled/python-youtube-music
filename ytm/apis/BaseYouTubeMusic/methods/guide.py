@@ -2,7 +2,6 @@
 Module containing the method: guide
 '''
 
-import copy
 from .. import constants
 from .. import decorators
 
@@ -36,16 +35,11 @@ def guide(self: object) -> dict:
         >>>
     '''
 
-    url = self._url_api(constants.ENDPOINT_YTM_API_GUIDE)
-
-    params  = copy.deepcopy(constants.URL_PARAMS)
-    payload = copy.deepcopy(constants.PAYLOAD)
-
     resp = self.session.post \
     (
-        url    = url,
-        params = params,
-        json   = payload,
+        url    = self._url_api(constants.ENDPOINT_YTM_API_GUIDE),
+        params = constants.URL_PARAMS,
+        json   = constants.PAYLOAD,
     )
 
     data = resp.json()

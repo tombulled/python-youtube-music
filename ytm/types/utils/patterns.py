@@ -1,4 +1,10 @@
-def patterns(*types, prepend=None):
+'''
+'''
+
+def patterns(*types: type, prepend: str = None) -> tuple:
+    '''
+    '''
+
     return tuple \
     (
         (prepend or '') + pattern

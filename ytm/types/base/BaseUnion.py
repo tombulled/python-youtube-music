@@ -1,25 +1,34 @@
-from ... import utils
+'''
+'''
 
-class BaseUnion():
-    def __init__(self: object, *types: type) -> None:
-        self._types = types
+from ... import classes
+from .. import utils
+
+class BaseUnion(tuple, metaclass = classes.BuiltinMeta):
+    '''
+    '''
+
+    def __new__(cls: type, *types) -> object:
+        '''
+        '''
+
+        return super().__new__(cls, types)
 
     def __repr__(self: object) -> str:
+        '''
+        '''
+
         return '{class_name}({types})'.format \
         (
             class_name = self.__class__.__name__,
-            types      = ', '.join(type.__name__ for type in self._types)
+            types      = ', '.join(type.__name__ for type in self)
         )
 
-    # def _validate(self: object, value: object) -> bool:
-    #     for type in self._types:
-    #         if utils.isinstance(value, type):
-    #             return True
-    #
-    #     return False
-
     def _isinstance(self: object, value: object) -> bool:
-        for type in self._types:
+        '''
+        '''
+
+        for type in self:
             if utils.isinstance(value, type):
                 return True
 

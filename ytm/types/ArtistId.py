@@ -1,12 +1,13 @@
 from . import base
 from . import utils
+from . import constants
 
 class ArtistId(base.BaseType):
     _patterns = \
     (
         utils.pattern \
         (
-            'UC',
-            utils.entropy(22),
+            constants.PREFIX_ARTIST_ID,
+            utils.entropy(constants.LEN_ENTROPY_ARTIST_ID),
         ),
     )

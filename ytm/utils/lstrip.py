@@ -2,39 +2,33 @@
 Module containing the utility function: lstrip
 '''
 
-def lstrip(string: str, sub_string: str, strip_count: int = 1) -> str:
+def lstrip(string: str, sub_string: str, count: int = None) -> str:
     """
-    Left strip strip_count sub_string's from <string>.
+    Left strip <count> <sub_string>'s from <string>.
 
     Strips a phrase instead of a set of characters.
 
     Args:
-        string: Source string to strip from.
-        sub_string: Sub string to strip from string.
-        strip_count: Maximum number of substrings to strip. Defaults to one.
+        string: Source string to strip from
+        sub_string: Sub string to strip from string
+        count: Maximum number of sub strings to strip
+            Default: 1
 
     Returns:
-        string left-stripped of sub_string
-    
-    Raises:
-        ValueError: If strip_count is less than one.
-        
+        <string> left-stripped of <sub_string> <count> times
+
     Examples:
-        >>> lstrip('someData', 'some', 1)
+        >>> lstrip('someData', 'some')
         'Data'
-        >>> lstrip('somesomesomesom', 'some', 2)
-        'somesom'
+        >>> lstrip('somesomeData', 'some', 2)
+        'Data'
     """
-    if strip_count <= 0:
-        raise ValueError
-        
-    strip_counter = 0
-    
-    while string.startswith(substring):
-        if strip_counter > strip_count:
-            string = string[len(subs_tring):]
-            strip_counter += 1
-        else:
-            break
-     
+
+    if not isinstance(count, int) or count <= 0:
+        count = 1
+
+    for _ in range(count):
+        if string.startswith(sub_string):
+            string = string[len(sub_string):]
+
     return string

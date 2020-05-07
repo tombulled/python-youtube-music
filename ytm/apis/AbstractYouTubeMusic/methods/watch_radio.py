@@ -1,4 +1,5 @@
 '''
+Module containing the method: watch_radio
 '''
 
 from .. import decorators
@@ -60,6 +61,31 @@ def watch_radio \
             song_id: SongId = None,
         ) -> dict:
     '''
+    Fetch Radio Watch data.
+
+    Use the watch() method to continue data.
+
+    Args:
+        self: Class Instance
+        playlist_id: Playlist Id
+            Example: 'RDEM8Tjy6KJDUmM5-nJ3baglrQ'
+        song_id: Song Id
+            Example: '0nCYgT-rVSo'
+
+    Returns:
+        Radio Watch data
+
+    Raises:
+        MethodError: Method encountered an error
+
+    Example:
+        >>> api = ytm.AbstractYouTubeMusic()
+        >>>
+        >>> data = api.watch_radio(song_id = '0nCYgT-rVSo')
+        >>>
+        >>> data['tracks'][0]['name']
+        'Cool with You'
+        >>>
     '''
 
     type_map = \
@@ -115,8 +141,8 @@ def watch_radio \
         return self._base.next \
         (
             video_id      = song_id,
-            params        = 'mgMDCNgE', # Make these constants
-            player_params = 'igMDCNgE',
+            params        = constants.PARAMS_RADIO_SONG,
+            player_params = constants.PLAYER_PARAMS_RADIO_SONG,
         )
     else:
         raise Exception \

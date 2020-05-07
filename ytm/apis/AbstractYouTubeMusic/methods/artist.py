@@ -1,3 +1,7 @@
+'''
+Module containing the method: artist
+'''
+
 from .. import decorators
 from .... import parsers
 from .... import types
@@ -19,6 +23,27 @@ def artist \
             ),
         ) -> dict:
     '''
+    Fetch Artist data.
+
+    Args:
+        self: Class Instance
+        artist_id: Artist Id
+            Example: 'UCRI-Ds5eY70A4oeHggAFBbg'
+
+    Returns:
+        Artist data.
+
+    Raises:
+        MethodError: Method encountered an error
+
+    Example:
+        >>> api = ytm.AbstractYouTubeMusic()
+        >>>
+        >>> artist = api.artist('UCTK1maAvqrDlD2agZDGZzjw')
+        >>>
+        >>> artist['name']
+        'Take That'
+        >>>
     '''
 
     artist_browse_id = types.ArtistBrowseId(artist_id)

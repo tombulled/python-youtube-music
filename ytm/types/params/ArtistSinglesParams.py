@@ -46,6 +46,9 @@ class ArtistSinglesParams(base.Params):
 
         parsed_1 = super()._parse(value, pattern_1)
 
+        if not parsed_1:
+            return data
+
         len_suffix = cls._get(parsed_1, int, 'len_suffix')
         suffix     = cls._get(parsed_1, str, 'suffix')
 
@@ -53,6 +56,9 @@ class ArtistSinglesParams(base.Params):
             return data
 
         parsed_2 = super()._parse(suffix, pattern_2)
+
+        if not parsed_2:
+            return data
 
         language        = cls._get(parsed_2, str, 'language')
         region_1        = cls._get(parsed_2, str, 'region_1')

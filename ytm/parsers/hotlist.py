@@ -110,7 +110,7 @@ def hotlist(data: dict):
         track_data = \
         {
             'id':        track_id,
-            'title':     track_title,
+            'name':     track_title,
             'views':     track_views,
             'artist': \
             {

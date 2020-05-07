@@ -1,4 +1,5 @@
 '''
+Module containing the Api class: AbstractYouTubeMusic
 '''
 
 from ..BaseYouTubeMusic import BaseYouTubeMusic
@@ -6,10 +7,28 @@ from . import methods
 
 class AbstractYouTubeMusic(object):
     '''
+    Abstract YouTube Music class.
+
+    Base methods get abstracted and parsed.
+
+    Attributes:
+        _base: Base class reference
     '''
 
-    def __init__(self: object):
+    _base: BaseYouTubeMusic = None
+
+    def __init__(self: object) -> None:
         '''
+        Initialise class.
+
+        Args:
+            self: Class instance
+
+        Returns:
+            None
+
+        Example:
+            >>> api = AbstractYouTubeMusic()
         '''
 
         self._base = BaseYouTubeMusic()
@@ -21,6 +40,22 @@ class AbstractYouTubeMusic(object):
 
     def __repr__(self: object) -> str:
         '''
+        Return a string representation of the object.
+
+        Returns a string in the format <{class_name}()>
+
+        Args:
+            self: Class instance
+
+        Returns:
+            String representation of the object
+
+        Example:
+            >>> api = AbstractYouTubeMusic()
+            >>>
+            >>> api
+            <AbstractYouTubeMusic()>
+            >>>
         '''
 
         return '<{class_name}()>'.format \

@@ -17,7 +17,11 @@ class TypeB64(TypeStr):
 
         parsed = {}
 
-        url_decoded = urllib.parse.unquote(value).replace('-', '+')
+        url_decoded = urllib.parse.unquote(value)
+
+        # Replacing - with + has been checked and is correct.
+        # Is replacing _ with + correct?
+        url_decoded = url_decoded.replace('-', '+').replace('_', '+')
 
         if not utils.is_base64(url_decoded):
             return parsed

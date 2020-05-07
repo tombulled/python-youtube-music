@@ -1,3 +1,7 @@
+'''
+Module containing the method: playlist
+'''
+
 from .. import decorators
 from .... import parsers
 from .... import types
@@ -30,9 +34,39 @@ def playlist \
             continuation: PlaylistContinuation = None,
         ) -> dict:
     '''
+    Fetch Playlist data.
+
+    Args:
+        self: Class Instance
+        playlist_id: Playlist Id
+            Example: 'RDCLAK5uy_nUi8B-S9ckz5feHM7oMGyQQ_eKW2Zl9aE'
+        continuation: Playlist Continuation
+            Example: '4qmFsgJbEi1WTFJEQ0xBSzV1eV9uVWk4Qi1TOWNrejVmZUhNN29NR3...'
+
+    Returns:
+        Playlist data.
+
+    Raises:
+        MethodError: Method encountered an error
+
+    Example:
+        >>> api = ytm.AbstractYouTubeMusic()
+        >>>
+        >>> playlist = api.playlist('RDCLAK5uy_nUi8B-S9ckz5feHM7oMGyQQ_eKW2Zl9aE')
+        >>>
+        >>> playlist['name']
+        '00s Sing-Alongs'
+        >>>
+        >>> # More playlist data (only if it has 100+ tracks)
+        >>> more_playlist = api.playlist(continuation = playlist['continuation'])
+        >>>
+        >>> more_playlist['tracks'][0]['name']
+        'America'
+        >>>
     '''
 
     if playlist_id is not None:
+        # Turn this into a mapping
         if utils.isinstance(playlist_id, types.ChartPlaylistId):
             playlist_browse_id = types.ChartPlaylistBrowseId(playlist_id)
         elif utils.isinstance(playlist_id, types.ArtistSongsPlaylistId):

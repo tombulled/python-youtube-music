@@ -1,4 +1,5 @@
 '''
+Module containing the method: watch_shuffle
 '''
 
 from .. import decorators
@@ -56,6 +57,31 @@ def watch_shuffle \
             ),
         ) -> dict:
     '''
+    Fetch Shuffle Watch data.
+
+    Use the watch() method to continue data.
+
+    Args:
+        self: Class Instance
+        playlist_id: Playlist Id
+            Example: 'RDAODz952MrmDXLULMlo7SEXUw'
+        song_id: Song Id
+            Example: 'gyOF8CopyGo'
+
+    Returns:
+        Shuffle Watch data
+
+    Raises:
+        MethodError: Method encountered an error
+
+    Example:
+        >>> api = ytm.AbstractYouTubeMusic()
+        >>>
+        >>> data = api.watch_shuffle('OLAK5uy_kEQJGO2SZ0k-vJ8b-F2AJLfKnw0cFydNg')
+        >>>
+        >>> data['tracks'][0]['name']
+        'Come as You Are'
+        >>>
     '''
 
     type_map = \

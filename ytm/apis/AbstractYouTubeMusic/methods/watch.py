@@ -1,3 +1,7 @@
+'''
+Module containing the method: watch
+'''
+
 from .. import decorators
 from .... import parsers
 from .... import utils
@@ -34,7 +38,7 @@ def watch \
         (
             self:         object,
             song_id:      SongId = None,
-            playlist_id: Union \
+            playlist_id:  Union \
             (
                 ChartPlaylistId,
                 ChartPlaylistBrowseId,
@@ -60,6 +64,33 @@ def watch \
             continuation: WatchContinuation = None,
         ) -> dict:
     '''
+    Fetch Watch data.
+
+    Args:
+        self: Class Instance
+        song_id: Song Id
+            Example: '0nCYgT-rVSo'
+        playlist_id: Playlist Id
+            Example: 'OLAK5uy_kEQJGO2SZ0k-vJ8b-F2AJLfKnw0cFydNg'
+        params: Watch Params
+            Example: 'wAEB'
+        continuation: Watch Continuation
+            Example: 'CBkSSBILLUIzOVdoVW5Pc0UiKFJEQU1QTFBMSGNkcGVKUEVJdDlRLX...'
+
+    Returns:
+        Watch data
+
+    Raises:
+        MethodError: Method encountered an error
+
+    Example:
+        >>> api = ytm.AbstractYouTubeMusic()
+        >>>
+        >>> data = api.watch('Rf3-KrGyw8U', 'OLAK5uy_le-wYvLezyD8DZ_n99oJJswSaobGTiGgA')
+        >>>
+        >>> data['tracks'][0]['name']
+        'B.I.T.M.'
+        >>>
     '''
 
     type_map = \

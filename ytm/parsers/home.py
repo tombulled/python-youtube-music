@@ -407,7 +407,7 @@ def home(data: dict):
 
         shelf_data = \
         {
-            'title':     shelf_title,
+            'name':      shelf_title,
             'strapline': shelf_strapline,
             'items':     shelf_items,
         }

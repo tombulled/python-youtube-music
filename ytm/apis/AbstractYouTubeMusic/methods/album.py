@@ -1,3 +1,7 @@
+'''
+Module containing the method: album
+'''
+
 from .. import decorators
 from .... import parsers
 from .... import utils
@@ -28,6 +32,27 @@ def album \
             ),
         ) -> dict:
     '''
+    Fetch Album data.
+
+    Args:
+        self: Class Instance
+        album_id: Album Id
+            Example: 'MPREb_qQJJUiZlXaS'
+
+    Returns:
+        Album data
+
+    Raises:
+        MethodError: Method encountered an error
+
+    Example:
+        >>> api = ytm.AbstractYouTubeMusic()
+        >>>
+        >>> data = api.album('MPREb_qQJJUiZlXaS')
+        >>>
+        >>> data['name']
+        'Apricot Princess'
+        >>> 
     '''
 
     if utils.isinstance(album_id, types.AlbumBrowseId):

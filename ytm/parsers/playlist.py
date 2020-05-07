@@ -1,3 +1,6 @@
+'''
+'''
+
 from .. import utils
 from . import decorators
 from . import cleansers
@@ -5,6 +8,9 @@ from . import cleansers
 @decorators.enforce_parameters
 @decorators.catch
 def playlist(data: dict):
+    '''
+    '''
+
     assert data, 'No data to parse'
 
     if 'continuationContents' in data:
@@ -493,9 +499,15 @@ def playlist(data: dict):
 
         tracks.append(track_data)
 
+    # scraped = \
+    # {
+    #     'playlist':     playlist_data,
+    #     'tracks':       tracks,
+    #     'continuation': continuation,
+    # }
     scraped = \
     {
-        'playlist':     playlist_data,
+        **(playlist_data or {}),
         'tracks':       tracks,
         'continuation': continuation,
     }

@@ -345,7 +345,7 @@ def album(data: dict):
             'explicit':  track_explicit,
             'length':    track_length,
             'thumbnail': track_thumbnail,
-            'title':     track_title,
+            'name':     track_title,
             'id':        track_id,
         }
 

@@ -251,7 +251,7 @@ def playlist(data: dict):
             'name':         playlist_title,
             'type':         playlist_type,
             'year':         playlist_year,
-            'thubnail':     playlist_thumbnail,
+            'thumbnail':    playlist_thumbnail,
             'duration':     playlist_duration,
             'id':           playlist_id,
             'total_tracks': playlist_track_count, # This is not 100% correct. Maxes at 100 (??)

@@ -21,13 +21,14 @@ PARAMS_RADIO_SONG = 'mgMDCNgE'
 PLAYER_PARAMS_RADIO_SONG = 'igMDCNgE'
 
 # Prefixes
-PREFIX_RADIO    = 'RDAMPL'
+PREFIX_RADIO    = 'RDAMPL' # These exist in /types/constants. Are they needed here?
 PREFIX_PLAYLIST = 'VL'
 
 API_KEYS = \
 (
     'AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30',
     'AIzaSyDK3iBpDP9nHVTk2qL73FLJICfOC3c51Og',
+    'AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8',
 )
 
 API_KEY = API_KEYS[0]

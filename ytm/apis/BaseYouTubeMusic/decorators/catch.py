@@ -84,6 +84,15 @@ def catch(func):
                 exception_message = str(error)
 
             exception = exceptions.ConnectionError
+        except TimeoutError as error:
+            error_name = error.__class__.__name__
+
+            error_number = error.errno
+            error_message = error.strerror
+
+            exception_message = f'{error_name} - [{error_number}] {error_message}'
+
+            exception = exceptions.ConnectionError
         except Exception as error:
             exception_message = str(error)
 

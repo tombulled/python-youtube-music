@@ -4,9 +4,10 @@ Module containing the utility function: rstrip
 
 def rstrip(string: str, sub_string: str, count: int = None) -> str:
     """
-    Right strip <count> <sub_string>'s from <string>. If <count> is not >= 1 or not an integer, it will be set to 1.
+    Right strip <count> <sub_string>'s from <string>.
 
     Strips a phrase instead of a set of characters
+    If <count> is <= 0 or not an integer, it will be set to 1.
 
     Args:
         string: Source string to strip from

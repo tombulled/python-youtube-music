@@ -52,6 +52,7 @@ def video_info(self: object, video_id: str) -> dict:
 
     data = dict(urllib.parse.parse_qsl(resp.text))
 
+    # Offload this to /parsers/song?
     parsers = \
     {
         'fexp': lambda data:  \

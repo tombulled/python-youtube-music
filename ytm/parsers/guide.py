@@ -1,9 +1,37 @@
+'''
+Module containing the parser: guide
+'''
+
 from .. import utils
 from . import decorators
 
 @decorators.enforce_parameters
 @decorators.catch
-def guide(data: dict):
+def guide(data: dict) -> dict:
+    '''
+    Parse data: Guide.
+
+    Args:
+        data: Data to parse
+
+    Returns:
+        Parsed data
+
+    Raises:
+        ParserError: The parser encountered an error
+
+    Example:
+        >>> api = ytm.BaseYouTubeMusic()
+        >>>
+        >>> data = api.guide()
+        >>>
+        >>> parsed_data = ytm.parsers.guide(data)
+        >>>
+        >>> parsed_data['Home']
+        'FEmusic_home'
+        >>>
+    '''
+
     assert data, 'No data to parse'
 
     scraped = {}
@@ -18,7 +46,7 @@ def guide(data: dict):
         default = (),
     )
 
-    assert pivot_items
+    assert pivot_items, 'Data has no pivot items'
 
     for pivot_item in pivot_items:
         pivot_item = utils.get \

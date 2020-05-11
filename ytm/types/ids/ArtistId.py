@@ -1,8 +1,13 @@
+'''
+'''
+
 from .. import base
-from .. import utils
 from .. import constants
 
 class ArtistId(base.Id):
+    '''
+    '''
+    
     _pattern = '^(?P<data>{prefix}[{chars}]{{{entropy_length}}})$'.format \
     (
         prefix         = constants.PREFIX_ARTIST_ID,

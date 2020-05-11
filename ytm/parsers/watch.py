@@ -1,3 +1,7 @@
+'''
+Module containing the parser: watch
+'''
+
 from .. import utils
 from . import decorators
 from . import cleansers
@@ -5,6 +9,34 @@ from . import cleansers
 @decorators.enforce_parameters
 @decorators.catch
 def watch(data: dict):
+    '''
+    Parse data: Watch.
+
+    Args:
+        data: Data to parse
+
+    Returns:
+        Parsed data
+
+    Raises:
+        ParserError: The parser encountered an error
+
+    Example:
+        >>> api = ytm.BaseYouTubeMusic()
+        >>>
+        >>> data = api.next \
+        (
+            video_id    = 'HyHNuVaZJ-k',
+        	playlist_id = 'RDCLAK5uy_kzInc7BXjYqbrGEiqW9fBhOZoroJvfsao',
+        )
+        >>>
+        >>> parsed_data = ytm.parsers.watch(data)
+        >>>
+        >>> parsed_data['tracks'][0]['name']
+        'Feel Good Inc'
+        >>>
+    '''
+
     assert data, 'No data to parse'
 
     if 'continuationContents' in data:
@@ -24,7 +56,7 @@ def watch(data: dict):
             'playlistPanelRenderer',
         )
 
-    assert playlist_renderer
+    assert playlist_renderer, 'No Playlist Renderer'
 
     tracks = utils.get \
     (
@@ -33,7 +65,7 @@ def watch(data: dict):
         default = (),
     )
 
-    assert tracks
+    assert tracks, 'No Tracks'
 
     playlist_tracks = []
 

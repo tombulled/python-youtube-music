@@ -1,9 +1,35 @@
+'''
+Module containing the parser: album
+'''
+
 from .. import utils
 from . import decorators
 
 @decorators.enforce_parameters
 @decorators.catch
-def album(data: dict):
+def album(data: dict) -> dict:
+    '''
+    Parse album data.
+
+    Args:
+        data: Data to parse
+
+    Returns:
+        Parsed data
+
+    Raises:
+        ParserError: The parser encountered an error
+
+    Example:
+        >>> api = ytm.BaseYouTubeMusic()
+        >>>
+        >>> data = api.browse_album('MPREb_ij6eHbvH9FF')
+        >>>
+        >>> parsed_data['name']
+        'Why Are You OK'
+        >>>
+    '''
+
     assert data, 'No data to parse'
 
     scraped = {}

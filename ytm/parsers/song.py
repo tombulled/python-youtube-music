@@ -1,9 +1,37 @@
+'''
+Module containing the parser: song
+'''
+
 from .. import utils
 from . import decorators
 
 @decorators.enforce_parameters
 @decorators.catch
-def song(data: dict):
+def song(data: dict) -> dict:
+    '''
+    Parse data: Song.
+
+    Args:
+        data: Data to parse
+
+    Returns:
+        Parsed data
+
+    Raises:
+        ParserError: The parser encountered an error
+
+    Example:
+        >>> api = ytm.BaseYouTubeMusic()
+        >>>
+        >>> data = api.video_info('8gYfvzGqcbY')
+        >>>
+        >>> parsed_data = ytm.parsers.song(data)
+        >>>
+        >>> parsed_data['name']
+        'Above The Clouds Of Pompeii'
+        >>>
+    '''
+
     assert data, 'No data to parse'
 
     player_response = utils.get \

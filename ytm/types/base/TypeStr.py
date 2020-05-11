@@ -82,4 +82,7 @@ class TypeStr(str, metaclass = classes.BuiltinMeta):
 
     @classmethod
     def _clean(cls: type, value: str) -> str:
+        '''
+        '''
+        
         return value

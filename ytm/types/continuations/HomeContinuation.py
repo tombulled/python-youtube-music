@@ -1,9 +1,18 @@
+'''
+'''
+
 from .. import base
 from .. import utils
 
 class HomeContinuation(base.Continuation):
+    '''
+    '''
+
     @classmethod
     def _parse(cls: type, value: str) -> dict:
+        '''
+        '''
+        
         value = str(value)
 
         pattern_1 = \

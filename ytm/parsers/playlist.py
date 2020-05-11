@@ -1,4 +1,5 @@
 '''
+Module containing the parser: playlist
 '''
 
 from .. import utils
@@ -7,8 +8,29 @@ from . import cleansers
 
 @decorators.enforce_parameters
 @decorators.catch
-def playlist(data: dict):
+def playlist(data: dict) -> dict:
     '''
+    Parse data: Playlist.
+
+    Args:
+        data: Data to parse
+
+    Returns:
+        Parsed data
+
+    Raises:
+        ParserError: The parser encountered an error
+
+    Example:
+        >>> api = ytm.BaseYouTubeMusic()
+        >>>
+        >>> data = api.browse_playlist('VLRDCLAK5uy_kzInc7BXjYqbrGEiqW9fBhOZoroJvfsao')
+        >>>
+        >>> parsed_data = ytm.parsers.playlist(data)
+        >>>
+        >>> parsed_data['name']
+        'Feel-Good 00s'
+        >>>
     '''
 
     assert data, 'No data to parse'

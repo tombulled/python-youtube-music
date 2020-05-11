@@ -1,5 +1,7 @@
+'''
+'''
+
 from .TypeStr import TypeStr
-from .. import constants
 from .. import utils
 
 import urllib.parse
@@ -8,10 +10,16 @@ import re
 from typing import Any
 
 class TypeB64(TypeStr):
+    '''
+    '''
+
     _pattern = f'^(?P<data>.*)$'.encode()
 
     @classmethod
     def _parse(cls: type, value: str, pattern: bytes = None) -> dict:
+        '''
+        '''
+
         if pattern is None:
             pattern = cls._pattern
 
@@ -42,6 +50,9 @@ class TypeB64(TypeStr):
 
     @staticmethod
     def _get(groups: dict, type: type, key: str) -> Any:
+        '''
+        '''
+
         if type is str:
             return (groups.get(key) or b'').decode() or None
         elif type is bytes:

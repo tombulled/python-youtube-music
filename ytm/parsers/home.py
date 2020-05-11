@@ -1,9 +1,37 @@
+'''
+Module containing the parser: home
+'''
+
 from .. import utils
 from . import decorators
 
 @decorators.enforce_parameters
 @decorators.catch
-def home(data: dict):
+def home(data: dict) -> dict:
+    '''
+    Parse data: Home.
+
+    Args:
+        data: Data to parse
+
+    Returns:
+        Parsed data
+
+    Raises:
+        ParserError: The parser encountered an error
+
+    Example:
+        >>> api = ytm.BaseYouTubeMusic()
+        >>>
+        >>> data = api.browse_home()
+        >>>
+        >>> parsed_data = ytm.parsers.home(data)
+        >>>
+        >>> parsed_data['shelves'][0]['name']
+        'Morning sunshine'
+        >>>
+    '''
+
     assert data, 'No data to parse'
 
     if 'continuationContents' in data:

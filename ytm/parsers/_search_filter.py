@@ -1,10 +1,44 @@
+'''
+Module containing the parser: _search_filter
+'''
+
 from .. import utils
 from . import decorators
 from ._search import _search as parse_search
 
 @decorators.enforce_parameters
 @decorators.catch
-def _search_filter(data: dict, filter: str):
+def _search_filter(data: dict, filter: str) -> dict:
+    '''
+    Parse filtered search data.
+
+    Args:
+        data: Data to parse
+        filter: Search filter
+            Example: 'artists'
+
+    Returns:
+        Parsed data
+
+    Raises:
+        ParserError: The parser encountered an error
+
+    Example:
+        >>> api = ytm.BaseYouTubeMusic()
+        >>>
+        >>> params_artists = ytm.constants.SEARCH_PARAM_PREFIX  \
+        		           + ytm.constants.SEARCH_PARAM_ARTISTS \
+        		           + ytm.constants.SEARCH_PARAM_SUFFIX
+        >>>
+        >>> data = api.search('foo fighters', params = params_artists)
+        >>>
+        >>> parsed_data = ytm.parsers._search_filter(data, 'artists')
+        >>>
+        >>> parsed_data['items'][0]['name']
+        'Foo Fighters'
+        >>>
+    '''
+
     assert data, 'No data to parse'
 
     if 'continuationContents' in data:

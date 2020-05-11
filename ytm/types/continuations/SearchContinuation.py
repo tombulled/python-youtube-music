@@ -1,9 +1,18 @@
+'''
+'''
+
 from .. import base
 from .. import constants
 
 class SearchContinuation(base.Continuation):
+    '''
+    '''
+
     @classmethod
     def _parse(cls: type, value: str) -> dict:
+        '''
+        '''
+        
         value = str(value)
 
         pattern_1 = b''.join \

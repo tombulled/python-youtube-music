@@ -1,28 +1,39 @@
-import pathlib
-import os
 from ..YouTubeMusic import YouTubeMusic
 from ... import utils
+import pathlib
+import os
 import io
 import requests
-# import ffmpeg
-from PIL import Image
-import mutagen.easyid3
-import mutagen.id3
-import mutagen.mp4
-import mutagen.easymp4
-import youtube_dl
-
-# Monkey patch ffmpeg's popen:
 import subprocess
 import functools
 
-Popen = subprocess.Popen
-
-CREATE_NO_WINDOW = 0x08000000
-subprocess.Popen = functools.partial(Popen, creationflags=CREATE_NO_WINDOW)
+# Monkey patch ffmpeg's popen:
+subprocess._Popen = subprocess.Popen
+subprocess.Popen  = functools.partial \
+(
+    subprocess._Popen,
+    creationflags = 0x08000000,
+)
 
 class BaseYouTubeMusicDL(object):
-    def _download(self, song_id, metadata=None, thumbnail=None, directory=None, video=False):
+    def _download \
+            (
+                self,
+                song_id,
+                metadata  = None,
+                thumbnail = None,
+                directory = None,
+                video     = False,
+            ):
+        '''
+        '''
+        
+        import mutagen.easyid3
+        import mutagen.id3
+        import mutagen.mp4
+        import mutagen.easymp4
+        import youtube_dl
+
         file_name_format = '%(title)s.%(ext)s'
 
         if not metadata:
@@ -56,7 +67,7 @@ class BaseYouTubeMusicDL(object):
         (
             params = \
             {
-                'quiet': True,
+                'quiet':          True,
                 'outtmpl':        str(path_file),
                 'postprocessors': post_processors,
                 'format':         format,
@@ -183,6 +194,8 @@ class BaseYouTubeMusicDL(object):
         return path_file
 
     def _get_album_art(self, url, crop=True):
+        from PIL import Image
+
         resp   = requests.get(url) # Use _api's session
         buffer = io.BytesIO(resp.content)
         image  = Image.open(buffer)
@@ -233,10 +246,10 @@ class AbstractYouTubeMusicDL(object):
         album = self._api.album(album_id)
 
         album_thumbnail_url = album['thumbnail']['url']
-        album_artist = album['artists'][0]['name']
-        album_name = album['name']
-        album_year = album['date']['year']
-        album_tracks = album['tracks']
+        album_artist        = album['artists'][0]['name']
+        album_name          = album['name']
+        album_year          = album['date']['year']
+        album_tracks        = album['tracks']
 
         thumbnail = self._base._get_album_art \
         (
@@ -257,8 +270,8 @@ class AbstractYouTubeMusicDL(object):
         # Create album directory
 
         for index, track in enumerate(album_tracks, start = 1):
-            track_id = track['id']
-            track_name = track['name']
+            track_id    = track['id']
+            track_name  = track['name']
             track_index = str(index)
 
             track_metadata = \
@@ -282,12 +295,12 @@ class AbstractYouTubeMusicDL(object):
     def download_playlist(self, playlist_id, directory=None):
         playlist = self._api.playlist(playlist_id)
 
-        playlist_name = playlist['name']
-        playlist_year = str(playlist['year'])
+        playlist_name          = playlist['name']
+        playlist_year          = str(playlist['year'])
         playlist_thumbnail_url = playlist['thumbnail']['url']
-        playlist_tracks = playlist['tracks']
-        playlist_continuation = playlist['continuation']
-        playlist_artist_name = playlist['artist']['name']
+        playlist_tracks        = playlist['tracks']
+        playlist_continuation  = playlist['continuation']
+        playlist_artist_name   = playlist['artist']['name']
 
         thumbnail = self._base._get_album_art \
         (
@@ -298,7 +311,6 @@ class AbstractYouTubeMusicDL(object):
         metadata = utils.filter \
         (
             {
-                # 'artist':      playlist_artist_name,
                 'album':       playlist_name,
                 'albumartist': playlist_artist_name,
                 'date':        playlist_year,
@@ -314,9 +326,9 @@ class AbstractYouTubeMusicDL(object):
 
         for track_index, track in enumerate(playlist_tracks, start = 1):
             track_artist_name = track['artist']['name']
-            track_name = track['name']
-            track_id = track['id']
-            track_index = str(track_index)
+            track_name        = track['name']
+            track_id          = track['id']
+            track_index       = str(track_index)
 
             track_metadata = \
             {

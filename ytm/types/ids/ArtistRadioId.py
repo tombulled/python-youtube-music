@@ -1,7 +1,13 @@
+'''
+'''
+
 from .. import base
 from .. import constants
 
 class ArtistRadioId(base.Id):
+    '''
+    '''
+    
     _pattern = '^(?P<prefix>{prefixes})(?P<data>[{chars}]{{{entropy_length}}})$'.format \
     (
         prefixes       = '|'.join \

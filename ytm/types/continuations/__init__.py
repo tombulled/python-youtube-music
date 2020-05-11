@@ -1,4 +1,5 @@
 '''
+Package containing Continuation types.
 '''
 
 from ...utils import include as __include

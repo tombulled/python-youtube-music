@@ -1,7 +1,13 @@
+'''
+'''
+
 from .. import base
 from .. import constants
 
 class PlaylistId(base.Id):
+    '''
+    '''
+    
     _pattern = '^(?P<prefix>{prefixes})?(?P<data>{prefix}[{chars}]{{{entropy_length}}})$'.format \
     (
         prefixes       = '|'.join \

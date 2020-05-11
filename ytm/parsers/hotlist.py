@@ -1,9 +1,37 @@
+'''
+Module containing the parser: hotlist
+'''
+
 from .. import utils
 from . import decorators
 
 @decorators.enforce_parameters
 @decorators.catch
-def hotlist(data: dict):
+def hotlist(data: dict) -> list:
+    '''
+    Parse data: Hotlist.
+
+    Args:
+        data: Data to parse
+
+    Returns:
+        Parsed data
+
+    Raises:
+        ParserError: The parser encountered an error
+
+    Example:
+        >>> api = ytm.BaseYouTubeMusic()
+        >>>
+        >>> data = api.browse_hotlist()
+        >>>
+        >>> parsed_data = ytm.parsers.hotlist(data)
+        >>>
+        >>> parsed_data[0]['name']
+        'Me & You Together Song'
+        >>>
+    '''
+
     assert data, 'No data to parse'
 
     grid_items = utils.get \

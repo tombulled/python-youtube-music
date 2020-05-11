@@ -1,9 +1,44 @@
+'''
+Module containing the parser: artist_singles
+'''
+
 from .. import utils
 from . import decorators
 
 @decorators.enforce_parameters
 @decorators.catch
-def artist_singles(data):
+def artist_singles(data: dict) -> list:
+    '''
+    Parse data: Artist Singles
+
+    Args:
+        data: Data to parse
+
+    Returns:
+        Parsed data
+
+    Raises:
+        ParserError: The parser encountered an error
+
+    Example:
+        >>> api_base     = ytm.BaseYouTubeMusic()
+        >>> api_abstract = ytm.AbstractYouTubeMusic()
+        >>>
+        >>> artist_id = 'UCTK1maAvqrDlD2agZDGZzjw' # Take That
+        >>>
+        >>> artist = api_abstract.artist(artist_id)
+        >>>
+        >>> singles_params = artist['singles']['params']
+        >>>
+        >>> data = api.browse(artist_id, params=singles_params)
+        >>>
+        >>> parsed_data = ytm.parsers.artist_singles(data)
+        >>>
+        >>> parsed_data[0]['name']
+        'Cry (Live)'
+        >>>
+    '''
+
     assert data, 'No data to parse'
 
     header = utils.get \
@@ -13,7 +48,7 @@ def artist_singles(data):
         'musicHeaderRenderer',
     )
 
-    assert header
+    assert header, 'Data has no header'
 
     contents = utils.get \
     (
@@ -31,7 +66,7 @@ def artist_singles(data):
         'contents',
     )
 
-    assert contents
+    assert contents, 'Data has no contents'
 
     parsed_items = []
 

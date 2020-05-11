@@ -1,3 +1,7 @@
+'''
+Package containing parser functions
+'''
+
 from .. import utils as __utils
 import types as __types
 

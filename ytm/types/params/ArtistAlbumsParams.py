@@ -1,8 +1,17 @@
+'''
+'''
+
 from .. import base
 
 class ArtistAlbumsParams(base.Params):
+    '''
+    '''
+
     @classmethod
     def _parse(cls: type, value: str) -> dict:
+        '''
+        '''
+        
         value = str(value)
 
         pattern_1 = \

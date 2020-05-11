@@ -1,10 +1,38 @@
+'''
+Module containing the parser: _search
+'''
+
 from .. import utils
 from . import decorators
 from . import cleansers
 
 @decorators.enforce_parameters
 @decorators.catch
-def _search(data: dict):
+def _search(data: dict) -> dict:
+    '''
+    Parse search data.
+
+    Args:
+        data: Data to parse
+
+    Returns:
+        Parsed data
+
+    Raises:
+        ParserError: The parser encountered an error
+
+    Example:
+        >>> api = ytm.BaseYouTubeMusic()
+        >>>
+        >>> data = api.search('the funeral')
+        >>>
+        >>> parsed_data = ytm.parsers._search(data)
+        >>>
+        >>> parsed_data['songs']['items'][0]['name']
+        'The Funeral'
+        >>>
+    '''
+
     assert data, 'No data to parse'
 
     data = utils.get \

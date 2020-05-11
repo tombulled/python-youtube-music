@@ -1,3 +1,7 @@
+'''
+Package containing decorators.
+'''
+
 from ... import \
 (
     utils as __utils,
@@ -10,6 +14,5 @@ locals().update(__inherit)
 
 __all__ = \
 (
-    # *tuple(__inherit),
     *tuple(__utils.include(__spec__)),
 )

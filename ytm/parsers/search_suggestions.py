@@ -1,9 +1,45 @@
+'''
+Module containing the parser: search_suggestions
+'''
+
 from .. import utils
 from . import decorators
 
 @decorators.enforce_parameters
 @decorators.catch
-def search_suggestions(data: dict):
+def search_suggestions(data: dict) -> list:
+    '''
+    Parse data: Search Suggestions.
+
+    Args:
+        data: Data to parse
+
+    Returns:
+        Parsed data
+
+    Raises:
+        ParserError: The parser encountered an error
+
+    Example:
+        >>> api = ytm.BaseYouTubeMusic()
+        >>>
+        >>> data = api.search_suggestions('band of')
+        >>>
+        >>> parsed_data = ytm.parsers.search_suggestions(data)
+        >>>
+        >>> for suggestion in parsed_data:
+        	print(suggestion)
+
+        band of horses the funeral
+        band of horses
+        band of heathens hurricane
+        band of gold
+        band of brothers theme
+        band of boys
+        band of horses no one's gonna love you
+        >>>
+    '''
+
     assert data, 'No data to parse'
 
     contents = utils.get \
@@ -16,7 +52,7 @@ def search_suggestions(data: dict):
         default = (),
     )
 
-    assert contents
+    assert contents, 'No contents'
 
     suggestions = []
 

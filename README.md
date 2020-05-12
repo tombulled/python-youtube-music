@@ -1,9 +1,16 @@
 # python-youtube-music
 
-Python YouTube Music Web API Client - **Still under active development**
+Python YouTube Music Web API Client - **Still under active development** - _Nearly at v1.0_   :smile:
 
 ![YouTube Music](https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Logo_of_YouTube_Music.svg/1280px-Logo_of_YouTube_Music.svg.png)
 
+## Contents:
+* [Dependencies](#dependencies)
+* [Installation](#installation)
+* [Getting Started](#getting-started)
+* [Methods](#methods)
+
+<!--
 ## Contents:
 * [Dependencies - Required](#dependencies---required)
 * [Dependencies - Optional](#dependencies---optional)
@@ -29,27 +36,34 @@ Python YouTube Music Web API Client - **Still under active development**
 * [Method - Watch](#method---watch)
 * [Method - Watch Radio](#method---watch-radio)
 * [Method - Watch Shuffle](#method---watch-shuffle)
+-->
 
-## Dependencies - Required
+## Dependencies
+Libraries ```ytm``` depends on
+
+### Required Dependencies
 | Library                                     | Install              | Import          | Functionality            |
 | ------------------------------------------- | -------------------- | --------------- | ------------------------ |
 | [Requests](https://github.com/psf/requests) | pip install requests | import requests | Send HTTP/HTTPS requests |
 
-## Dependencies - Optional
+### Optional Dependencies
 | Library                                                 | Install                | Import            | Functionality                |
 | ------------------------------------------------------- | ---------------------- | ----------------- | ---------------------------- |
 | [YoutubeDL](https://github.com/ytdl-org/youtube-dl)     | pip install youtube-dl | import youtube_dl | Download YouTube videos      |
 | [Mutagen](https://github.com/quodlibet/mutagen)         | pip install mutagen    | import mutagen    | Read and write audio metadata|
 | [Pillow (PIL)](https://github.com/python-pillow/Pillow) | pip install Pillow     | import PIL        | Python imaging library       |
 
-## Installation - From PyPi
+## Installation
+Install ```ytm``` onto your system.
+
+### Install From PyPi
 In a terminal execute the command:
 ```console
 user@host:~$ pip install ytm # You may need to use: python3 -m pip install ytm
 Successfully installed ytm
 ```
 
-## Installation - From Source
+### Install From Source
 Clone/download this repository and run setup.py:
 ```console
 user@host:~$ python setup.py install # You may need to use: python3 setup.py install
@@ -96,7 +110,30 @@ View available methods
 >>> 
 ```
 
-## Method - Album
+## Methods
+Available API methods to retrieve data.
+
+* [Method - Album](#method---album)
+* [Method - Artist](#method---artist)
+* [Method - Artist Albums](#method---artist-albums)
+* [Method - Artist Singles](#method---artist-singles)
+* [Method - Guide](#method---guide)
+* [Method - Home](#method---home)
+* [Method - Hotlist](#method---hotlist)
+* [Method - Playlist](#method---playlist)
+* [Method - Search](#method---search)
+* [Method - Search Albums](#method---search-albums)
+* [Method - Search Artists](#method---search-artists)
+* [Method - Search Playlists](#method---search-playlists)
+* [Method - Search Songs](#method---search-songs)
+* [Method - Search Videos](#method---search-videos)
+* [Method - Search Suggestions](#method---search-suggestions)
+* [Method - Song](#method---song)
+* [Method - Watch](#method---watch)
+* [Method - Watch Radio](#method---watch-radio)
+* [Method - Watch Shuffle](#method---watch-shuffle)
+
+### Method - Album
 
 Retrieve information about an album.
 
@@ -124,7 +161,7 @@ False
 </p>
 </details>
 
-## Method - Artist
+### Method - Artist
 
 Retrieve information about an artist.
 
@@ -139,7 +176,7 @@ Retrieve information about an artist.
 </p>
 </details>
 
-## Method - Artist Albums
+### Method - Artist Albums
 
 Retrieve information about an artist's albums.
 
@@ -154,7 +191,7 @@ Retrieve information about an artist's albums.
 </p>
 </details>
 
-## Method - Artist Singles
+### Method - Artist Singles
 
 Retrieve information about an artist's singles.
 
@@ -169,7 +206,7 @@ Retrieve information about an artist's singles.
 </p>
 </details>
 
-## Method - Guide
+### Method - Guide
 
 Retrieve information about available tabs.
 
@@ -188,7 +225,7 @@ Retrieve information about available tabs.
 </p>
 </details>
 
-## Method - Home
+### Method - Home
 
 Retrieve information about the home page
 
@@ -223,7 +260,7 @@ Cool vibes
 </p>
 </details>
 
-## Method - Hotlist
+### Method - Hotlist
 Retrieve information about songs in the hotlist.
 
 <details>
@@ -263,7 +300,7 @@ Baauer - AETHER
 </p>
 </details>
 
-## Method - Playlist
+### Method - Playlist
 Retrieve information about a playlist.
 
 <details>
@@ -277,7 +314,7 @@ Retrieve information about a playlist.
 </p>
 </details>
 
-## Method - Search
+### Method - Search
 
 Retrieve information about a specific search.
 
@@ -305,7 +342,7 @@ Retrieve information about a specific search.
 </p>
 </details>
 
-## Method - Search Albums
+### Method - Search Albums
 Retrieve information about a albums related to a specific search query.
 
 <details>
@@ -341,7 +378,7 @@ Jacob Lee - Nevermind
 </p>
 </details>
 
-## Method - Search Artists
+### Method - Search Artists
 
 Retrieve information about artists related to a specific search query.
 
@@ -379,7 +416,7 @@ John Barry
 </p>
 </details>
 
-## Method - Search Playlists
+### Method - Search Playlists
 Retrieve information about playlists related to a specific search query.
 
 <details>
@@ -415,7 +452,7 @@ Pop & Indie Easy Listening
 </p>
 </details>
 
-## Method - Search Songs
+### Method - Search Songs
 
 Retrieve information about songs related to a specific search query.
 
@@ -452,7 +489,7 @@ Coldplay - Cry Cry Cry
 </p>
 </details>
 
-## Method - Search Videos
+### Method - Search Videos
 
 Retrieve information about videos related to a specific search query.
 
@@ -489,7 +526,7 @@ Freddie Mercury - Time Waits For No One
 </p>
 </details>
 
-## Method - Search Suggestions
+### Method - Search Suggestions
 
 Retrieve a list of search suggestions.
 
@@ -516,7 +553,7 @@ Retrieve a list of search suggestions.
 </p>
 </details>
 
-## Method - Song
+### Method - Song
 
 Retrieve information about a song/video.
 
@@ -550,7 +587,7 @@ False
 </p>
 </details>
 
-## Method - Watch
+### Method - Watch
 
 Retrieve information about a song/playlist being watched.
 
@@ -565,7 +602,7 @@ Retrieve information about a song/playlist being watched.
 </p>
 </details>
 
-## Method - Watch Radio
+### Method - Watch Radio
 
 Retrieve information about a song/playlist being watched in radio mode.
 
@@ -580,7 +617,7 @@ Retrieve information about a song/playlist being watched in radio mode.
 </p>
 </details>
 
-## Method - Watch Shuffle
+### Method - Watch Shuffle
 Retrieve information about a playlist being watched in shuffle mode.
 
 <details>

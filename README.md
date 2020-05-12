@@ -16,6 +16,18 @@ Unofficial Python YouTube Music Web API Client - **Still under active developmen
 | [Mutagen](https://github.com/quodlibet/mutagen)         | pip install mutagen    | import mutagen    | Read and write audio metadata|
 | [Pillow (PIL)](https://github.com/python-pillow/Pillow) | pip install Pillow     | import PIL        | Python imaging library       |
 
+## Installation - From PyPi
+In a terminal execute the command:
+```
+pip install ytm
+```
+
+## Installation - From Source
+Clone/download this repository and in a terminal run setup.py:
+```
+cd python-youtube-music && python setup.py install
+```
+
 <!--
 ## Installation
 

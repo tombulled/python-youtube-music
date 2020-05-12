@@ -5,12 +5,30 @@ Python YouTube Music Web API Client - **Still under active development**
 ![YouTube Music](https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Logo_of_YouTube_Music.svg/1280px-Logo_of_YouTube_Music.svg.png)
 
 ## Contents:
-* [Dependencies - Required](#)
-* [Dependencies - Optional](#)
-* [Installation - From PyPi](#)
-* [Installation - From Source](#)
-* [Getting Started](#)
-* [Method - Album](#)
+* [Dependencies - Required](#dependencies--required)
+* [Dependencies - Optional](#dependencies--optional)
+* [Installation - From PyPi](#installation--from-pypi)
+* [Installation - From Source](#installation--from-source)
+* [Getting Started](#getting-started)
+* [Method - Album](#method--album)
+* [Method - Artist](#method--artist)
+* [Method - Artist Albums](#method--artist-albums)
+* [Method - Artist Singles](#method--artist-singles)
+* [Method - Guide](#method--guide)
+* [Method - Home](#method--home)
+* [Method - Hotlist](#method--hotlist)
+* [Method - Playlist](#method--playlist)
+* [Method - Search](#method--search)
+* [Method - Search Albums](#method--search-albums)
+* [Method - Search Artists](#method--search-artists)
+* [Method - Search Playlists](#method--search-playlists)
+* [Method - Search Songs](#method--search-songs)
+* [Method - Search Videos](#method--search-videos)
+* [Method - Search Suggestions](#method--search-suggestions)
+* [Method - Song](#method--song)
+* [Method - Watch](#method--watch)
+* [Method - Watch Radio](#method--watch-radio)
+* [Method - Watch Shuffle](#method--watch-shuffle)
 
 ## Dependencies - Required
 | Library                                     | Install              | Import          | Functionality            |
@@ -26,14 +44,16 @@ Python YouTube Music Web API Client - **Still under active development**
 
 ## Installation - From PyPi
 In a terminal execute the command:
-```
-pip install ytm
+```console
+user@host:~$ pip install ytm # You may need to use: python3 -m pip install ytm
+Successfully installed ytm
 ```
 
 ## Installation - From Source
-Clone/download this repository and in a terminal run setup.py:
-```
-python setup.py install
+Clone/download this repository and run setup.py:
+```console
+user@host:~$ python setup.py install # You may need to use: python3 setup.py install
+Successfully installed ytm
 ```
 
 ## Getting Started
@@ -83,7 +103,7 @@ Retrieve information about an album.
 <details>
 <summary>View Example</summary>
 <p>
-	
+
 ```python
 >>> album = api.album('MPREb_ctJ5HEJw8pg') # Band Of Horses - Everything All The Time
 >>> 
@@ -105,21 +125,58 @@ False
 </details>
 
 ## Method - Artist
+
+Retrieve information about an artist.
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> # TODO
 ```
+
+</p>
+</details>
 
 ## Method - Artist Albums
+
+Retrieve information about an artist's albums.
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> # TODO
 ```
+
+</p>
+</details>
 
 ## Method - Artist Singles
+
+Retrieve information about an artist's singles.
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> # TODO
 ```
 
+</p>
+</details>
+
 ## Method - Guide
+
+Retrieve information about available tabs.
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> guide = api.guide()
 >>> 
@@ -128,7 +185,17 @@ False
 >>> 
 ```
 
+</p>
+</details>
+
 ## Method - Home
+
+Retrieve information about the home page
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> home = api.home()
 >>> 
@@ -153,7 +220,16 @@ Cool vibes
 >>> 
 ```
 
+</p>
+</details>
+
 ## Method - Hotlist
+Retrieve information about songs in the hotlist.
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> hotlist = api.hotlist()
 >>> 
@@ -184,12 +260,31 @@ Baauer - AETHER
 >>> 
 ```
 
+</p>
+</details>
+
 ## Method - Playlist
+Retrieve information about a playlist.
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> # TODO
 ```
 
+</p>
+</details>
+
 ## Method - Search
+
+Retrieve information about a specific search.
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> results = api.search('alt-j')
 >>> 
@@ -207,7 +302,16 @@ Baauer - AETHER
 >>> 
 ```
 
+</p>
+</details>
+
 ## Method - Search Albums
+Retrieve information about a albums related to a specific search query.
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> albums = api.search_albums('nevermind')
 >>> 
@@ -234,7 +338,17 @@ Jacob Lee - Nevermind
 >>> 
 ```
 
+</p>
+</details>
+
 ## Method - Search Artists
+
+Retrieve information about artists related to a specific search query.
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> artists = api.search_artists('john')
 >>> 
@@ -262,7 +376,16 @@ John Barry
 >>> 
 ```
 
+</p>
+</details>
+
 ## Method - Search Playlists
+Retrieve information about playlists related to a specific search query.
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> playlists = api.search_playlists('indie')
 >>> 
@@ -289,7 +412,17 @@ Pop & Indie Easy Listening
 >>> 
 ```
 
+</p>
+</details>
+
 ## Method - Search Songs
+
+Retrieve information about songs related to a specific search query.
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> songs = api.search_songs('cry')
 >>> 
@@ -316,7 +449,17 @@ Coldplay - Cry Cry Cry
 >>> 
 ```
 
+</p>
+</details>
+
 ## Method - Search Videos
+
+Retrieve information about videos related to a specific search query.
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> videos = api.search_videos('time')
 >>> 
@@ -343,7 +486,17 @@ Freddie Mercury - Time Waits For No One
 >>> 
 ```
 
+</p>
+</details>
+
 ## Method - Search Suggestions
+
+Retrieve a list of search suggestions.
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> suggestions = api.search_suggestions('foo fight')
 >>> 
@@ -360,7 +513,17 @@ Freddie Mercury - Time Waits For No One
 >>> 
 ```
 
+</p>
+</details>
+
 ## Method - Song
+
+Retrieve information about a song/video.
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> song = api.song('pPt_FZ9m2bM')
 >>> 
@@ -384,20 +547,52 @@ False
 >>> 
 ```
 
+</p>
+</details>
+
 ## Method - Watch
+
+Retrieve information about a song/playlist being watched.
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> # TODO
 ```
+
+</p>
+</details>
 
 ## Method - Watch Radio
+
+Retrieve information about a song/playlist being watched in radio mode.
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> # TODO
 ```
 
+</p>
+</details>
+
 ## Method - Watch Shuffle
+Retrieve information about a playlist being watched in shuffle mode.
+
+<details>
+<summary>View Example</summary>
+<p>
+
 ```python
 >>> # TODO
 ```
+
+</p>
+</details>
 
 <!-- ################################################################################################## -->
 

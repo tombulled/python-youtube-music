@@ -1,5 +1,6 @@
 from ..YouTubeMusic import YouTubeMusic
 from ... import utils
+
 import pathlib
 import os
 import io
@@ -27,7 +28,7 @@ class BaseYouTubeMusicDL(object):
             ):
         '''
         '''
-        
+
         import mutagen.easyid3
         import mutagen.id3
         import mutagen.mp4

@@ -10,34 +10,6 @@ Python YouTube Music Web API Client - **Still under active development** - _Near
 * [Getting Started](#getting-started)
 * [Methods](#methods)
 
-<!--
-## Contents:
-* [Dependencies - Required](#dependencies---required)
-* [Dependencies - Optional](#dependencies---optional)
-* [Installation - From PyPi](#installation---from-pypi)
-* [Installation - From Source](#installation---from-source)
-* [Getting Started](#getting-started)
-* [Method - Album](#method---album)
-* [Method - Artist](#method---artist)
-* [Method - Artist Albums](#method---artist-albums)
-* [Method - Artist Singles](#method---artist-singles)
-* [Method - Guide](#method---guide)
-* [Method - Home](#method---home)
-* [Method - Hotlist](#method---hotlist)
-* [Method - Playlist](#method---playlist)
-* [Method - Search](#method---search)
-* [Method - Search Albums](#method---search-albums)
-* [Method - Search Artists](#method---search-artists)
-* [Method - Search Playlists](#method---search-playlists)
-* [Method - Search Songs](#method---search-songs)
-* [Method - Search Videos](#method---search-videos)
-* [Method - Search Suggestions](#method---search-suggestions)
-* [Method - Song](#method---song)
-* [Method - Watch](#method---watch)
-* [Method - Watch Radio](#method---watch-radio)
-* [Method - Watch Shuffle](#method---watch-shuffle)
--->
-
 ## Dependencies
 Libraries ```ytm``` depends on
 
@@ -57,14 +29,16 @@ Libraries ```ytm``` depends on
 Install ```ytm``` onto your system.
 
 ### Install From PyPi
-In a terminal execute the command:
+In a terminal execute:
+
 ```console
 user@host:~$ pip install ytm # You may need to use: python3 -m pip install ytm
 Successfully installed ytm
 ```
 
 ### Install From Source
-Clone/download this repository and run setup.py:
+Clone or download this repository and run setup.py:
+
 ```console
 user@host:~$ python setup.py install # You may need to use: python3 setup.py install
 Successfully installed ytm
@@ -72,20 +46,21 @@ Successfully installed ytm
 
 ## Getting Started
 Create an API instance
+
 ```python
 >>> import ytm
->>> 
+>>>
 >>> api = ytm.YouTubeMusic()
 >>> api
 <YouTubeMusic()>
->>> 
+>>>
 ````
 
 View available methods
 
 ```python
 >>> from pprint import pprint
->>> 
+>>>
 >>> pprint(list(api._methods))
 ['_search_filter',
  'album',
@@ -107,11 +82,11 @@ View available methods
  'watch',
  'watch_radio',
  'watch_shuffle']
->>> 
+>>>
 ```
 
 ## Methods
-Available API methods to retrieve data.
+API methods available to retrieve data from YouTube Music:
 
 * [Method - Album](#method---album)
 * [Method - Artist](#method---artist)
@@ -143,10 +118,10 @@ Retrieve information about an album.
 
 ```python
 >>> album = api.album('MPREb_ctJ5HEJw8pg') # Band Of Horses - Everything All The Time
->>> 
+>>>
 >>> list(album)
 ['name', 'id', 'total_tracks', 'radio', 'shuffle', 'explicit', 'duration', 'date', 'type', 'thumbnail', 'description', 'artists', 'tracks', 'variants']
->>> 
+>>>
 >>> album['name']
 'Everything All The Time'
 >>> album['total_tracks']
@@ -216,10 +191,10 @@ Retrieve information about available tabs.
 
 ```python
 >>> guide = api.guide()
->>> 
+>>>
 >>> guide
 {'Home': 'FEmusic_home', 'Hotlist': 'FEmusic_trending', 'Library': 'FEmusic_liked'}
->>> 
+>>>
 ```
 
 </p>
@@ -227,7 +202,7 @@ Retrieve information about available tabs.
 
 ### Method - Home
 
-Retrieve information about the home page
+Retrieve information about shelves displayed on the home page.
 
 <details>
 <summary>View Example</summary>
@@ -235,13 +210,13 @@ Retrieve information about the home page
 
 ```python
 >>> home = api.home()
->>> 
+>>>
 >>> list(home)
 ['continuation', 'shelves']
->>> 
+>>>
 >>> for shelf in home['shelves']:
 	print(shelf['name'])
-	
+
 Top charts
 Relaxing to Country
 >>>
@@ -254,7 +229,7 @@ Relaxing to Country
 Office radio
 Today's hits
 Cool vibes
->>> 
+>>>
 ```
 
 </p>
@@ -269,7 +244,7 @@ Retrieve information about songs in the hotlist.
 
 ```python
 >>> hotlist = api.hotlist()
->>> 
+>>>
 >>> for song in hotlist:
 	print(' & '.join(song['artist']['names']), '-', song['name'])
 
@@ -293,8 +268,8 @@ The 1975 - Me & You Together Song
 SBK - SBK - Numbers (Official Video)
 Sean Paul - Back It up Deh
 Baauer - AETHER
->>> 
->>> 
+>>>
+>>>
 ```
 
 </p>
@@ -324,26 +299,26 @@ Retrieve information about a specific search.
 
 ```python
 >>> results = api.search('alt-j')
->>> 
+>>>
 >>> list(results)
 ['albums', 'playlists', 'videos', 'artists', 'songs', 'top_result']
->>> 
+>>>
 >>> results['top_result']
 'artist'
->>> 
+>>>
 >>> results['artists'][0]['name']
 'alt-J'
->>> 
+>>>
 >>> results['albums'][0]['name']
 'An Awesome Wave'
->>> 
+>>>
 ```
 
 </p>
 </details>
 
 ### Method - Search Albums
-Retrieve information about a albums related to a specific search query.
+Retrieve information about albums related to a specific search query.
 
 <details>
 <summary>View Example</summary>
@@ -351,7 +326,7 @@ Retrieve information about a albums related to a specific search query.
 
 ```python
 >>> albums = api.search_albums('nevermind')
->>> 
+>>>
 >>> for album in albums['items'][:5]: # First 5 Albums
 	print(album['artist']['name'], '-', album['name'])
 
@@ -360,10 +335,10 @@ Alexander Jean - Nevermind
 Sex Pistols - Never Mind The Bollocks, Here's The Sex Pistols (40th Anniversary Deluxe Edition)
 Poyo Spirit - Nevermind
 Distruction Boyz, Zhao - Nevermind (Radio Edit)
->>> 
+>>>
 >>> # Continue Data
 >>> albums2 = api.search_albums(continuation = albums['continuation'])
->>> 
+>>>
 >>> for album in albums2['items'][:5]: # First 5 Albums
 	print(album['artist']['name'], '-', album['name'])
 
@@ -372,7 +347,7 @@ Wisp X - Nevermind
 P_frmdatribe - Nevermind
 Renel - Nevermind
 Jacob Lee - Nevermind
->>> 
+>>>
 ```
 
 </p>
@@ -388,7 +363,7 @@ Retrieve information about artists related to a specific search query.
 
 ```python
 >>> artists = api.search_artists('john')
->>> 
+>>>
 >>> for artist in artists['items'][:5]: # First 5 Artists
 	print(artist['name'])
 
@@ -397,20 +372,20 @@ John Mayer
 John Newman
 Elton John
 John Lennon
->>> 
+>>>
 >>> # Continue Data
 >>> artists2 = api.search_artists(continuation = artists['continuation'])
->>> 
+>>>
 >>> for artist in artists2['items'][:5]: # First 5 Artists
 	print(artist['name'])
 
-	
+
 John Mellencamp
 John Carpenter
 John Williams
 John Coltrane
 John Barry
->>> 
+>>>
 ```
 
 </p>
@@ -425,7 +400,7 @@ Retrieve information about playlists related to a specific search query.
 
 ```python
 >>> playlists = api.search_playlists('indie')
->>> 
+>>>
 >>> for playlist in playlists['items'][:5]: # First 5 Playlists
 	print(playlist['name'])
 
@@ -434,19 +409,19 @@ Upbeat Indie Pop
 Indie Folk Favorites
 Indie Rock Chasers
 Take It Easy Indie
->>> 
+>>>
 >>> # Continue Data
 >>> playlists2 = api.search_playlists(continuation = playlists['continuation'])
->>> 
+>>>
 >>> for playlist in playlists2['items'][:5]: # First 5 Playlists
 	print(playlist['name'])
-	
+
 A Decade of Easy Indie
 Indie Disco Overload
 Sunshine Indie
 Pop & Indie Easy Listening
 00s Indie Guitar Anthems
->>> 
+>>>
 ```
 
 </p>
@@ -462,7 +437,7 @@ Retrieve information about songs related to a specific search query.
 
 ```python
 >>> songs = api.search_songs('cry')
->>> 
+>>>
 >>> for song in songs['items'][:5]: # First 5 Songs
 	print(song['artists'][0]['name'], '-', song['name'])
 
@@ -471,19 +446,19 @@ KAZKA - CRY (English Version)
 James Blunt - Cry
 Carly Rae Jepsen - Cry
 System F - Cry (Original Extended)
->>> 
+>>>
 >>> # Continue Data
 >>> songs2 = api.search_songs(continuation = songs['continuation'])
->>> 
+>>>
 >>> for song in songs2['items'][:5]: # First 5 Songs
 	print(song['artists'][0]['name'], '-', song['name'])
-	
+
 Marilyn Manson - Cry Little Sister
 Jorja Smith - Don't Watch Me Cry
 Oasis - Stop Crying Your Heart Out
 Volbeat - I'm So Lonesome I Could Cry
 Coldplay - Cry Cry Cry
->>> 
+>>>
 ```
 
 </p>
@@ -499,7 +474,7 @@ Retrieve information about videos related to a specific search query.
 
 ```python
 >>> videos = api.search_videos('time')
->>> 
+>>>
 >>> for video in videos['items'][:5]: # First 5 Videos
 	print(video['artist']['name'], '-', video['name'])
 
@@ -508,10 +483,10 @@ NF - Time
 Pink Floyd Remasted Songs - Pink Floyd - Time (2011 Remastered)
 Chase & Status - Time
 Lil Baby - Time
->>> 
+>>>
 >>> # Continue Data
 >>> videos2 = api.search_videos(continuation = videos['continuation'])
->>> 
+>>>
 >>> for video in videos2['items'][:5]: # First 5 Videos
 	print(video['artist']['name'], '-', video['name'])
 
@@ -520,7 +495,7 @@ Alesso - TIME
 Imagine Dragons - It's Time
 Culture Club - Time (Clock of the Heart)
 Freddie Mercury - Time Waits For No One
->>> 
+>>>
 ```
 
 </p>
@@ -536,9 +511,9 @@ Retrieve a list of search suggestions.
 
 ```python
 >>> suggestions = api.search_suggestions('foo fight')
->>> 
+>>>
 >>> from pprint import pprint
->>> 
+>>>
 >>> pprint(suggestions)
 ['foo fighters',
  'foo fighters everlong',
@@ -547,7 +522,7 @@ Retrieve a list of search suggestions.
  'foo fighters best of you',
  'foo fighters live',
  'foo fighters pretender']
->>> 
+>>>
 ```
 
 </p>
@@ -563,10 +538,10 @@ Retrieve information about a song/video.
 
 ```python
 >>> song = api.song('pPt_FZ9m2bM')
->>> 
+>>>
 >>> list(song)
 ['id', 'name', 'views', 'rating', 'duration', 'explicit', 'description', 'thumbnail', 'owner', 'artist', 'date']
->>> 
+>>>
 >>> song['name']
 'The Key to Life on Earth'
 >>> song['owner']['name']
@@ -581,7 +556,7 @@ Retrieve information about a song/video.
 False
 >>> song['date']
 {'year': 2020, 'month': 4, 'day': 14}
->>> 
+>>>
 ```
 
 </p>
@@ -630,114 +605,3 @@ Retrieve information about a playlist being watched in shuffle mode.
 
 </p>
 </details>
-
-<!-- ################################################################################################## -->
-
-
-<!--
-## Installation
-
-### From Source
-Clone this repository and run setup.py:
-```
-cd python-youtube-music && python setup.py install
-```
-
-## Getting Started
-Initialise a YouTubeMusic instance
-```python
->>> import ytm
->>>
->>> api = ytm.YouTubeMusic()
->>> api
-<YouTubeMusic()>
->>>
-```
-
-## Types
-Creating types
-```python
->>> from ytm import types
->>>
->>> # Today's Biggest Hits
->>> playlist_id = 'RDCLAK5uy_mkLtojKLOUUGwnu3ZnN5AaODijlieB-aQ'
->>>
->>> # Create type object
->>> playlist_id = types.PlaylistId(playlist_id)
->>>
->>> # Check specific type
->>> types.utils.isinstance(playlist_id, types.PlaylistPlaylistId)
-True
->>>
->>> # Convert type
->>> playlist_id = types.PlaylistPlaylistId(playlist_id)
->>> playlist_id
-<PlaylistPlaylistId('RDCLAK5uy_mkLtojKLOUUGwnu3ZnN5AaODijlieB-aQ')>
->>>
-```
-
-Creating types with an invalid value
-
-```python
->>> from ytm import types
->>>
->>> playlist_id = types.PlaylistId('invalid')
-TypeError: Invalid PlaylistId: 'invalid'
->>> 
-```
-
-Enforcing types for a function
-```python
->>> from ytm import types
->>> from ytm import decorators
->>> 
->>> @decorators.typecheck
-def my_func(song_id: types.SongId):
-	print('song_id:', song_id)
->>>	
->>> my_func
-<function my_func at 0x0000028B4319BD30>
->>> 
->>> song_id_str = 'L-NbInXED-o'
->>> song_id_type = types.SongId(song_id_str)
->>> 
->>> # Passing a valid string
->>> my_func(song_id_str)
-song_id: L-NbInXED-o
->>> 
->>> # Passing a correct type
->>> my_func(song_id_type)
-song_id: L-NbInXED-o
->>> 
->>> # Passing an invalid string
->>> my_func('not a valid SongId')
-TypeError: my_func() expected parameter 'song_id' to be of type 'SongId' not 'str'
->>> 
-```
-
-## Utilities
-Utility functions
-```python
->>> from ytm import utils
->>> 
->>> # Create a YouTube Music URL
->>> utils.url('watch', {'v': '0d2llFWvFSM', 'list': 'RDAOazj3phJrB390ewqF8AaC-w'})
-'https://music.youtube.com/watch?v=0d2llFWvFSM&list=RDAOazj3phJrB390ewqF8AaC-w'
->>> 
->>> # Create a YouTube URL
->>> utils.url_yt('playlist', {'list': 'RDCLAK5uy_lZjWT2hQC7Gb_1_Las16IryBLhnCMgdIo'})
-'https://www.youtube.com/playlist?list=RDCLAK5uy_lZjWT2hQC7Gb_1_Las16IryBLhnCMgdIo'
->>>
->>> # Filter a dictionary
->>> utils.filter({'name': 'Gotye', 'id': None}, lambda key, val: val is not None)
-{'name': 'Gotye'}
->>> 
->>> # Massively nested iterable
->>> iterable = {'data': {'results': [{'value': 'Wozniak'}]}}
->>>
->>> # Get a specific value from an iterable
->>> utils.get(iterable, 'data', 'results', 0, 'value')
-'Wozniak'
->>> 
-```
--->

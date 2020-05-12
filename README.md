@@ -1,16 +1,20 @@
 # python-youtube-music
 
-Unofficial Python YouTube Music Web API Client
-
-** **Still under active development** **
+Unofficial Python YouTube Music Web API Client - **Still under active development**
 
 ![YouTube Music](https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Logo_of_YouTube_Music.svg/1280px-Logo_of_YouTube_Music.svg.png)
 
-## Dependencies
-Library | optional
-------- | --------
-[requests](https://github.com/psf/requests) | 
-[youtube_dl](https://github.com/ytdl-org/youtube-dl) | true
+## Dependencies - Required
+| Library                                     | Install              | Import          | Functionality            |
+| ------------------------------------------- | -------------------- | --------------- | ------------------------ |
+| [Requests](https://github.com/psf/requests) | pip install requests | import requests | Send HTTP/HTTPS requests |
+
+## Dependencies - Optional
+| Library                                                 | Install                | Import            | Functionality                |
+| ------------------------------------------------------- | ---------------------- | ----------------- | ---------------------------- |
+| [YoutubeDL](https://github.com/ytdl-org/youtube-dl)     | pip install youtube-dl | import youtube_dl | Download YouTube videos      |
+| [Mutagen](https://github.com/quodlibet/mutagen)         | pip install mutagen    | import mutagen    | Read and write audio metadata|
+| [Pillow (PIL)](https://github.com/python-pillow/Pillow) | pip install Pillow     | import PIL        | Python imaging library       |
 
 <!--
 ## Installation

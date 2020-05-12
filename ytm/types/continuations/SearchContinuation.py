@@ -1,4 +1,5 @@
 '''
+Module containing the continuation type: SearchContinuation
 '''
 
 from .. import base
@@ -6,13 +7,50 @@ from .. import constants
 
 class SearchContinuation(base.Continuation):
     '''
+    Continuation class: SearchContinuation.
+
+    Example:
+        >>> api = ytm.YouTubeMusic()
+        >>>
+        >>> albums = api.search_albums('strange trails')
+        >>>
+        >>> continuation = ytm.types.SearchContinuation(albums['continuation'])
+        >>>
+        >>> continuation
+        <SearchContinuation('EpMGEg5zdHJhbmdlIHRyYWlscxqABkVnLUtBUXdJQUJBQUd...')>
+        >>>
     '''
 
     @classmethod
     def _parse(cls: type, value: str) -> dict:
         '''
+        Parse a continuation string.
+
+        Args:
+            cls: This class
+            value: Value to parse
+
+        Returns:
+            Values extracted during parsing
+
+        Example:
+            >>> api = ytm.YouTubeMusic()
+            >>>
+            >>> albums = api.search_albums('strange trails')
+            >>>
+            >>> continuation = ytm.types.SearchContinuation(albums['continuation'])
+            >>>
+            >>> from pprint import pprint
+            >>>
+            >>> parsed = continuation._parse(continuation)
+            >>>
+            >>> pprint(parsed)
+            {'data': '4qmFsgJbEi1WTFJEQ0xBSzV1eV9sWFdobEpzaWhleTZ4cTFiNTBkN1...',
+             'params': 'PT:EgtyS1RLVGEzU1o3UQ',
+             'playlist_browse_id': 'VLRDCLAK5uy_lXWhlJsihey6xq1b50d7Uv93NLqle8TSc'}
+            >>>
         '''
-        
+
         value = str(value)
 
         pattern_1 = b''.join \

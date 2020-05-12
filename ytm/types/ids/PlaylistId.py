@@ -1,4 +1,5 @@
 '''
+Module containing the Id type: PlaylistId
 '''
 
 from .. import base
@@ -6,9 +7,20 @@ from .. import constants
 
 class PlaylistId(base.Id):
     '''
+    Id class: PlaylistId
+
+    Example:
+        >>> id = PlaylistId('RDCLAK5uy_kqSXUdZBZlDrNwxWgVm3xlQ7q0I6h9Zsc')
+        >>>
+        >>> id
+        <PlaylistId('RDCLAK5uy_kqSXUdZBZlDrNwxWgVm3xlQ7q0I6h9Zsc')>
+        >>>
+        >>> str(id)
+        'RDCLAK5uy_kqSXUdZBZlDrNwxWgVm3xlQ7q0I6h9Zsc'
+        >>>
     '''
-    
-    _pattern = '^(?P<prefix>{prefixes})?(?P<data>{prefix}[{chars}]{{{entropy_length}}})$'.format \
+
+    _pattern: str = '^(?P<prefix>{prefixes})?(?P<data>{prefix}[{chars}]{{{entropy_length}}})$'.format \
     (
         prefixes       = '|'.join \
         (

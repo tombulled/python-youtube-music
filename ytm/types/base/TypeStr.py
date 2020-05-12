@@ -3,6 +3,7 @@ Module containing the base type: TypeStr
 '''
 
 from ... import classes
+from .. import utils
 
 import re
 
@@ -58,12 +59,10 @@ class TypeStr(str, metaclass = classes.BuiltinMeta):
             String representation of the class
         '''
 
-        # Make utility: snip? shorten? to 'some long sen...' <--- utility adds ellipsis
-
         return '<{class_name}({value})>'.format \
         (
             class_name = self.__class__.__name__,
-            value      = super().__repr__(),
+            value      = repr(utils.truncate(str(self))),
         )
 
     @classmethod

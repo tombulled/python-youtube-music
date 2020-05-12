@@ -13,9 +13,11 @@ class AbstractYouTubeMusic(object):
 
     Attributes:
         _base: Base class reference
+        _methods: API Methods
     '''
 
-    _base: BaseYouTubeMusic = None
+    _base:    BaseYouTubeMusic = None
+    _methods: list             = {}
 
     def __init__(self: object) -> None:
         '''
@@ -31,12 +33,14 @@ class AbstractYouTubeMusic(object):
             >>> api = AbstractYouTubeMusic()
         '''
 
-        self._base = BaseYouTubeMusic()
+        self._base    = BaseYouTubeMusic()
 
         for method_name in methods.__all__:
             method = getattr(methods, method_name)
 
             setattr(self.__class__, method_name, method)
+
+            self._methods[method_name] = method
 
     def __repr__(self: object) -> str:
         '''

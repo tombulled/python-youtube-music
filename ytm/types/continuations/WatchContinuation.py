@@ -1,17 +1,56 @@
 '''
+Module containing the continuation type: WatchContinuation
 '''
 
 from .. import base
 
 class WatchContinuation(base.Continuation):
     '''
+    Continuation class: WatchContinuation.
+
+    Example:
+        >>> api = ytm.YouTubeMusic()
+        >>>
+        >>> watch = api.watch('Kil4Abhm9KA')
+        >>>
+        >>> continuation = ytm.types.WatchContinuation(watch['continuation'])
+        >>>
+        >>> continuation
+        <WatchContinuation('CBkSMRILaHFYaFBfX2lHT1EiEVJEQU1WTUtpbDRBYmhtOUt...')>
+        >>>
     '''
 
     @classmethod
     def _parse(cls: type, value: str) -> dict:
         '''
+        Parse a continuation string.
+
+        Args:
+            cls: This class
+            value: Value to parse
+
+        Returns:
+            Values extracted during parsing
+
+        Example:
+            >>> api = ytm.YouTubeMusic()
+            >>>
+            >>> watch = api.watch('Kil4Abhm9KA')
+            >>>
+            >>> continuation = ytm.types.WatchContinuation(watch['continuation'])
+            >>>
+            >>> from pprint import pprint
+            >>>
+            >>> parsed = continuation._parse(continuation)
+            >>>
+            >>> pprint(parsed)
+            {'data': 'CBkSMRILaHFYaFBfX2lHT1EiEVJEQU1WTUtpbDRBYmhtOUtBMgR3QU...',
+             'params': 'wAEB',
+             'playlist_id': 'RDAMVMKil4Abhm9KA',
+             'video_id': 'hqXhP__iGOQ'}
+            >>>
         '''
-        
+
         value = str(value)
 
         pattern = \
@@ -58,7 +97,7 @@ class WatchContinuation(base.Continuation):
 
         data = \
         {
-            'video_id':    video_id,    # Check format
+            'video_id':    video_id,    # Check format | next video id?
             'playlist_id': playlist_id, # Check format
             'params':      params,      # Check format
             'data':        value,

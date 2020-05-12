@@ -1,17 +1,60 @@
 '''
+Module containing the Params type: ArtistSinglesParams
 '''
 
 from .. import base
 
 class ArtistSinglesParams(base.Params):
     '''
+    Params class: ArtistSinglesParams.
+
+    Example:
+        >>> api = ytm.YouTubeMusic()
+        >>>
+        >>> artist = api.artist('UCIaFw5VBEK8qaW6nRpx_qnw')
+        >>>
+        >>> params = ytm.types.ArtistSinglesParams(artist['singles']['params'])
+        >>>
+        >>> params
+        <ArtistSinglesParams('6gPUAUNwd0JDbjBLYmdBQVpXNEFBVWRDQUFGSFFnQUJBRVp...')>
+        >>>
     '''
 
     @classmethod
     def _parse(cls: type, value: str) -> dict:
         '''
+        Parse a params string.
+
+        Args:
+            cls: This class
+            value: Value to parse
+
+        Returns:
+            Values extracted during parsing
+
+        Example:
+            >>> api = ytm.YouTubeMusic()
+            >>>
+            >>> artist = api.artist('UCIaFw5VBEK8qaW6nRpx_qnw')
+            >>>
+            >>> params = ytm.types.ArtistSinglesParams(artist['singles']['params'])
+            >>>
+            >>> from pprint import pprint
+            >>>
+            >>> parsed = params._parse(params)
+            >>>
+            >>> pprint(parsed)
+            {'artist_id_1': 'UCIaFw5VBEK8qaW6nRpx_qnw',
+             'artist_id_2': 'UCIaFw5VBEK8qaW6nRpx_qnw',
+             'browse_id': 'FEmusic_detail_artist',
+             'data': '6gPUAUNwd0JDbjBLYmdBQVpXNEFBVWRDQUFGSFFnQUJBRVpGYlhW...',
+             'language': 'en',
+             'region_1': 'GB',
+             'region_2': 'GB',
+             'target': 'artist_releases'}
+            >>>
         '''
-        
+
         value = str(value)
 
         pattern_1 = \

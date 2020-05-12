@@ -1,4 +1,5 @@
 '''
+Module containing the continuation type: HomeContinuation
 '''
 
 from .. import base
@@ -6,13 +7,55 @@ from .. import utils
 
 class HomeContinuation(base.Continuation):
     '''
+    Continuation class: HomeContinuation.
+
+    Example:
+        >>> api = ytm.YouTubeMusic()
+        >>>
+        >>> home = api.home()
+        >>>
+        >>> continuation = ytm.types.HomeContinuation(home['continuation'])
+        >>>
+        >>> continuation
+        <HomeContinuation('4qmFsgKIARIMRkVtdXNpY19ob21lGnhDQU42VmtOcVJVRkJ...')>
+        >>>
     '''
 
     @classmethod
     def _parse(cls: type, value: str) -> dict:
         '''
+        Parse a continuation string.
+
+        Args:
+            cls: This class
+            value: Value to parse
+
+        Returns:
+            Values extracted during parsing
+
+        Example:
+            >>> api = ytm.YouTubeMusic()
+            >>>
+            >>> home = api.home()
+            >>>
+            >>> continuation = ytm.types.HomeContinuation(home['continuation'])
+            >>>
+            >>> from pprint import pprint
+            >>>
+            >>> parsed = continuation._parse(continuation)
+            >>>
+            >>> pprint(parsed)
+            {'browse_id': 'FEmusic_home',
+             'data': '4qmFsgKIARIMRkVtdXNpY19ob21lGnhDQU42VmtOcVJVRkJSMVoxUVV...',
+             'flag_continuation': False,
+             'language': 'en',
+             'playlist_id': None,
+             'region_1': 'GB',
+             'region_2': 'GB',
+             'total_shelves': 3}
+            >>>
         '''
-        
+
         value = str(value)
 
         pattern_1 = \

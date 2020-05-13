@@ -169,7 +169,20 @@ Retrieve information about an artist.
 <p>
 
 ```python
->>> # TODO
+>>> artist = api.artist('UC8Yu1_yfN5qPh601Y4btsYw') # Arctic Monkeys
+>>> 
+>>> list(artist)
+['name', 'id', 'subscribers', 'views', 'description', 'albums', 'singles', 'videos', 'songs', 'playlists', 'similar_artists']
+>>> 
+>>> artist['name']
+'Arctic Monkeys'
+>>> artist['subscribers']
+'4.34M'
+>>> artist['views']
+2082236489
+>>> artist['description']
+'For tour dates, visit the website www.arcticmonkeys.com'
+>>> 
 ```
 
 </p>
@@ -184,7 +197,29 @@ Retrieve information about an artist's albums.
 <p>
 
 ```python
->>> # TODO
+>>> artist = api.artist('UC8Yu1_yfN5qPh601Y4btsYw') # Arctic Monkeys
+>>> 
+>>> artist_id = artist['id']
+>>> params = artist['albums']['params']
+>>> 
+>>> albums = api.artist_albums(artist_id, params)
+>>> 
+>>> for album in albums:
+	print(album['name'])
+
+Tranquility Base Hotel & Casino
+AM
+Suck It and See
+My Propeller
+Cornerstone
+Humbug
+Teddy Picker
+Fluorescent Adolescent
+Favourite Worst Nightmare
+Brianstorm
+Who The Fuck Are Arctic Monkeys?
+Whatever People Say I Am, That's What I Am Not
+>>> 
 ```
 
 </p>
@@ -199,7 +234,31 @@ Retrieve information about an artist's singles.
 <p>
 
 ```python
->>> # TODO
+>>> artist = api.artist('UC8Yu1_yfN5qPh601Y4btsYw') # Arctic Monkeys
+>>> 
+>>> artist_id = artist['id']
+>>> params = artist['singles']['params']
+>>> 
+>>> singles = api.artist_singles(artist_id, params)
+>>> 
+>>> for single in singles:
+	print(single['name'])
+
+Tranquility Base Hotel & Casino
+Why'd You Only Call Me When You're High?
+Do I Wanna Know?
+One For The Road
+R U Mine? / Electricity
+Black Treacle
+Suck It And See
+The Hellcat Spangled Shalalala
+Don't Sit Down 'Cause I've Moved Your Chair
+Crying Lightning
+Da Frame 2R / Matador
+Leave Before The Lights Come On
+When The Sun Goes Down
+I Bet You Look Good On The Dancefloor
+>>> 
 ```
 
 </p>
@@ -307,7 +366,43 @@ Retrieve information about a playlist.
 <p>
 
 ```python
->>> # TODO
+>>> playlist = api.playlist('RDCLAK5uy_lXWhlJsihey6xq1b50d7Uv93NLqle8TSc')
+>>> 
+>>> list(playlist)
+['name', 'type', 'year', 'thumbnail', 'duration', 'id', 'total_tracks', 'artist', 'radio', 'shuffle', 'tracks', 'continuation']
+>>> 
+>>> playlist['name']
+'Take It Easy Indie'
+>>> playlist['year']
+2020
+>>> playlist['duration']
+'6+ hours'
+>>> playlist['total_tracks']
+163
+>>> 
+>>> for track in playlist['tracks'][:5]: # First 5 Tracks
+	print(track['artist']['name'], '-', track['name'])
+
+	
+Lord Huron - The Night We Met (feat. Phoebe Bridgers)
+The Lumineers - Cleopatra
+The xx - I Dare You
+Hozier - Work Song
+girl in red - we fell in love in october
+>>> 
+>>> # Continue Data
+>>> playlist2 = api.playlist(continuation = playlist['continuation'])
+>>> 
+>>> for track in playlist2['tracks'][:5]: # First 5 Tracks
+	print(track['artist']['name'], '-', track['name'])
+
+	
+Maddie Jay - Mood Swings
+Cloud Control - Dojo Rising
+Broken Bells - The Angel and the Fool
+George Glew - Bittersweet
+Cold War Kids - First
+>>> 
 ```
 
 </p>
@@ -402,7 +497,6 @@ John Lennon
 >>>
 >>> for artist in artists2['items'][:5]: # First 5 Artists
 	print(artist['name'])
-
 
 John Mellencamp
 John Carpenter
@@ -595,7 +689,38 @@ Retrieve information about a song/playlist being watched.
 <p>
 
 ```python
->>> # TODO
+>>> watch = api.watch('dIwwjy4slI8', 'RDCLAK5uy_mgonaF5RiN90kqT-edkFB53N81dZ9XHp8')
+>>> 
+>>> list(watch)
+['id', 'name', 'continuation', 'total', 'tracks', 'radio', 'current']
+>>> 
+>>> watch['name']
+'Celestial Instrumentals'
+>>> watch['total']
+52
+>>> watch['radio']
+False
+>>> 
+>>> for track in watch['tracks'][:5]: # First 5 tracks
+	print(track['name'])
+
+Says
+The Light
+Sun Drugs
+Dark Lights
+Together Alone
+>>> 
+>>> # Continue data
+>>> watch2 = api.watch(continuation = watch['continuation'])
+>>> 
+>>> for track in watch2['tracks'][:5]: # First 5 tracks
+	print(track['name'])
+
+Goodnight
+Indoor Swimming At The Space Station
+Hoppípolla
+Sleeping on the Roof
+Zero Gravity
 ```
 
 </p>
@@ -610,7 +735,42 @@ Retrieve information about a song/playlist being watched in radio mode.
 <p>
 
 ```python
->>> # TODO
+>>> song_radio = api.watch_radio(song_id = '8A9_1hGmtj0')
+>>> 
+>>> list(song_radio)
+['id', 'name', 'continuation', 'total', 'tracks', 'radio', 'current']
+>>> 
+>>> song_radio['id']
+'RDAMVM8A9_1hGmtj0'
+>>> 
+>>> for track in song_radio['tracks'][:5]: # First 5 Tracks
+	print(track['name'])
+
+Travel Is Dangerous
+A Gallant Gentleman
+Motion Picture Soundtrack
+Don't Stay Here
+Everything In Its Right Place
+>>> 
+>>> playlist_radio = api.watch_radio(playlist_id = 'RDCLAK5uy_kNj0whsN9sFy3dqiTCfu34HoOdeZIjfyw')
+>>> 
+>>> list(playlist_radio)
+['id', 'name', 'continuation', 'total', 'tracks', 'radio', 'current']
+>>> 
+>>> playlist_radio['id']
+'RDAMPLRDCLAK5uy_kNj0whsN9sFy3dqiTCfu34HoOdeZIjfyw'
+>>> playlist_radio['name']
+'Ambient Post Rock'
+>>> 
+>>> for track in playlist_radio['tracks'][:5]: # First 5 Tracks
+	print(track['name'])
+
+Only The Winds
+The Winter
+The Kindness In Letting Go
+Aldgate Patterns
+I'm Not
+>>> 
 ```
 
 </p>
@@ -624,7 +784,23 @@ Retrieve information about a playlist being watched in shuffle mode.
 <p>
 
 ```python
->>> # TODO
+>>> watch = api.watch_shuffle('RDCLAK5uy_l6Wg_lE2_Wx7GdOE21bKJvYPIif8n1fAQ')
+>>> 
+>>> list(watch)
+['id', 'name', 'continuation', 'total', 'tracks', 'radio', 'current']
+>>> 
+>>> watch['name']
+'Peaceful Indie Dreams'
+>>> 
+>>> for track in watch['tracks'][:5]: # First 5 Tracks
+	print(track['name'])
+
+Make It Holy
+Bible Belt (Acoustic)
+Take Care
+Atlas Hands
+Sweetheart, What Have You Done to Us
+>>> 
 ```
 
 </p>

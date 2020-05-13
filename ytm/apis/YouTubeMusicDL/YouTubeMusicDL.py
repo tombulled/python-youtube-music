@@ -5,16 +5,22 @@ import pathlib
 import os
 import io
 import requests
-import subprocess
-import functools
+
+# https://github.com/tombulled/python-youtube-music/issues/5
+# The issue above highlighted that creationflags is specific to Windows only
+# As CMD opening is a very Windows specific issue and is not super important
+# the code below has been left commented-out for now until a working
+# platform independent solution is found
 
 # Monkey patch ffmpeg's popen:
-subprocess._Popen = subprocess.Popen
-subprocess.Popen  = functools.partial \
-(
-    subprocess._Popen,
-    creationflags = 0x08000000,
-)
+# import subprocess
+# import functools
+# subprocess._Popen = subprocess.Popen
+# subprocess.Popen  = functools.partial \
+# (
+#     subprocess._Popen,
+#     creationflags = 0x08000000,
+# )
 
 class BaseYouTubeMusicDL(object):
     def _download \

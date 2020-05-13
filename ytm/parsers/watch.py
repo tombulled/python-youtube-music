@@ -307,6 +307,7 @@ def watch(data: dict):
     playlist_data = \
     {
         'id':           playlist_id,
+        'name':         playlist_name,
         'continuation': playlist_continuation,
         'total':        playlist_total,
         'tracks':       playlist_tracks,

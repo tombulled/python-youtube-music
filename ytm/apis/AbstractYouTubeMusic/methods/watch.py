@@ -107,10 +107,20 @@ def watch \
 
             break
 
-    return self._base.next \
-    (
-        video_id     = song_id,
-        playlist_id  = playlist_id,
-        params       = params,
-        continuation = continuation,
-    )
+    if song_id or playlist_id:
+        return self._base.next \
+        (
+            video_id     = song_id,
+            playlist_id  = playlist_id,
+            params       = params,
+        )
+    elif continuation:
+        return self._base.next \
+        (
+            continuation = continuation,
+        )
+    else:
+        raise Exception \
+        (
+            'Missing 1 required argument: \'playlist_id\' or \'song_id\''
+        )

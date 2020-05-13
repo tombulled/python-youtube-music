@@ -245,7 +245,8 @@ def playlist(data: dict) -> dict:
             'runs',
             2,
             'text',
-            func = cleansers.ascii_time,
+            # Cannot convert to seconds int as it may be, e.g. '6+ hours'
+            # func = cleansers.ascii_time,
             # func = cleansers.iso_time,
         )
         playlist_id = utils.get \
@@ -459,7 +460,9 @@ def playlist(data: dict) -> dict:
             0,
             'musicResponsiveListItemFixedColumnRenderer',
             'text',
-            'simpleText',
+            'runs',
+            0,
+            'text',
             func = cleansers.iso_time,
         )
         track_thumbnail = utils.get \

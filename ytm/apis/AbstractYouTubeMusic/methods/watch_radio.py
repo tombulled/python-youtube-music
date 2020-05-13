@@ -36,6 +36,7 @@ from ....types import \
 def watch_radio \
         (
             self: object,
+            song_id: SongId = None,
             playlist_id: Union \
             (
                 ChartPlaylistId,
@@ -58,7 +59,6 @@ def watch_radio \
                 AlbumShuffleId,
                 SongRadioId,
             ) = None,
-            song_id: SongId = None,
         ) -> dict:
     '''
     Fetch Radio Watch data.
@@ -67,10 +67,10 @@ def watch_radio \
 
     Args:
         self: Class Instance
-        playlist_id: Playlist Id
-            Example: 'RDEM8Tjy6KJDUmM5-nJ3baglrQ'
         song_id: Song Id
             Example: '0nCYgT-rVSo'
+        playlist_id: Playlist Id
+            Example: 'RDEM8Tjy6KJDUmM5-nJ3baglrQ'
 
     Returns:
         Radio Watch data
@@ -143,6 +143,7 @@ def watch_radio \
             video_id      = song_id,
             params        = constants.PARAMS_RADIO_SONG,
             player_params = constants.PLAYER_PARAMS_RADIO_SONG,
+            # should playlist_id be passed through as well?
         )
     else:
         raise Exception \

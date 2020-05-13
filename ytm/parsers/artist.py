@@ -68,6 +68,9 @@ def artist(data: dict) -> dict:
         else:
             shelves[content_key] = [content]
 
+    # return {'d':data,'s':shelves,} ###
+
+
     header_renderer = utils.get \
     (
         data,
@@ -1028,7 +1031,8 @@ def artist(data: dict) -> dict:
             # artist_params[shelf_identifier] = shelf_params
 
             # Update to correct artist id
-            artist_id = shelf_browse_id
+            if shelf_browse_id:
+                artist_id = shelf_browse_id
         elif shelf_identifier == 'singles':
             shelf_data = \
             {
@@ -1041,7 +1045,8 @@ def artist(data: dict) -> dict:
             # artist_params[shelf_identifier] = shelf_params
 
             # Update to correct artist id
-            artist_id = shelf_browse_id
+            if shelf_browse_id:
+                artist_id = shelf_browse_id
         elif shelf_identifier == 'videos':
             if shelf_browse_id and shelf_browse_id.startswith('VL'):
                 shelf_browse_id = shelf_browse_id[2:]

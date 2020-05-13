@@ -28,6 +28,7 @@ Libraries ```ytm``` depends on
 ## Installation
 Install ```ytm``` onto your system.
 
+<!--
 ### Install From PyPi
 In a terminal execute:
 
@@ -35,6 +36,7 @@ In a terminal execute:
 user@host:~$ pip install ytm # You may need to use: python3 -m pip install ytm
 Successfully installed ytm
 ```
+-->
 
 ### Install From Source
 Clone or download this repository and run setup.py:

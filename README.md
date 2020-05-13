@@ -38,15 +38,22 @@ Successfully installed ytm
 ```
 -->
 
-<!--
 ### Install From Source
-Clone or download this repository and run setup.py:
+Firstly, clone or download this repository.
 
+#### Basic Installation:
+No YouTubeMusicDL support
 ```console
-user@host:~$ python setup.py install # You may need to use: python3 setup.py install
+user@host:~$ pip install . # You may need to use: python3 -m pip install .
 Successfully installed ytm
 ```
--->
+
+#### Full Installation:
+YouTubeMusicDL support
+```console
+user@host:~$ pip install .[dl] # You may need to use: python3 -m pip install .[dl]
+Successfully installed ytm
+```
 
 ## Getting Started
 Create an API instance

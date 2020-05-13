@@ -689,7 +689,38 @@ Retrieve information about a song/playlist being watched.
 <p>
 
 ```python
->>> # TODO
+>>> watch = api.watch('dIwwjy4slI8', 'RDCLAK5uy_mgonaF5RiN90kqT-edkFB53N81dZ9XHp8')
+>>> 
+>>> list(watch)
+['id', 'name', 'continuation', 'total', 'tracks', 'radio', 'current']
+>>> 
+>>> watch['name']
+'Celestial Instrumentals'
+>>> watch['total']
+52
+>>> watch['radio']
+False
+>>> 
+>>> for track in watch['tracks'][:5]: # First 5 tracks
+	print(track['name'])
+
+Says
+The Light
+Sun Drugs
+Dark Lights
+Together Alone
+>>> 
+>>> # Continue data
+>>> watch2 = api.watch(continuation = watch['continuation'])
+>>> 
+>>> for track in watch2['tracks'][:5]: # First 5 tracks
+	print(track['name'])
+
+Goodnight
+Indoor Swimming At The Space Station
+Hoppípolla
+Sleeping on the Roof
+Zero Gravity
 ```
 
 </p>
@@ -704,7 +735,42 @@ Retrieve information about a song/playlist being watched in radio mode.
 <p>
 
 ```python
->>> # TODO
+>>> song_radio = api.watch_radio(song_id = '8A9_1hGmtj0')
+>>> 
+>>> list(song_radio)
+['id', 'name', 'continuation', 'total', 'tracks', 'radio', 'current']
+>>> 
+>>> song_radio['id']
+'RDAMVM8A9_1hGmtj0'
+>>> 
+>>> for track in song_radio['tracks'][:5]: # First 5 Tracks
+	print(track['name'])
+
+Travel Is Dangerous
+A Gallant Gentleman
+Motion Picture Soundtrack
+Don't Stay Here
+Everything In Its Right Place
+>>> 
+>>> playlist_radio = api.watch_radio(playlist_id = 'RDCLAK5uy_kNj0whsN9sFy3dqiTCfu34HoOdeZIjfyw')
+>>> 
+>>> list(playlist_radio)
+['id', 'name', 'continuation', 'total', 'tracks', 'radio', 'current']
+>>> 
+>>> playlist_radio['id']
+'RDAMPLRDCLAK5uy_kNj0whsN9sFy3dqiTCfu34HoOdeZIjfyw'
+>>> playlist_radio['name']
+'Ambient Post Rock'
+>>> 
+>>> for track in playlist_radio['tracks'][:5]: # First 5 Tracks
+	print(track['name'])
+
+Only The Winds
+The Winter
+The Kindness In Letting Go
+Aldgate Patterns
+I'm Not
+>>> 
 ```
 
 </p>
@@ -718,7 +784,23 @@ Retrieve information about a playlist being watched in shuffle mode.
 <p>
 
 ```python
->>> # TODO
+>>> watch = api.watch_shuffle('RDCLAK5uy_l6Wg_lE2_Wx7GdOE21bKJvYPIif8n1fAQ')
+>>> 
+>>> list(watch)
+['id', 'name', 'continuation', 'total', 'tracks', 'radio', 'current']
+>>> 
+>>> watch['name']
+'Peaceful Indie Dreams'
+>>> 
+>>> for track in watch['tracks'][:5]: # First 5 Tracks
+	print(track['name'])
+
+Make It Holy
+Bible Belt (Acoustic)
+Take Care
+Atlas Hands
+Sweetheart, What Have You Done to Us
+>>> 
 ```
 
 </p>

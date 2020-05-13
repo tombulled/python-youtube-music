@@ -1,5 +1,9 @@
 # python-youtube-music
 
+![Made With Python](https://forthebadge.com/images/badges/made-with-python.svg)
+![Built By Neckbeards](https://forthebadge.com/images/badges/built-by-neckbeards.svg)
+![Gluten Free](https://forthebadge.com/images/badges/gluten-free.svg)
+
 Python YouTube Music Web API Client - **Still under active development** - _Nearly at v1.0_   :smile:
 
 ![YouTube Music](https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Logo_of_YouTube_Music.svg/1280px-Logo_of_YouTube_Music.svg.png)
@@ -7,6 +11,7 @@ Python YouTube Music Web API Client - **Still under active development** - _Near
 ## Contents:
 * [Dependencies](#dependencies)
 * [Installation](#installation)
+<!-- * [Roadmap](#roadmap) -->
 * [Getting Started](#getting-started)
 * [Methods](#methods)
 
@@ -54,6 +59,14 @@ YouTubeMusicDL support
 user@host:~$ pip install .[dl] # You may need to use: python3 -m pip install .[dl]
 Successfully installed ytm
 ```
+
+<!--
+## Roadmap
+Things still left to do:
+* Documentation: Will live on GitHub Wiki
+* Landing page: Will live on GitHub Pages Page
+* CLI: YouTubeMusicDL command-line interface invoked by - python -m ytm --foo --bar
+-->
 
 ## Getting Started
 Create an API instance

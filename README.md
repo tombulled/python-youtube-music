@@ -2,7 +2,11 @@
 
 ![Made With Python](https://forthebadge.com/images/badges/made-with-python.svg)
 ![Built By Neckbeards](https://forthebadge.com/images/badges/built-by-neckbeards.svg)
-![Gluten Free](https://forthebadge.com/images/badges/gluten-free.svg)
+![Gluten Free](https://forthebadge.com/images/badges/gluten-free.svg)  
+![Forks](https://img.shields.io/github/forks/tombulled/python-youtube-music?style=for-the-badge)
+![Stars](https://img.shields.io/github/stars/tombulled/python-youtube-music?style=for-the-badge)
+![Issues](https://img.shields.io/github/issues/tombulled/python-youtube-music?style=for-the-badge)
+![License](https://img.shields.io/github/license/tombulled/python-youtube-music?style=for-the-badge)
 
 Python YouTube Music Web API Client - **Still under active development** - _Nearly at v1.0_   :smile:
 

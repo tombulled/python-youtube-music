@@ -11,9 +11,9 @@ Python YouTube Music Web API Client - **Still under active development** - _Near
 ## Contents:
 * [Dependencies](#dependencies)
 * [Installation](#installation)
-<!-- * [Roadmap](#roadmap) -->
 * [Getting Started](#getting-started)
 * [Methods](#methods)
+<!-- * [Roadmap](#roadmap) -->
 
 ## Dependencies
 Libraries ```ytm``` depends on
@@ -86,8 +86,7 @@ View available methods
 >>> from pprint import pprint
 >>>
 >>> pprint(list(api._methods))
-['_search_filter',
- 'album',
+['album',
  'artist',
  'artist_albums',
  'artist_singles',

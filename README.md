@@ -38,6 +38,7 @@ Successfully installed ytm
 ```
 -->
 
+<!--
 ### Install From Source
 Clone or download this repository and run setup.py:
 
@@ -45,6 +46,7 @@ Clone or download this repository and run setup.py:
 user@host:~$ python setup.py install # You may need to use: python3 setup.py install
 Successfully installed ytm
 ```
+-->
 
 ## Getting Started
 Create an API instance

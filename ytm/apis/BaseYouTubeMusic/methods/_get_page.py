@@ -49,7 +49,7 @@ def _get_page(self: object, *endpoints: str, params: dict = None) -> dict:
 
     url = self._url(endpoint)
 
-    resp = self.session.get \
+    resp = self._session.get \
     (
         url    = url,
         params = params,

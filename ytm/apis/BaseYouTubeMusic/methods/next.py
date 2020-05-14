@@ -67,8 +67,8 @@ def next \
 
     url = self._url_api(constants.ENDPOINT_YTM_API_NEXT)
 
-    url_params = copy.deepcopy(constants.URL_PARAMS)
-    payload    = copy.deepcopy(constants.PAYLOAD)
+    url_params = copy.deepcopy(self._params)
+    payload    = copy.deepcopy(self._payload)
 
     payload.update \
     (
@@ -108,7 +108,7 @@ def next \
     if continuation:
         payload['continuation'] = continuation
 
-    resp = self.session.post \
+    resp = self._session.post \
     (
         url    = url,
         params = url_params,

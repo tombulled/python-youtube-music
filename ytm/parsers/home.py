@@ -54,9 +54,8 @@ def home(data: dict) -> dict:
             'sectionListRenderer',
         )
 
-    assert data
+    assert data, 'No section list'
 
-    # Insert back into data
     continuation = utils.get \
     (
         data,
@@ -73,9 +72,9 @@ def home(data: dict) -> dict:
         data,
         'contents',
         default = (),
-    ) # [:-1]
+    )
 
-    assert shelves
+    assert shelves, 'No shelves'
 
     for shelf in shelves:
         shelf = utils.first(shelf)
@@ -424,8 +423,10 @@ def home(data: dict) -> dict:
                         },
                     }
                 else:
+                    # print('INVALID ITEM TYPE:', item_type)
                     return # raise
             else:
+                # print('INVALID ratio:', aspect_ratio)
                 return # raise
 
             shelf_items.append(item_data)

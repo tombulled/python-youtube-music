@@ -103,7 +103,7 @@ class HomeContinuation(base.Continuation):
             b'\x18'
             b'.{6}'
             b'\xe9\x022'
-            b'(?:\x00|-\x1a\+(?P<playlist_id>.+))'
+            b'(?:\x00|.\x1a.(?P<playlist_id>.+))'
             b'$'
         )
 

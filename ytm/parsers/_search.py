@@ -141,19 +141,12 @@ def _search(data: dict) -> dict:
         }
 
         if shelf_key == 'top_result':
-            results[shelf_key] = shelf_item_type
+            results[f'{shelf_key}s'] = f'{shelf_item_type}s'
 
             continue
 
         for item in shelf_items:
             item = utils.first(item)
-
-            # if shelf_key == 'top_result':
-            #     results[shelf_key] = shelf_item_type
-            #
-            #     continue
-
-            # return item ###
 
             item_menu_items = utils.get \
             (

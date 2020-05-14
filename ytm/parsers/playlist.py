@@ -393,8 +393,6 @@ def playlist(data: dict) -> dict:
 
             track_menu[menu_identifier] = menu_item_data
 
-        # return track_menu
-
         track_watch_endpoint = utils.get \
         (
             track,
@@ -453,6 +451,30 @@ def playlist(data: dict) -> dict:
             0,
             'text',
         )
+        track_album_name = utils.get \
+        (
+            track,
+            'flexColumns',
+            2,
+            'musicResponsiveListItemFlexColumnRenderer',
+            'text',
+            'runs',
+            0,
+            'text',
+        )
+        track_album_id = utils.get \
+        (
+            track,
+            'flexColumns',
+            2,
+            'musicResponsiveListItemFlexColumnRenderer',
+            'text',
+            'runs',
+            0,
+            'navigationEndpoint',
+            'browseEndpoint',
+            'browseId',
+        )
         track_duration = utils.get \
         (
             track,
@@ -510,6 +532,11 @@ def playlist(data: dict) -> dict:
             'duration':  track_duration,
             'thumbnail': track_thumbnail,
             'explicit':  track_explicit,
+            'album': \
+            {
+                'id':   track_album_id,
+                'name': track_album_name,
+            },
             'artist': \
             {
                 'id':   track_artist_id,

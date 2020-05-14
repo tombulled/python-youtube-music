@@ -40,7 +40,8 @@ class AbstractYouTubeMusic(object):
 
             setattr(self.__class__, method_name, method)
 
-            self._methods[method_name] = method
+            if not method_name.startswith('_'):
+                self._methods[method_name] = method
 
     def __repr__(self: object) -> str:
         '''

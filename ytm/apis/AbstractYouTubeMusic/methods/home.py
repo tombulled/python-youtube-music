@@ -41,7 +41,7 @@ def home(self: object, continuation: HomeContinuation = None) -> dict:
     if continuation:
         return self._base.browse \
         (
-            continuation = continuation,
+            continuation = str(continuation),
         )
     else:
         return self._base.browse_home()

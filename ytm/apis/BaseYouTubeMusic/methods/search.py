@@ -54,8 +54,8 @@ def search \
 
     url = self._url_api(constants.ENDPOINT_YTM_API_SEARCH)
 
-    url_params = copy.deepcopy(constants.URL_PARAMS)
-    payload    = copy.deepcopy(constants.PAYLOAD)
+    url_params = copy.deepcopy(self._params)
+    payload    = copy.deepcopy(self._payload)
 
     if continuation:
         url_params['continuation'] = continuation
@@ -79,7 +79,7 @@ def search \
             'zeroPrefixEnabled': True,
         }
 
-    resp = self.session.post \
+    resp = self._session.post \
     (
         url    = url,
         params = url_params,

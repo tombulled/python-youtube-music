@@ -229,9 +229,12 @@ class BaseYouTubeMusicDL(object):
         return buffer.read()
 
 class AbstractYouTubeMusicDL(object):
-    def __init__(self):
-        self._api = YouTubeMusic()
+    def __init__(self: object, api: object = None):
+        if api is None:
+            api = YouTubeMusic()
+            
         self._base = BaseYouTubeMusicDL()
+        self._api = api
 
     def download_song(self, song_id, directory=None):
         return self._base._download \

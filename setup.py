@@ -21,6 +21,10 @@ DEPENDENCIES_OPTIONAL = \
         'mutagen',
         'Pillow',
     ),
+    'dev': \
+    (
+        'pytest',
+    ),
 }
 
 config = dict \

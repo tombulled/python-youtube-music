@@ -7,9 +7,9 @@ These constants help the super package achieve general tasks.
 from ....constants import *
 
 # Headers
-HEADER_VISITOR_ID   = 'CgtqQXdSZDY3c29hSSiPsr_uBQ%3D%3D'
-HEADER_DO_NOT_TRACK = '1'
-HEADER_TRAILERS     = 'Trailers'
+# HEADER_VISITOR_ID   = 'CgtqQXdSZDY3c29hSSiPsr_uBQ%3D%3D'
+# HEADER_DO_NOT_TRACK = '1'
+# HEADER_TRAILERS     = 'Trailers'
 
 # User Agents
 USER_AGENTS = \

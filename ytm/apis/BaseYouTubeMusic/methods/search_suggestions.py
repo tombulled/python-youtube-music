@@ -40,13 +40,13 @@ def search_suggestions(self: object, query: str = None) -> List[str]:
         >>>
     '''
 
-    resp = self.session.post \
+    resp = self._session.post \
     (
         url    = self._url_api(constants.ENDPOINT_YTM_API_SEARCH_SUGGESTIONS),
-        params = constants.URL_PARAMS,
+        params = self._params,
         json   = \
         {
-            **constants.PAYLOAD,
+            **self._payload,
             'input': query or '',
         },
     )

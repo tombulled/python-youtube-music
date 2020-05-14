@@ -41,9 +41,11 @@ class TypeB64(TypeStr):
 
         Example:
             >>> TypeB64._parse('Zm9vIGJhci4gMSArIDEgPSAyIQ%3D%3D')
-            {'data': b'foo bar. 1 + 1 = 2!'}
-            >>>
+            {'data': 'Zm9vIGJhci4gMSArIDEgPSAyIQ%3D%3D', 'parsed': b'foo bar. 1 + 1 = 2!'}
+            >>> 
         '''
+
+        value = str(value)
 
         if pattern is None:
             pattern = cls._pattern
@@ -70,6 +72,14 @@ class TypeB64(TypeStr):
 
         if match:
             parsed = match.groupdict()
+
+            parsed.update \
+            (
+                {
+                    'parsed': parsed.get('data'),
+                    'data': value,
+                }
+            )
 
         return parsed
 

@@ -38,6 +38,17 @@ class Union(tuple, metaclass = classes.BuiltinMeta):
             New class instance
         '''
 
+        for item_type in types:
+            if not isinstance(item_type, type):
+                raise TypeError \
+                (
+                    'Invalid {class_name} type: {value}'.format \
+                    (
+                        class_name = cls.__name__,
+                        value      = repr(str(item_type)),
+                    )
+                )
+
         return super().__new__(cls, types)
 
     def __repr__(self: object) -> str:
@@ -79,7 +90,7 @@ class Union(tuple, metaclass = classes.BuiltinMeta):
 
         Example:
             >>> my_union = Union(str, int, bool)
-            >>> 
+            >>>
             >>> my_union
             Union(str, int, bool)
             >>>

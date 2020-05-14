@@ -35,11 +35,11 @@ def guide(self: object) -> dict:
         >>>
     '''
 
-    resp = self.session.post \
+    resp = self._session.post \
     (
         url    = self._url_api(constants.ENDPOINT_YTM_API_GUIDE),
-        params = constants.URL_PARAMS,
-        json   = constants.PAYLOAD,
+        params = self._params,
+        json   = self._payload,
     )
 
     data = resp.json()

@@ -4,7 +4,6 @@ Module containing the Api class: BaseYouTubeMusic
 
 import requests
 
-from . import constants
 from . import utils
 from . import methods
 
@@ -15,10 +14,14 @@ class BaseYouTubeMusic(object):
     Lowest level interactions with YouTube Music are achieved using this class
 
     Attributes:
-        session: Requests session for sending requests
+        _session: Requests session for sending requests
+        _params: URL GET request parameters
+        _payload: YouTube Music base payload
     '''
 
-    session: requests.Session = None
+    _session: requests.Session = None
+    _params:  dict             = {}
+    _payload: dict             = {}
 
     def __init__(self: object) -> None:
         '''
@@ -39,16 +42,17 @@ class BaseYouTubeMusic(object):
 
             setattr(self.__class__, method_name, method)
 
-        self.session = requests.Session()
+        self._session = requests.Session()
 
-        self.session.headers.update \
+        self._session.headers.update \
         (
             {
-                'User-Agent'       : utils.random_user_agent(),
-                'X-Goog-Visitor-Id': constants.HEADER_VISITOR_ID,
-                'Referer'          : self._url(),
+                'User-Agent': utils.random_user_agent(),
+                'Referer'   : self._url(),
             }
         )
+
+        self._update()
 
     def __repr__(self: object) -> str:
         '''
@@ -67,10 +71,80 @@ class BaseYouTubeMusic(object):
             >>>
             >>> api
             <BaseYouTubeMusic()>
-            >>> 
+            >>>
         '''
 
         return '<{class_name}()>'.format \
         (
             class_name = self.__class__.__name__,
         )
+
+    def _update(self: object) -> None:
+        '''
+        Update the API's core values.
+
+        Args:
+            self: Class instance
+
+        Returns:
+            None
+
+        Example:
+            >>> api = BaseYouTubeMusic()
+            >>>
+            >>> api._update()
+            >>>
+        '''
+
+        page = self.page_home()
+
+        self._payload = \
+        {
+            'context': \
+            {
+                'client': {},
+            },
+        }
+
+        mappings = \
+        (
+            {
+                'container': self._session.headers,
+                'mapping': \
+                {
+                    'X-Goog-Visitor-Id':        'VISITOR_DATA',
+                    'X-YouTube-Client-Name':    'INNERTUBE_CONTEXT_CLIENT_NAME',
+                    'X-YouTube-Client-Version': 'INNERTUBE_CONTEXT_CLIENT_VERSION',
+                    'X-YouTube-Device':         'DEVICE',
+                    'X-YouTube-Page-CL':        'PAGE_CL',
+                    'X-YouTube-Page-Label':     'PAGE_BUILD_LABEL',
+                },
+            },
+            {
+                'container': self._params,
+                'mapping': \
+                {
+                    'key': 'INNERTUBE_API_KEY',
+                },
+            },
+            {
+                'container': self._payload['context']['client'],
+                'mapping': \
+                {
+                    'clientName':    'INNERTUBE_CLIENT_NAME',
+                    'clientVersion': 'INNERTUBE_CLIENT_VERSION',
+                    'gl':            'GL',
+                    'hl':            'HL',
+                },
+            },
+        )
+
+        for mapping_entry in mappings:
+            container = mapping_entry['container']
+            mapping = mapping_entry['mapping']
+
+            for container_key, page_key in mapping.items():
+                container_val = page.get(page_key)
+
+                if container_val:
+                    container[container_key] = str(container_val)

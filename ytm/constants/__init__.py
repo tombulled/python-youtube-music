@@ -24,14 +24,14 @@ PLAYER_PARAMS_RADIO_SONG = 'igMDCNgE'
 PREFIX_RADIO    = 'RDAMPL' # These exist in /types/constants. Are they needed here?
 PREFIX_PLAYLIST = 'VL'
 
-API_KEYS = \
-(
-    'AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30',
-    'AIzaSyDK3iBpDP9nHVTk2qL73FLJICfOC3c51Og',
-    'AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8',
-)
-
-API_KEY = API_KEYS[0]
+# API_KEYS = \
+# (
+#     'AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30',
+#     'AIzaSyDK3iBpDP9nHVTk2qL73FLJICfOC3c51Og',
+#     'AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8',
+# )
+#
+# API_KEY = API_KEYS[0]
 
 # Domains
 DOMAIN_YOUTUBE_MUSIC = 'music.youtube.com'
@@ -46,7 +46,7 @@ PROTOCOL_YOUTUBE       = PROTOCOL_HTTPS
 PROTOCOL_YOUTUBE_MUSIC = PROTOCOL_HTTPS
 
 # Versions
-VERSION_YTM_API = 1
+VERSION_YTM_API = 1 # page_data['PLAYER_CONFIG']['args']['innertube_api_version']
 
 # YouTube Music Endpoints
 ENDPOINT_YTM_HOME                   = ''
@@ -80,11 +80,11 @@ MUSIC_VIDEO_TYPE_OMV = 'MUSIC_VIDEO_TYPE_OMV'
 # Automix settings
 AUTOMIX_SETTING_NORMAL = 'AUTOMIX_SETTING_NORMAL'
 
-URL_PARAMS = \
-{
-    'alt': 'json',
-    'key': API_KEY,
-}
+# URL_PARAMS = \
+# {
+#     'alt': 'json',
+#     'key': API_KEY,
+# }
 
 SEARCH_PARAM_PREFIX    = 'Eg-KAQwIA'
 SEARCH_PARAM_SUFFIX    = 'MABqChADEAQQCRAKEAU%3D'
@@ -115,55 +115,66 @@ SEARCH_PARAMS_MAP_REV = \
     for key, val in SEARCH_PARAMS_MAP.items()
 }
 
-# Check how many of these are required?
-PAYLOAD = \
-{
-    'context': \
-    {
-        'activePlayers': {},
-        'capabilities': {},
-        'client': \
-        {
-            'clientName': 'WEB_REMIX',
-            'clientVersion': '0.1',
-            'experimentIds': [],
-            'experimentsToken': '',
-            'gl': 'GB',
-            'hl': 'en',
-            'locationInfo': \
-            {
-                'locationPermissionAuthorizationStatus': 'LOCATION_PERMISSION_AUTHORIZATION_STATUS_UNSUPPORTED',
-            },
-            'musicAppInfo': \
-            {
-                'musicActivityMasterSwitch': 'MUSIC_ACTIVITY_MASTER_SWITCH_INDETERMINATE',
-                'musicLocationMasterSwitch': 'MUSIC_LOCATION_MASTER_SWITCH_INDETERMINATE',
-                'pwaInstallabilityStatus': 'PWA_INSTALLABILITY_STATUS_UNKNOWN',
-            },
-            'utcOffsetMinutes': 0,
-        },
-        'request': \
-        {
-            'internalExperimentFlags': \
-            [
-                {
-                    'key': 'force_music_enable_outertube_playlist_detail_browse',
-                    'value': 'true',
-                },
-                {
-                    'key': 'force_music_enable_outertube_tastebuilder_browse',
-                    'value': 'true',
-                },
-                {
-                    'key': 'force_music_enable_outertube_search_suggestions',
-                    'value': 'true',
-                },
-            ],
-            'sessionIndex': {},
-        },
-        'user': \
-        {
-            'enableSafetyMode': False,
-        },
-    },
-}
+# PAYLOAD = \
+# {
+#     'context': \
+#     {
+#         'activePlayers': {},
+#         'capabilities': {},
+#         'client': \
+#         {
+#             'clientName': 'WEB_REMIX',
+#             'clientVersion': '0.1',
+#             'experimentIds': [],
+#             'experimentsToken': '',
+#             'gl': 'GB', # GL
+#             'hl': 'en',
+#             'locationInfo': \
+#             {
+#                 'locationPermissionAuthorizationStatus': 'LOCATION_PERMISSION_AUTHORIZATION_STATUS_UNSUPPORTED',
+#             },
+#             'musicAppInfo': \
+#             {
+#                 'musicActivityMasterSwitch': 'MUSIC_ACTIVITY_MASTER_SWITCH_INDETERMINATE',
+#                 'musicLocationMasterSwitch': 'MUSIC_LOCATION_MASTER_SWITCH_INDETERMINATE',
+#                 'pwaInstallabilityStatus': 'PWA_INSTALLABILITY_STATUS_UNKNOWN',
+#             },
+#             'utcOffsetMinutes': 0,
+#         },
+#         'request': \
+#         {
+#             'internalExperimentFlags': \
+#             [
+#                 {
+#                     'key': 'force_music_enable_outertube_playlist_detail_browse',
+#                     'value': 'true',
+#                 },
+#                 {
+#                     'key': 'force_music_enable_outertube_tastebuilder_browse',
+#                     'value': 'true',
+#                 },
+#                 {
+#                     'key': 'force_music_enable_outertube_search_suggestions',
+#                     'value': 'true',
+#                 },
+#             ],
+#             'sessionIndex': {},
+#         },
+#         'user': \
+#         {
+#             'enableSafetyMode': False,
+#         },
+#     },
+# }
+
+# PAYLOAD = \
+# {
+#     'context': \
+#     {
+#         'client': \
+#         {
+#             'clientName': 'WEB_REMIX', # INNERTUBE_CLIENT_NAME
+#             'clientVersion': '0.1', # INNERTUBE_CONTEXT_CLIENT_VERSION, INNERTUBE_CLIENT_VERSION
+#         },
+#     },
+# }

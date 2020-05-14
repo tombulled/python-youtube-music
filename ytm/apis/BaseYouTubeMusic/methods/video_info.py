@@ -9,6 +9,7 @@ from .. import decorators
 import urllib
 import base64
 import json
+import requests
 
 @decorators.catch
 def video_info(self: object, video_id: str) -> dict:
@@ -36,7 +37,9 @@ def video_info(self: object, video_id: str) -> dict:
         >>>
     '''
 
-    resp = self.session.get \
+    video_id = str(video_id)
+
+    resp = requests.get \
     (
         url = self._url_yt(constants.ENDPOINT_YT_VIDEO_INFO),
         params = \
@@ -46,7 +49,7 @@ def video_info(self: object, video_id: str) -> dict:
             'ps': 'default',
             'hl': 'en',
             'gl': 'US',
-            'eurl': f'https://youtube.googleapis.com/v/{video_id}',
+            'eurl': f'https://youtube.googleapis.com/v/{video_id}', # Make this use a url util
         }
     )
 

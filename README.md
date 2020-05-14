@@ -423,10 +423,10 @@ Retrieve information about a specific search.
 >>> results = api.search('alt-j')
 >>>
 >>> list(results)
-['albums', 'playlists', 'videos', 'artists', 'songs', 'top_result']
+['albums', 'playlists', 'videos', 'artists', 'songs', 'top_results']
 >>>
->>> results['top_result']
-'artist'
+>>> results['top_results']
+'artists'
 >>>
 >>> results['artists'][0]['name']
 'alt-J'
@@ -434,6 +434,9 @@ Retrieve information about a specific search.
 >>> results['albums'][0]['name']
 'An Awesome Wave'
 >>>
+>>> results[results['top_results']][0]['name']
+'alt-J'
+>>> 
 ```
 
 </p>

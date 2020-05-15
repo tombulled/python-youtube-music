@@ -107,13 +107,11 @@ def song(data: dict) -> dict:
         'videoDescriptionRenderer',
     )
 
-    video_description_runs = utils.get(video_description_renderer, 'description', 'runs')
-
-    video_like_button      = utils.get(video_metadata_renderer, 'likeButton', 'likeButtonRenderer')
-    video_owner_renderer   = utils.get(video_metadata_renderer, 'owner', 'videoOwnerRenderer')
-    video_subscribe_button = utils.get(video_owner_renderer, 'subscribeButton', 'subscribeButtonRenderer')
-    video_owner_thumbnail  = utils.get(video_owner_renderer, 'thumbnail', 'thumbnails', -1)
-
+    video_description_runs  = utils.get(video_description_renderer, 'description', 'runs')
+    video_like_button       = utils.get(video_metadata_renderer, 'likeButton', 'likeButtonRenderer')
+    video_owner_renderer    = utils.get(video_metadata_renderer, 'owner', 'videoOwnerRenderer')
+    video_subscribe_button  = utils.get(video_owner_renderer, 'subscribeButton', 'subscribeButtonRenderer')
+    video_owner_thumbnail   = utils.get(video_owner_renderer, 'thumbnail', 'thumbnails', -1)
     raw_video_metadata_rows = utils.get(video_description_renderer, 'metadataRowContainer', 'metadataRowContainerRenderer', 'rows', default=())
 
     video_metadata_rows = []
@@ -185,7 +183,7 @@ def song(data: dict) -> dict:
         watch_next_video_long_byline_text = utils.get(watch_next_video, 'longBylineText', 'runs', 0)
 
         watch_next_video_artist_thumbnail = utils.get(watch_next_video, 'channelThumbnail', 'thumbnails', 0)
-        watch_next_video_duration = utils.get(watch_next_video, 'lengthText', 'simpleText', func=cleansers.iso_time)
+        watch_next_video_duration = utils.get(watch_next_video, 'lengthText', 'simpleText', func = cleansers.iso_time)
         watch_next_video_artist_id = utils.get(watch_next_video_long_byline_text, 'navigationEndpoint', 'browseEndpoint', 'browseId')
         watch_next_video_artist_name = utils.get(watch_next_video_long_byline_text, 'text')
         watch_next_video_published_time = utils.get(watch_next_video, 'publishedTimeText', 'simpleText')

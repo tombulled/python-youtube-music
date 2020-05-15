@@ -3,7 +3,10 @@ Module containing the parser: artist
 '''
 
 from .. import utils
+from .. import types
 from . import decorators
+from . import constants
+from . import cleansers
 
 @decorators.enforce_parameters
 @decorators.catch
@@ -34,7 +37,10 @@ def artist(data: dict) -> dict:
 
     assert data, 'No data to parse'
 
-    content = utils.get \
+    # return data ########
+
+    # Entry Points
+    section_list_contents = utils.get \
     (
         data,
         'contents',
@@ -43,80 +49,72 @@ def artist(data: dict) -> dict:
         0,
         'tabRenderer',
         'content',
-    )
-
-    assert content, 'No tab Content'
-
-    contents = utils.get \
-    (
-        content,
         'sectionListRenderer',
         'contents',
         default = (),
     )
+    header = utils.get \
+    (
+        data,
+        'header',
+        'musicImmersiveHeaderRenderer',
+    )
 
-    assert contents, 'No section list contents'
+    assert section_list_contents, 'No section list contents'
+    assert header,       'No Header'
 
     shelves = {}
 
-    for content in contents:
-        content_key = list(content)[0]
-        content = content[content_key]
+    # Make this a util?
+    for section_list in section_list_contents:
+        content_key = list(section_list)[0]
+        content     = section_list[content_key]
 
         if content_key in shelves:
             shelves[content_key].append(content)
         else:
             shelves[content_key] = [content]
 
+    # Artist Shelves
+    songs_shelf       = utils.get(shelves, 'musicShelfRenderer', 0)
+    description_shelf = utils.get(shelves, 'musicDescriptionShelfRenderer', 0)
+    carousel_shelves   = utils.get(shelves, 'musicCarouselShelfRenderer', default = ())
 
-    header_renderer = utils.get \
+    # Songs Shelf > Items
+    songs_shelf_bottom = utils.get \
     (
-        data,
-        'header',
-        'musicImmersiveHeaderRenderer',
-    )
-    shelf_renderer = utils.get \
-    (
-        shelves,
-        'musicShelfRenderer',
-        0,
-    )
-    browse_endpoint = utils.get \
-    (
-        shelf_renderer,
+        songs_shelf,
         'bottomEndpoint',
-        'browseEndpoint',
     )
-    description_shelf_renderer = utils.get \
+    songs_shelf_contents = utils.get \
     (
-        shelves,
-        'musicDescriptionShelfRenderer',
-        0,
+        songs_shelf,
+        'contents',
+        default = (),
     )
+
+    # Header > Items
     subscribe_button_renderer = utils.get \
     (
-        header_renderer,
+        header,
         'subscriptionButton',
         'subscribeButtonRenderer',
     )
 
-    artist_playlist_id = utils.get \
-    (
-        browse_endpoint,
-        'browseId',
-    )
-    artist_playlist_params = utils.get \
-    (
-        browse_endpoint,
-        'params',
-    )
+    # Songs Shelf > Data
+    artist_playlist_id     = utils.get(songs_shelf_bottom, *constants.BROWSE_ENDPOINT_ID)
+    artist_playlist_params = utils.get(songs_shelf_bottom, *constants.BROWSE_ENDPOINT_PARAMS)
+
+    # Description Shelf > Data
+    artist_views       = utils.get(description_shelf, 'subheader', *constants.RUN_TEXT, func = cleansers.views)
+    artist_description = utils.get(description_shelf, 'description', *constants.RUN_TEXT)
+
+    # Header > Data
     artist_name = utils.get \
     (
-        header_renderer,
+        header,
         'title',
-        'runs',
-        0,
-        'text',
+        *constants.RUN_TEXT,
     )
     artist_id = utils.get \
     (
@@ -127,43 +125,34 @@ def artist(data: dict) -> dict:
     (
         subscribe_button_renderer,
         'subscriberCountText',
-        'runs',
-        0,
-        'text',
-    )
-    artist_views = utils.get \
-    (
-        description_shelf_renderer,
-        'subheader',
-        'runs',
-        0,
-        'text',
-        func = lambda views:int(views.strip().split(' ')[0].replace(',', '')),
-    )
-    artist_description = utils.get \
-    (
-        description_shelf_renderer,
-        'description',
-        'runs',
-        0,
-        'text',
+        *constants.RUN_TEXT,
     )
 
-    shelf_songs = utils.get \
+    artist_shelves = {}
+    artist_songs   = []
+
+    shelf_identifiers = \
     (
-        shelf_renderer,
-        'contents',
-        default = (),
+        'albums',
+        'singles',
+        'videos',
+        'songs',
+        'playlists',
+        'similar_artists',
     )
 
-    songs = []
+    shelf_identifier_map = \
+    {
+        'featured_on':          'playlists',
+        'fans_might_also_like': 'similar_artists',
+    }
 
-    for song in shelf_songs:
-        song = utils.get \
-        (
-            song,
-            'musicResponsiveListItemRenderer',
-        )
+    for shelf_identifier in shelf_identifiers:
+        artist_shelves.setdefault(shelf_identifier, None)
+
+    # Songs Shelf > Songs
+    for song in songs_shelf_contents:
+        song = utils.first(song)
 
         song_overlay_watch_endpoint = utils.get \
         (
@@ -262,8 +251,7 @@ def artist(data: dict) -> dict:
         (
             song_flex_column_1_run,
             'navigationEndpoint',
-            'browseEndpoint',
-            'browseId',
+            *constants.BROWSE_ENDPOINT_ID,
         )
         song_album_title = utils.get \
         (
@@ -274,8 +262,7 @@ def artist(data: dict) -> dict:
         (
             song_flex_column_2_run,
             'navigationEndpoint',
-            'browseEndpoint',
-            'browseId',
+            *constants.BROWSE_ENDPOINT_ID,
         )
         song_radio_params = utils.get \
         (
@@ -291,17 +278,17 @@ def artist(data: dict) -> dict:
         song_data = \
         {
             'id':        song_video_id,
-            'name':     song_title,
+            'name':      song_title,
             'thumbnail': song_thumbnail,
             'artist': \
             {
                 'name': song_artist_title,
-                'id':    song_artist_browse_id,
+                'id':   song_artist_browse_id,
             },
             'album': \
             {
                 'name': song_album_title,
-                'id':    song_album_browse_id,
+                'id':   song_album_browse_id,
             },
             'radio': \
             {
@@ -310,37 +297,9 @@ def artist(data: dict) -> dict:
             },
         }
 
-        songs.append(song_data)
+        artist_songs.append(song_data)
 
-    shelves = utils.get \
-    (
-        shelves,
-        'musicCarouselShelfRenderer',
-        default = (),
-    )
-
-    shelves_data = {}
-
-    fields = \
-    (
-        'albums',
-        'singles',
-        'videos',
-        'songs',
-        'playlists',
-        'similar_artists',
-    )
-
-    for field in fields:
-        shelves_data.setdefault(field, None)
-
-    # artist_params = \
-    # {
-    #     'abums': None,
-    #     'singles': None,
-    # }
-
-    for shelf in shelves:
+    for shelf in carousel_shelves:
         shelf_header = utils.get \
         (
             shelf,
@@ -355,6 +314,12 @@ def artist(data: dict) -> dict:
             'iconLinkRenderer',
             'navigationEndpoint',
             'browseEndpoint',
+        )
+        shelf_contents = utils.get \
+        (
+            shelf,
+            'contents',
+            default = (),
         )
 
         shelf_title = utils.get \
@@ -376,35 +341,32 @@ def artist(data: dict) -> dict:
             'params',
         )
 
-        shelf_identifier = shelf_title.strip().lower().replace(' ', '_') \
-            if shelf_title else None
+        shelf_identifier = str(shelf_title).strip().lower().replace(' ', '_')
 
-        shelf_items = utils.get \
-        (
-            shelf,
-            'contents',
-            default = (),
-        )
+        shelf_items = []
 
-        items = []
+        if shelf_identifier in shelf_identifier_map:
+            shelf_identifier = shelf_identifier_map[shelf_identifier]
 
-        for item in shelf_items:
-            item = utils.get \
+        if shelf_identifier not in shelf_identifiers:
+            raise Exception \
             (
-                item,
-                'musicTwoRowItemRenderer',
+                f'Unrecognised sheld identifier: {repr(shelf_identifier)}'
             )
+
+        for shelf_item in shelf_contents:
+            shelf_item = utils.first(shelf_item)
 
             if shelf_identifier == 'albums':
                 shelf_item_browse_endpoint = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'navigationEndpoint',
                     'browseEndpoint',
                 )
                 shelf_item_menu_item_0_playlist_endpoint = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'menu',
                     'menuRenderer',
                     'items',
@@ -415,7 +377,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_menu_item_1_playlist_endpoint = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'menu',
                     'menuRenderer',
                     'items',
@@ -426,14 +388,14 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_subtitle_runs = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'subtitle',
                     'runs',
                 )
 
                 shelf_item_icon_type = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'subtitleBadges',
                     0,
                     'musicInlineBadgeRenderer',
@@ -442,7 +404,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_thumbnail = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'thumbnailRenderer',
                     'musicThumbnailRenderer',
                     'thumbnail',
@@ -451,7 +413,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_title = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'title',
                     'runs',
                     0,
@@ -509,14 +471,13 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_explicit = shelf_item_icon_type == 'MUSIC_EXPLICIT_BADGE'
 
-                item_data = \
+                shelf_item_data = \
                 {
                     'name':      shelf_item_title,
                     'id':        shelf_item_browse_id,
                     'type':      shelf_item_type,
                     'year':      shelf_item_year,
                     'explicit':  shelf_item_explicit,
-                    # 'params':    shelf_item_params,
                     'thumbnail': shelf_item_thumbnail,
                     'shuffle': \
                     {
@@ -530,17 +491,15 @@ def artist(data: dict) -> dict:
                     },
                 }
             elif shelf_identifier == 'singles':
-                # return item ###
-
                 shelf_item_browse_endpoint = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'navigationEndpoint',
                     'browseEndpoint',
                 )
                 shelf_item_watch_playlist_endpoint_0 = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'menu',
                     'menuRenderer',
                     'items',
@@ -551,7 +510,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_watch_playlist_endpoint_1 = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'menu',
                     'menuRenderer',
                     'items',
@@ -563,7 +522,7 @@ def artist(data: dict) -> dict:
 
                 shelf_item_icon_type = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'subtitleBadges',
                     0,
                     'musicInlineBadgeRenderer',
@@ -572,7 +531,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_thumbnail = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'thumbnailRenderer',
                     'musicThumbnailRenderer',
                     'thumbnail',
@@ -581,7 +540,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_name = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'title',
                     'runs',
                     0,
@@ -589,7 +548,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_year = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'subtitle',
                     'runs',
                     0,
@@ -615,7 +574,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_playlist_id = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'thumbnailOverlay',
                     'musicItemThumbnailOverlayRenderer',
                     'content',
@@ -646,7 +605,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_explicit = shelf_item_icon_type == 'MUSIC_EXPLICIT_BADGE'
 
-                item_data = \
+                shelf_item_data = \
                 {
                     'thumbnail': shelf_item_thumbnail,
                     'name':      shelf_item_name,
@@ -655,14 +614,8 @@ def artist(data: dict) -> dict:
                         'id': shelf_item_browse_id,
                         'playlist_id': shelf_item_playlist_id,
                     },
-                    # 'album_id':  shelf_item_browse_id,
                     'year':      shelf_item_year,
                     'explicit':  shelf_item_explicit,
-                    # 'playlist': \
-                    # {
-                    #     'params': shelf_item_playlist_params,
-                    #     'id':     shelf_item_playlist_id,
-                    # },
                     'shuffle': \
                     {
                         'params':      shelf_item_shuffle_params,
@@ -677,13 +630,13 @@ def artist(data: dict) -> dict:
             elif shelf_identifier == 'videos':
                 shelf_item_watch_endpoint = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'navigationEndpoint',
                     'watchEndpoint',
                 )
                 shelf_item_menu_0_watch_endpoint = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'menu',
                     'menuRenderer',
                     'items',
@@ -694,7 +647,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_subtitle_run_0 = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'subtitle',
                     'runs',
                     0,
@@ -719,7 +672,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_thumbnail = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'thumbnailRenderer',
                     'musicThumbnailRenderer',
                     'thumbnail',
@@ -728,7 +681,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_name = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'title',
                     'runs',
                     0,
@@ -758,7 +711,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_views = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'subtitle',
                     'runs',
                     -1,
@@ -766,7 +719,7 @@ def artist(data: dict) -> dict:
                     func = lambda views: views.strip().split(' ')[0],
                 )
 
-                item_data = \
+                shelf_item_data = \
                 {
                     'name':      shelf_item_name,
                     'id':        shelf_item_video_id,
@@ -783,16 +736,16 @@ def artist(data: dict) -> dict:
                         'playlist_id': shelf_item_radio_playlist_id,
                     },
                 }
-            elif shelf_identifier == 'featured_on':
+            elif shelf_identifier == 'playlists':
                 shelf_item_browse_endpoint = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'navigationEndpoint',
                     'browseEndpoint',
                 )
                 shelf_item_menu_item_0_playlist_endpoint = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'menu',
                     'menuRenderer',
                     'items',
@@ -803,7 +756,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_menu_item_1_playlist_endpoint = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'menu',
                     'menuRenderer',
                     'items',
@@ -815,7 +768,7 @@ def artist(data: dict) -> dict:
 
                 shelf_item_thumbnail = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'thumbnailRenderer',
                     'musicThumbnailRenderer',
                     'thumbnail',
@@ -824,7 +777,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_playlist_id = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'thumbnailOverlay',
                     'musicItemThumbnailOverlayRenderer',
                     'content',
@@ -835,7 +788,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_name = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'title',
                     'runs',
                     0,
@@ -855,7 +808,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_type = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'subtitle',
                     'runs',
                     0,
@@ -863,7 +816,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_artist = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'subtitle',
                     'runs',
                     2,
@@ -890,7 +843,7 @@ def artist(data: dict) -> dict:
                     'playlistId',
                 )
 
-                item_data = \
+                shelf_item_data = \
                 {
                     'name':      shelf_item_name,
                     'id':        shelf_item_playlist_id,
@@ -906,16 +859,16 @@ def artist(data: dict) -> dict:
                         'playlist_id': shelf_item_radio_playlist_id,
                     },
                 }
-            elif shelf_identifier == 'fans_might_also_like':
+            elif shelf_identifier == 'similar_artists':
                 shelf_item_browse_endpoint = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'navigationEndpoint',
                     'browseEndpoint',
                 )
                 shelf_item_menu_item_0_playlist_endpoint = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'menu',
                     'menuRenderer',
                     'items',
@@ -926,7 +879,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_menu_item_1_playlist_endpoint = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'menu',
                     'menuRenderer',
                     'items',
@@ -950,7 +903,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_thumbnail = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'thumbnailRenderer',
                     'musicThumbnailRenderer',
                     'thumbnail',
@@ -959,7 +912,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_title = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'title',
                     'runs',
                     0,
@@ -967,7 +920,7 @@ def artist(data: dict) -> dict:
                 )
                 shelf_item_subscribers = utils.get \
                 (
-                    item,
+                    shelf_item,
                     'subtitle',
                     'runs',
                     0,
@@ -995,7 +948,7 @@ def artist(data: dict) -> dict:
                     'playlistId',
                 )
 
-                item_data = \
+                shelf_item_data = \
                 {
                     'name':        shelf_item_title,
                     'id':          shelf_item_browse_id,
@@ -1012,84 +965,41 @@ def artist(data: dict) -> dict:
                         'playlist_id': shelf_item_shuffle_playlist_id,
                     },
                 }
-            else:
-                raise Exception \
-                (
-                    f'Unrecognised sheld identifier: {repr(shelf_identifier)}'
-                )
-                # return # raise
 
-            items.append(item_data)
+            shelf_items.append(shelf_item_data)
 
-        if shelf_identifier == 'albums':
-            shelf_data = \
-            {
-                'title':  shelf_title,
-                'params': shelf_params,
-                'items':  items,
-            }
-            # shelf_data = items
+        shelf_data = \
+        {
+            'title':  shelf_title,
+            'items':  shelf_items,
+        }
 
-            # artist_params[shelf_identifier] = shelf_params
+        if shelf_identifier in ('albums', 'singles'):
+            shelf_data['params'] = shelf_params
 
             # Update to correct artist id
             if shelf_browse_id:
-                artist_id = shelf_browse_id
-        elif shelf_identifier == 'singles':
-            shelf_data = \
-            {
-                'title':  shelf_title,
-                'params': shelf_params,
-                'items':  items,
-            }
-            # shelf_data = items
-
-            # artist_params[shelf_identifier] = shelf_params
-
-            # Update to correct artist id
-            if shelf_browse_id:
-                artist_id = shelf_browse_id
+                artist_id = str(types.ArtistId(shelf_browse_id))
         elif shelf_identifier == 'videos':
-            if shelf_browse_id and shelf_browse_id.startswith('VL'):
-                shelf_browse_id = shelf_browse_id[2:]
+            if shelf_browse_id:
+                shelf_browse_id = str(types.ChartPlaylistId(shelf_browse_id)) ### For now. This type will be changed soon.
 
-            shelf_data = \
-            {
-                'title':       shelf_title,
-                'playlist_id': shelf_browse_id,
-                'items':       items,
-            }
-        elif shelf_identifier == 'featured_on':
-            shelf_data = \
-            {
-                'title': shelf_title,
-                'items': items,
-            }
+            shelf_data['playlist_id'] = shelf_browse_id
 
-            shelf_identifier = 'playlists'
-        elif shelf_identifier == 'fans_might_also_like':
-            shelf_data = \
-            {
-                'title': shelf_title,
-                'items': items,
-            }
+        artist_shelves[shelf_identifier] = shelf_data
 
-            shelf_identifier = 'similar_artists'
-        else:
-            return # raise
+    if artist_playlist_id:
+        artist_playlist_id = str(types.ArtistSongsPlaylistId(artist_playlist_id))
 
-        shelves_data[shelf_identifier] = shelf_data
+    if artist_songs:
+        artist_shelves['songs'] = \
+        {
+            'title':       'Songs',
+            'playlist_id': artist_playlist_id,
+            'items':       artist_songs,
+        }
 
-    if artist_playlist_id and artist_playlist_id.startswith('VL'):
-        artist_playlist_id = artist_playlist_id[2:]
-
-    shelves_data['songs'] = \
-    {
-        'title':       'Songs',
-        'playlist_id': artist_playlist_id,
-        'items':       songs,
-    } if songs else None
-
+    # return data ########
     scraped = \
     {
         'name':        artist_name,
@@ -1097,8 +1007,7 @@ def artist(data: dict) -> dict:
         'subscribers': artist_subscribers,
         'views':       artist_views,
         'description': artist_description,
+        **artist_shelves,
     }
-
-    scraped.update(shelves_data)
 
     return scraped

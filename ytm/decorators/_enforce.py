@@ -2,6 +2,7 @@
 Module containing the decorator: _enforce
 '''
 
+import copy
 import functools
 import inspect
 from typing import Callable, Any
@@ -51,7 +52,6 @@ def _enforce(parameters: bool = True, return_value: bool = True) -> Callable:
         '''
 
         signature = inspect.signature(func)
-        argument_keys = list(signature.parameters)
 
         is_empty = lambda object: getattr(object, '__name__', None) == inspect._empty.__name__
 
@@ -68,18 +68,23 @@ def _enforce(parameters: bool = True, return_value: bool = True) -> Callable:
                 The wrapped functions return value
             '''
 
-            arguments = {**dict(zip(argument_keys, args)), **kwargs}
-
             parameters = signature.parameters \
                 if enforce_parameters \
                 else {}
 
+            arguments = copy.deepcopy(kwargs)
+
+            for index, (parameter_name, parameter) in enumerate(parameters.items()):
+                if parameter.kind == parameter.VAR_POSITIONAL:
+                    argument = args[index:]
+                else:
+                    argument = args[index]
+
+                arguments[parameter_name] = argument
+
             for parameter_name, parameter in parameters.items() \
                     if parameters else ():
                 parameter_annotation = parameter.annotation
-                # parameter_annotation_name = getattr(parameter_annotation, '__name__', None) \
-                #     or repr(parameter_annotation)
-                    # or getattr(parameter_annotation.__class__, '__name__')
                 parameter_annotation_name = parameter_annotation.__name__ \
                     if isinstance(parameter_annotation, type) \
                     else repr(parameter_annotation)
@@ -99,15 +104,27 @@ def _enforce(parameters: bool = True, return_value: bool = True) -> Callable:
                         )
 
                 if not is_empty(parameter_annotation) \
-                        and parameter_value != parameter_default \
-                        and not isinstance(parameter_value, parameter_annotation):
-                    raise TypeError \
-                    (
-                        f'Expected argument '
-                        f'{repr(parameter_name)} to be of type '
-                        f'{repr(parameter_annotation_name)} not '
-                        f'{repr(parameter_type_name)}'
-                    )
+                        and parameter_value != parameter_default:
+                    if parameter.kind == parameter.VAR_POSITIONAL:
+                        for item in parameter_value:
+                            parameter_item_type = type(item)
+
+                            if not isinstance(item, parameter_annotation):
+                                raise TypeError \
+                                (
+                                    f'Expected argument '
+                                    f'{repr(parameter_name)} to all be of type '
+                                    f'{repr(parameter_annotation_name)} not contain '
+                                    f'{repr(parameter_item_type)}'
+                                )
+                    elif not isinstance(parameter_value, parameter_annotation):
+                        raise TypeError \
+                        (
+                            f'Expected argument '
+                            f'{repr(parameter_name)} to be of type '
+                            f'{repr(parameter_annotation_name)} not '
+                            f'{repr(parameter_type_name)}'
+                        )
 
             resp = func(*args, **kwargs)
 

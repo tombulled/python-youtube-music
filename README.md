@@ -89,6 +89,7 @@ View available methods
  'home',
  'hotlist',
  'playlist',
+ 'queue',
  'search',
  'search_albums',
  'search_artists',
@@ -114,6 +115,7 @@ API methods available to retrieve data from YouTube Music:
 * [Method - Home](#method---home)
 * [Method - Hotlist](#method---hotlist)
 * [Method - Playlist](#method---playlist)
+* [Method - Queue](#method---queue)
 * [Method - Search](#method---search)
 * [Method - Search Albums](#method---search-albums)
 * [Method - Search Artists](#method---search-artists)
@@ -396,6 +398,38 @@ Cloud Control - Dojo Rising
 Broken Bells - The Angel and the Fool
 George Glew - Bittersweet
 Cold War Kids - First
+>>>
+```
+
+</p>
+</details>
+
+### Method - Queue
+Retrieve information about queued songs.
+
+<details>
+<summary>View Example</summary>
+<p>
+
+```python
+>>> queue = api.queue('Gz3-4UuMWjQ', 'Ye8Er8MtiLk')
+>>>
+>>> for song in queue:
+	print(song['artist']['name'], '-', song['name'])
+
+Amber Run - Amen
+Amber Run - Kites
+>>>
+>>> queue2 = api.queue(playlist_id = 'RDCLAK5uy_k5DxhF_vXgbHHoaQ_d2hRBlY11Qgr3xpY')
+>>>
+>>> for song in queue2[:5]: # First 5 Songs
+	print(song['artist']['name'], '-', song['name'])
+
+Justin Bieber & N≠ - Sorry
+Mark Ronson - Uptown Funk (feat. Bruno Mars)
+Calvin Harris - This Is What You Came For (feat. Rihanna)
+Fifth Harmony - Work from Home (feat. Ty Dolla $ign)
+Katy Perry - Roar
 >>>
 ```
 

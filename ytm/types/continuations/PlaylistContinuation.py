@@ -55,10 +55,13 @@ class PlaylistContinuation(base.Continuation):
         pattern_1 = \
         (
             b'^'
-            b'\xe2\xa9\x85\xb2\x02\[\x12'
+            b'\xe2\xa9\x85\xb2\x02'
+            b'.'
+            b'\x12'
             b'(?P<len_playlist_browse_id>.)'
-            b'(?P<playlist_browse_id>.{45})'
-            b'\x1a\*'
+            b'(?P<playlist_browse_id>.+)'
+            b'\x1a'
+            b'(?P<len_suffix>.)'
             b'(?P<suffix>.+)'
             b'$'
         )
@@ -67,7 +70,7 @@ class PlaylistContinuation(base.Continuation):
             b'^'
             b'z'
             b'(?P<len_params>.)'
-            b'(?P<params>.{21})' # Note If you b64 decode this left-stripped of 'PT:' it yields a song_id ?
+            b'(?P<params>.+)'
             b'\x92\x01\x03\x08\xba\x04'
         )
 
@@ -80,7 +83,18 @@ class PlaylistContinuation(base.Continuation):
 
         len_playlist_browse_id = cls._get(parsed_1, int, 'len_playlist_browse_id')
         playlist_browse_id     = cls._get(parsed_1, str, 'playlist_browse_id')
+        len_suffix             = cls._get(parsed_1, int, 'len_suffix')
         suffix                 = cls._get(parsed_1, str, 'suffix')
+
+        lengths_1 = \
+        (
+            (playlist_browse_id, len_playlist_browse_id),
+            (suffix,             len_suffix),
+        )
+
+        for item, length in lengths_1:
+            if not item or len(item) != length:
+                return data
 
         if not playlist_browse_id or len(playlist_browse_id) != len_playlist_browse_id:
             return data

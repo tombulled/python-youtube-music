@@ -42,7 +42,7 @@ class TypeB64(TypeStr):
         Example:
             >>> TypeB64._parse('Zm9vIGJhci4gMSArIDEgPSAyIQ%3D%3D')
             {'data': 'Zm9vIGJhci4gMSArIDEgPSAyIQ%3D%3D', 'parsed': b'foo bar. 1 + 1 = 2!'}
-            >>> 
+            >>>
         '''
 
         value = str(value)

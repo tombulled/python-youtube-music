@@ -155,7 +155,7 @@ class BaseYouTubeMusic(object):
 
         for mapping_entry in mappings:
             container = mapping_entry['container']
-            mapping = mapping_entry['mapping']
+            mapping   = mapping_entry['mapping']
 
             for container_key, page_key in mapping.items():
                 container_val = page.get(page_key)

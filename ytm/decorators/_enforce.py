@@ -79,11 +79,11 @@ def _enforce(parameters: bool = True, return_value: bool = True) -> Callable:
                     continue
 
                 if parameter.kind == parameter.VAR_POSITIONAL:
-                    argument = args[index:]
-                else:
-                    argument = args[index]
+                    arguments[parameter_name] = args[index:]
 
-                arguments[parameter_name] = argument
+                    break
+                else:
+                    arguments[parameter_name] = args[index]
 
             for parameter_name, parameter in parameters.items() \
                     if parameters else ():

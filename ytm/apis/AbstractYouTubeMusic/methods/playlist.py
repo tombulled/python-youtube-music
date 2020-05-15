@@ -9,10 +9,6 @@ from .... import utils
 from ....types import \
 (
     Union,
-    ChartPlaylistId,
-    ChartPlaylistBrowseId,
-    ArtistSongsPlaylistId,
-    ArtistSongsPlaylistBrowseId,
     PlaylistId,
     PlaylistBrowseId,
     PlaylistContinuation,
@@ -24,10 +20,6 @@ def playlist \
             self: object,
             playlist_id: Union \
             (
-                ChartPlaylistId,
-                ChartPlaylistBrowseId,
-                ArtistSongsPlaylistId,
-                ArtistSongsPlaylistBrowseId,
                 PlaylistId,
                 PlaylistBrowseId,
             ) = None,
@@ -66,12 +58,7 @@ def playlist \
     '''
 
     if playlist_id is not None:
-        # Turn this into a mapping
-        if utils.isinstance(playlist_id, types.ChartPlaylistId):
-            playlist_browse_id = types.ChartPlaylistBrowseId(playlist_id)
-        elif utils.isinstance(playlist_id, types.ArtistSongsPlaylistId):
-            playlist_browse_id = types.ArtistSongsPlaylistBrowseId(playlist_id)
-        elif utils.isinstance(playlist_id, types.PlaylistId):
+        if utils.isinstance(playlist_id, types.PlaylistId):
             playlist_browse_id = types.PlaylistBrowseId(playlist_id)
         else:
             playlist_browse_id = playlist_id

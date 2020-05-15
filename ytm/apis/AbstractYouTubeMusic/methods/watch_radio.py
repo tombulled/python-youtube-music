@@ -10,14 +10,6 @@ from .... import types
 from ....types import \
 (
     Union,
-    ChartPlaylistId,
-    ChartPlaylistBrowseId,
-    ChartRadioId,
-    ChartShuffleId,
-    ArtistSongsPlaylistId,
-    ArtistSongsPlaylistBrowseId,
-    ArtistSongsRadioId,
-    ArtistSongsShuffleId,
     ArtistRadioId,
     ArtistShuffleId,
     PlaylistId,
@@ -39,14 +31,6 @@ def watch_radio \
             song_id: SongId = None,
             playlist_id: Union \
             (
-                ChartPlaylistId,
-                ChartPlaylistBrowseId,
-                ChartRadioId,
-                ChartShuffleId,
-                ArtistSongsPlaylistId,
-                ArtistSongsPlaylistBrowseId,
-                ArtistSongsRadioId,
-                ArtistSongsShuffleId,
                 ArtistRadioId,
                 ArtistShuffleId,
                 PlaylistId,
@@ -90,18 +74,6 @@ def watch_radio \
 
     type_map = \
     {
-        types.ChartRadioId: \
-        (
-            types.ChartPlaylistId,
-            types.ChartPlaylistBrowseId,
-            types.ChartShuffleId,
-        ),
-        types.ArtistSongsRadioId: \
-        (
-            types.ArtistSongsPlaylistId,
-            types.ArtistSongsPlaylistBrowseId,
-            types.ArtistSongsShuffleId,
-        ),
         types.ArtistRadioId: \
         (
             types.ArtistShuffleId,

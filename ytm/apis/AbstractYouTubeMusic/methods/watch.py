@@ -12,14 +12,6 @@ from ....types import \
     SongId,
     Params,
     WatchContinuation,
-    ChartPlaylistId,
-    ChartPlaylistBrowseId,
-    ChartRadioId,
-    ChartShuffleId,
-    ArtistSongsPlaylistId,
-    ArtistSongsPlaylistBrowseId,
-    ArtistSongsRadioId,
-    ArtistSongsShuffleId,
     ArtistRadioId,
     ArtistShuffleId,
     PlaylistId,
@@ -40,14 +32,6 @@ def watch \
             song_id:      SongId = None,
             playlist_id:  Union \
             (
-                ChartPlaylistId,
-                ChartPlaylistBrowseId,
-                ChartRadioId,
-                ChartShuffleId,
-                ArtistSongsPlaylistId,
-                ArtistSongsPlaylistBrowseId,
-                ArtistSongsRadioId,
-                ArtistSongsShuffleId,
                 ArtistRadioId,
                 ArtistShuffleId,
                 PlaylistId,
@@ -95,8 +79,6 @@ def watch \
 
     type_map = \
     {
-        types.ChartPlaylistBrowseId:       types.ChartPlaylistId,
-        types.ArtistSongsPlaylistBrowseId: types.ArtistSongsPlaylistId,
         types.PlaylistBrowseId:            types.PlaylistId,
         types.AlbumPlaylistBrowseId:       types.AlbumPlaylistId,
     }

@@ -20,16 +20,33 @@ class PlaylistId(base.Id):
         >>>
     '''
 
-    _pattern: str = '^(?P<prefix>{prefixes})?(?P<data>{prefix}[{chars}]{{{entropy_length}}})$'.format \
+    _pattern: str = \
     (
-        prefixes       = '|'.join \
+        '^(?P<prefix>{prefixes})?(?P<data>{patterns})$'
+    ).format \
+    (
+        prefixes = '|'.join \
         (
             (
                 constants.PREFIX_PLAYLIST_BROWSE_ID,
                 constants.PREFIX_PLAYLIST_RADIO_ID,
             ),
         ),
-        prefix         = constants.PREFIX_PLAYLIST_ID,
-        chars          = constants.CHARS_ID,
-        entropy_length = constants.LEN_ENTROPY_PLAYLIST_ID,
+        patterns = '|'.join \
+        (
+            '(?:{prefix}[{chars}]{{{entropy_length}}})'.format(**data)
+             for data in \
+            (
+                {
+                    'prefix':         constants.PREFIX_PLAYLIST_ID,
+                    'chars':          constants.CHARS_ID,
+                    'entropy_length': constants.LEN_ENTROPY_PLAYLIST_ID,
+                },
+                {
+                    'prefix':         constants.PREFIX_CHART_PLAYLIST_ID,
+                    'chars':          constants.CHARS_ID,
+                    'entropy_length': constants.LEN_ENTROPY_CHART_PLAYLIST_ID,
+                },
+            )
+        ),
     )

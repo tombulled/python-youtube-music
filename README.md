@@ -173,10 +173,10 @@ Retrieve information about an artist.
 
 ```python
 >>> artist = api.artist('UC8Yu1_yfN5qPh601Y4btsYw') # Arctic Monkeys
->>> 
+>>>
 >>> list(artist)
 ['name', 'id', 'subscribers', 'views', 'description', 'albums', 'singles', 'videos', 'songs', 'playlists', 'similar_artists']
->>> 
+>>>
 >>> artist['name']
 'Arctic Monkeys'
 >>> artist['subscribers']
@@ -185,7 +185,7 @@ Retrieve information about an artist.
 2082236489
 >>> artist['description']
 'For tour dates, visit the website www.arcticmonkeys.com'
->>> 
+>>>
 ```
 
 </p>
@@ -201,12 +201,12 @@ Retrieve information about an artist's albums.
 
 ```python
 >>> artist = api.artist('UC8Yu1_yfN5qPh601Y4btsYw') # Arctic Monkeys
->>> 
+>>>
 >>> artist_id = artist['id']
 >>> params = artist['albums']['params']
->>> 
+>>>
 >>> albums = api.artist_albums(artist_id, params)
->>> 
+>>>
 >>> for album in albums:
 	print(album['name'])
 
@@ -222,7 +222,7 @@ Favourite Worst Nightmare
 Brianstorm
 Who The Fuck Are Arctic Monkeys?
 Whatever People Say I Am, That's What I Am Not
->>> 
+>>>
 ```
 
 </p>
@@ -238,12 +238,12 @@ Retrieve information about an artist's singles.
 
 ```python
 >>> artist = api.artist('UC8Yu1_yfN5qPh601Y4btsYw') # Arctic Monkeys
->>> 
+>>>
 >>> artist_id = artist['id']
 >>> params = artist['singles']['params']
->>> 
+>>>
 >>> singles = api.artist_singles(artist_id, params)
->>> 
+>>>
 >>> for single in singles:
 	print(single['name'])
 
@@ -261,7 +261,7 @@ Da Frame 2R / Matador
 Leave Before The Lights Come On
 When The Sun Goes Down
 I Bet You Look Good On The Dancefloor
->>> 
+>>>
 ```
 
 </p>
@@ -370,10 +370,10 @@ Retrieve information about a playlist.
 
 ```python
 >>> playlist = api.playlist('RDCLAK5uy_lXWhlJsihey6xq1b50d7Uv93NLqle8TSc')
->>> 
+>>>
 >>> list(playlist)
 ['name', 'type', 'year', 'thumbnail', 'duration', 'id', 'total_tracks', 'artist', 'radio', 'shuffle', 'tracks', 'continuation']
->>> 
+>>>
 >>> playlist['name']
 'Take It Easy Indie'
 >>> playlist['year']
@@ -382,30 +382,30 @@ Retrieve information about a playlist.
 '6+ hours'
 >>> playlist['total_tracks']
 163
->>> 
+>>>
 >>> for track in playlist['tracks'][:5]: # First 5 Tracks
 	print(track['artist']['name'], '-', track['name'])
 
-	
+
 Lord Huron - The Night We Met (feat. Phoebe Bridgers)
 The Lumineers - Cleopatra
 The xx - I Dare You
 Hozier - Work Song
 girl in red - we fell in love in october
->>> 
+>>>
 >>> # Continue Data
 >>> playlist2 = api.playlist(continuation = playlist['continuation'])
->>> 
+>>>
 >>> for track in playlist2['tracks'][:5]: # First 5 Tracks
 	print(track['artist']['name'], '-', track['name'])
 
-	
+
 Maddie Jay - Mood Swings
 Cloud Control - Dojo Rising
 Broken Bells - The Angel and the Fool
 George Glew - Bittersweet
 Cold War Kids - First
->>> 
+>>>
 ```
 
 </p>
@@ -436,7 +436,7 @@ Retrieve information about a specific search.
 >>>
 >>> results[results['top_results']][0]['name']
 'alt-J'
->>> 
+>>>
 ```
 
 </p>
@@ -664,11 +664,11 @@ Retrieve information about a song/video.
 >>> song = api.song('pPt_FZ9m2bM')
 >>>
 >>> list(song)
-['id', 'name', 'views', 'rating', 'duration', 'explicit', 'description', 'thumbnail', 'owner', 'artist', 'date']
+['rating', 'duration', 'description', 'thumbnail', 'name', 'id', 'views', 'dislikes', 'likes', 'explicit', 'recommended', 'date', 'artist']
 >>>
 >>> song['name']
 'The Key to Life on Earth'
->>> song['owner']['name']
+>>> song['artist']['name']
 'Declan McKenna'
 >>> song['views']
 53130
@@ -680,6 +680,15 @@ Retrieve information about a song/video.
 False
 >>> song['date']
 {'year': 2020, 'month': 4, 'day': 14}
+>>>
+>>> for track in song['recommended'][:5]: # First 5 Tracks
+	print(track['artist']['name'], '-', track['name'])
+
+Declan McKenna - British Bombs
+None - Mix - The Key to Life on Earth
+Declan McKenna - Beautiful Faces
+Declan McKenna - Declan McKenna - The Key to Life on Earth (Official Video)
+Will Joseph Cook - Will Joseph Cook - Girls Like Me
 >>>
 ```
 
@@ -696,17 +705,17 @@ Retrieve information about a song/playlist being watched.
 
 ```python
 >>> watch = api.watch('dIwwjy4slI8', 'RDCLAK5uy_mgonaF5RiN90kqT-edkFB53N81dZ9XHp8')
->>> 
+>>>
 >>> list(watch)
 ['id', 'name', 'continuation', 'total', 'tracks', 'radio', 'current']
->>> 
+>>>
 >>> watch['name']
 'Celestial Instrumentals'
 >>> watch['total']
 52
 >>> watch['radio']
 False
->>> 
+>>>
 >>> for track in watch['tracks'][:5]: # First 5 tracks
 	print(track['name'])
 
@@ -715,10 +724,10 @@ The Light
 Sun Drugs
 Dark Lights
 Together Alone
->>> 
+>>>
 >>> # Continue data
 >>> watch2 = api.watch(continuation = watch['continuation'])
->>> 
+>>>
 >>> for track in watch2['tracks'][:5]: # First 5 tracks
 	print(track['name'])
 
@@ -742,13 +751,13 @@ Retrieve information about a song/playlist being watched in radio mode.
 
 ```python
 >>> song_radio = api.watch_radio(song_id = '8A9_1hGmtj0')
->>> 
+>>>
 >>> list(song_radio)
 ['id', 'name', 'continuation', 'total', 'tracks', 'radio', 'current']
->>> 
+>>>
 >>> song_radio['id']
 'RDAMVM8A9_1hGmtj0'
->>> 
+>>>
 >>> for track in song_radio['tracks'][:5]: # First 5 Tracks
 	print(track['name'])
 
@@ -757,17 +766,17 @@ A Gallant Gentleman
 Motion Picture Soundtrack
 Don't Stay Here
 Everything In Its Right Place
->>> 
+>>>
 >>> playlist_radio = api.watch_radio(playlist_id = 'RDCLAK5uy_kNj0whsN9sFy3dqiTCfu34HoOdeZIjfyw')
->>> 
+>>>
 >>> list(playlist_radio)
 ['id', 'name', 'continuation', 'total', 'tracks', 'radio', 'current']
->>> 
+>>>
 >>> playlist_radio['id']
 'RDAMPLRDCLAK5uy_kNj0whsN9sFy3dqiTCfu34HoOdeZIjfyw'
 >>> playlist_radio['name']
 'Ambient Post Rock'
->>> 
+>>>
 >>> for track in playlist_radio['tracks'][:5]: # First 5 Tracks
 	print(track['name'])
 
@@ -776,7 +785,7 @@ The Winter
 The Kindness In Letting Go
 Aldgate Patterns
 I'm Not
->>> 
+>>>
 ```
 
 </p>
@@ -791,13 +800,13 @@ Retrieve information about a playlist being watched in shuffle mode.
 
 ```python
 >>> watch = api.watch_shuffle('RDCLAK5uy_l6Wg_lE2_Wx7GdOE21bKJvYPIif8n1fAQ')
->>> 
+>>>
 >>> list(watch)
 ['id', 'name', 'continuation', 'total', 'tracks', 'radio', 'current']
->>> 
+>>>
 >>> watch['name']
 'Peaceful Indie Dreams'
->>> 
+>>>
 >>> for track in watch['tracks'][:5]: # First 5 Tracks
 	print(track['name'])
 
@@ -806,7 +815,7 @@ Bible Belt (Acoustic)
 Take Care
 Atlas Hands
 Sweetheart, What Have You Done to Us
->>> 
+>>>
 ```
 
 </p>

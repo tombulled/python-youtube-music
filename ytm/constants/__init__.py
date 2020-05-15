@@ -61,6 +61,7 @@ ENDPOINT_YTM_API_BROWSE             = 'browse'
 ENDPOINT_YTM_API_NEXT               = 'next'
 ENDPOINT_YTM_API_GUIDE              = 'guide'
 ENDPOINT_YTM_API_SEARCH_SUGGESTIONS = 'music/get_search_suggestions'
+ENDPOINT_YTM_API_GET_QUEUE          = 'music/get_queue'
 
 # YouTube Endpoints
 ENDPOINT_YT_VIDEO_INFO = 'get_video_info'

@@ -107,6 +107,8 @@ def song(data: dict) -> dict:
         'videoDescriptionRenderer',
     )
 
+    video_description_runs = utils.get(video_description_renderer, 'description', 'runs')
+
     video_like_button      = utils.get(video_metadata_renderer, 'likeButton', 'likeButtonRenderer')
     video_owner_renderer   = utils.get(video_metadata_renderer, 'owner', 'videoOwnerRenderer')
     video_subscribe_button = utils.get(video_owner_renderer, 'subscribeButton', 'subscribeButtonRenderer')
@@ -128,6 +130,14 @@ def song(data: dict) -> dict:
 
     video_publish_date = utils.get(microformat, 'publishDate', func = lambda date: tuple(map(int, date.strip().split('-'))), default=())
     video_upload_date  = utils.get(microformat, 'uploadDate',  func = lambda date: tuple(map(int, date.strip().split('-'))), default=())
+
+    video_description_run_texts = []
+
+    for video_description_run in video_description_runs:
+        video_description_run_text = utils.get(video_description_run, 'text')
+
+        if video_description_run_text:
+            video_description_run_texts.append(video_description_run_text)
 
     # Video Details
     song_author_name       = utils.get(video_details, 'author')
@@ -152,7 +162,7 @@ def song(data: dict) -> dict:
 
     # Video Metadata
     song_date                   = utils.get(video_metadata_renderer, 'dateText', 'simpleText')
-    song_description            = utils.get(video_metadata_renderer, 'description', 'runs', 0, 'text')
+    song_description_long       = utils.get(video_metadata_renderer, 'description', 'runs', 0, 'text')
     song_dislikes               = utils.get(video_like_button, 'dislikeCount')
     song_likes                  = utils.get(video_like_button, 'likeCount')
     song_owner_id               = utils.get(video_subscribe_button, 'channelId')
@@ -163,7 +173,8 @@ def song(data: dict) -> dict:
     song_owner_name             = utils.get(video_owner_renderer, 'title', 'runs', 0, 'text')
 
     # Video Description
-    song_explicit = 'parental_warning' in video_metadata_rows
+    song_explicit    = 'parental_warning' in video_metadata_rows
+    song_description = ''.join(video_description_run_texts)
 
     # Watch Next
     song_recommended_videos = []

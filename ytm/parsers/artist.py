@@ -45,7 +45,7 @@ def artist(data: dict) -> dict:
         'content',
     )
 
-    assert content
+    assert content, 'No tab Content'
 
     contents = utils.get \
     (
@@ -55,7 +55,7 @@ def artist(data: dict) -> dict:
         default = (),
     )
 
-    assert contents
+    assert contents, 'No section list contents'
 
     shelves = {}
 
@@ -67,8 +67,6 @@ def artist(data: dict) -> dict:
             shelves[content_key].append(content)
         else:
             shelves[content_key] = [content]
-
-    # return {'d':data,'s':shelves,} ###
 
 
     header_renderer = utils.get \
@@ -1015,7 +1013,11 @@ def artist(data: dict) -> dict:
                     },
                 }
             else:
-                return # raise
+                raise Exception \
+                (
+                    f'Unrecognised sheld identifier: {repr(shelf_identifier)}'
+                )
+                # return # raise
 
             items.append(item_data)
 

@@ -232,7 +232,7 @@ class AbstractYouTubeMusicDL(object):
     def __init__(self: object, api: object = None):
         if api is None:
             api = YouTubeMusic()
-            
+
         self._base = BaseYouTubeMusicDL()
         self._api = api
 
@@ -289,6 +289,7 @@ class AbstractYouTubeMusicDL(object):
                 **metadata,
                 'title': track_name,
                 'tracknumber': track_index,
+
             }
 
             downloaded = self._base._download \

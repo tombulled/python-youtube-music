@@ -102,9 +102,21 @@ class BaseYouTubeMusic(object):
         {
             'context': \
             {
-                'client': {},
+                'client': \
+                {
+                    'gl': 'US',
+                    'hl': 'en',
+                },
             },
         }
+
+        self._session.headers.update \
+        (
+            {
+                'X-YouTube-Time-Zone':  'Europe/London',
+                'X-YouTube-Utc-Offset': '60',
+            }
+        )
 
         mappings = \
         (
@@ -133,8 +145,10 @@ class BaseYouTubeMusic(object):
                 {
                     'clientName':    'INNERTUBE_CLIENT_NAME',
                     'clientVersion': 'INNERTUBE_CLIENT_VERSION',
-                    'gl':            'GL',
-                    'hl':            'HL',
+                    # The below regional information has been disabled as it may
+                    # interfere with the API which relies on the response being English.
+                    # 'gl':            'GL',
+                    # 'hl':            'HL',
                 },
             },
         )

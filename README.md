@@ -8,7 +8,7 @@
 ![Issues](https://img.shields.io/github/issues/tombulled/python-youtube-music?style=for-the-badge)
 ![License](https://img.shields.io/github/license/tombulled/python-youtube-music?style=for-the-badge)
 
-Python YouTube Music Web API Client - **Still under active development**
+Python YouTube Music Web API Client - **No longer under *active* development**
 
 ![YouTube Music](https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Logo_of_YouTube_Music.svg/1280px-Logo_of_YouTube_Music.svg.png)
 

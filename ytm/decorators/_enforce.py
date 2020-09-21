@@ -82,7 +82,7 @@ def _enforce(parameters: bool = True, return_value: bool = True) -> Callable:
                     arguments[parameter_name] = args[index:]
 
                     break
-                else:
+                elif index < len(args):
                     arguments[parameter_name] = args[index]
 
             for parameter_name, parameter in parameters.items() \

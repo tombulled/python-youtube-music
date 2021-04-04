@@ -94,10 +94,11 @@ class BaseYouTubeMusicDL(object):
             download = True,
         )
 
+        any_title = info.get('track', info.get('title'))
         metadata = utils.filter \
         (
             {
-                'title':       info.get('track', info.get('title')),
+                'title':       any_title,
                 'artist':      info.get('artist'),
                 'album':       info.get('album'),
                 'albumartist': info.get('artist'),
@@ -107,13 +108,14 @@ class BaseYouTubeMusicDL(object):
                 **metadata,
             }
         )
+        info.setdefault('track', any_title)
 
         file_path_src = self._get_file_path \
         (
             info,
             file_name_format % \
             {
-                'title': metadata.get('title'),
+                'title': info.get('title'),
                 'ext': to_ext,
             },
             directory,

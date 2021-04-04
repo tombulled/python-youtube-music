@@ -97,7 +97,7 @@ class BaseYouTubeMusicDL(object):
         metadata = utils.filter \
         (
             {
-                'title':       info.get('track'),
+                'title':       info.get('track', info.get('title')),
                 'artist':      info.get('artist'),
                 'album':       info.get('album'),
                 'albumartist': info.get('artist'),
@@ -113,7 +113,7 @@ class BaseYouTubeMusicDL(object):
             info,
             file_name_format % \
             {
-                'title': info.get('title'),
+                'title': metadata.get('title'),
                 'ext': to_ext,
             },
             directory,

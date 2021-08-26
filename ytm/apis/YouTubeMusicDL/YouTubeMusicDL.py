@@ -110,12 +110,16 @@ class BaseYouTubeMusicDL(object):
         )
         info.setdefault('track', any_title)
 
+        sanitized_name = info['title']
+        illegal_chars = ['\\', '/', ':', '*', '?', '<', '>', '|', '"']
+        for char in illegal_chars:
+            sanitized_name = sanitized_name.replace(char, '_')
         file_path_src = self._get_file_path \
         (
             info,
             file_name_format % \
             {
-                'title': info.get('title'),
+                'title': sanitized_name,
                 'ext': to_ext,
             },
             directory,
@@ -125,7 +129,7 @@ class BaseYouTubeMusicDL(object):
         (
             file_name_format % \
             {
-                'title': info.get('title'),
+                'title': sanitized_name,
                 'ext':   to_ext,
             }
         )

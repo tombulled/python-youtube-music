@@ -43,7 +43,7 @@ def album(data: dict) -> dict:
         default = (),
     )
 
-    assert raw_mutations
+    assert raw_mutations, 'Empty: frameworkUpdates -> entityBatchUpdate -> mutations'
 
     mutations = {}
 

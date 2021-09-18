@@ -23,6 +23,9 @@ import requests
 # )
 
 class BaseYouTubeMusicDL(object):
+    def __repr__(self) -> str:
+        return f'<{self.__class__.__name__}()>'
+        
     def _download \
             (
                 self,

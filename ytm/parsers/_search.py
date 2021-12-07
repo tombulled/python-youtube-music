@@ -39,6 +39,11 @@ def _search(data: dict) -> dict:
     (
         data,
         'contents',
+        'tabbedSearchResultsRenderer',
+        'tabs',
+        0,
+        'tabRenderer',
+        'content',
         'sectionListRenderer',
     )
 

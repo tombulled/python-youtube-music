@@ -132,3 +132,8 @@ dmypy.json
 
 # Custom
 app.py
+app.*.py
+tst.py
+tst.*.py
+_.*.py
+.ignore/

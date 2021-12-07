@@ -61,7 +61,7 @@ def _search_filter \
     if query:
         query  = query.strip()
 
-        assert query,  'No search query provided'
+        assert query, 'No search query provided'
 
         data = self._base.search \
         (

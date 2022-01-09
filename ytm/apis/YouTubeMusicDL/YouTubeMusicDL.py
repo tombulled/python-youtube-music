@@ -23,6 +23,12 @@ import requests
 # )
 
 class BaseYouTubeMusicDL(object):
+    def __init__(self, youtube_downloader=None):
+        if not youtube_downloader:
+            import youtube_dl
+            youtube_downloader = youtube_dl.YoutubeDL
+        self._yt_dl = youtube_downloader
+
     def __repr__(self) -> str:
         return f'<{self.__class__.__name__}()>'
         
@@ -42,7 +48,6 @@ class BaseYouTubeMusicDL(object):
         import mutagen.id3
         import mutagen.mp4
         import mutagen.easymp4
-        import youtube_dl
 
         file_name_format = '%(title)s.%(ext)s'
 
@@ -73,7 +78,7 @@ class BaseYouTubeMusicDL(object):
                 }
             )
 
-        ytdl = youtube_dl.YoutubeDL \
+        ytdl = self._yt_dl \
         (
             params = \
             {

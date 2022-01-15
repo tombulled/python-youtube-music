@@ -1,56 +1,7 @@
-''' xxx '''
+'''
+Package containing the Api class: AbstractYouTubeMusic
+'''
 
-from ...utils import _import
-from ..BaseYouTubeMusic import BaseYouTubeMusic
+from .AbstractYouTubeMusic import AbstractYouTubeMusic
 
-__all__ = __name__.split('.')[-1:]
-
-_import(locals())
-
-class AbstractYouTubeMusic(object):
-    def __init__(self):
-        # This should be _base or __base
-        # ... so not confused with a method when dir(...)
-        # ... Note: Has to be removed from all methods aswell
-        self.base = BaseYouTubeMusic()
-
-        methods = \
-        (
-            'home',
-            # 'guide', # Made but so pointless
-            'hotlist',
-            'song',
-            'suggest', # Rename to search_suggest ?? search_suggestions ??
-            'watch',   # Rename to next?
-            'playlist',
-            'album',
-
-            'search',
-
-            'search_albums',
-            'search_playlists',
-            'search_videos',
-            'search_artists',
-            'search_songs',
-
-            'artist',
-
-            'artist_albums',  # (artist_id, params)
-            'artist_singles', # (artist_id, params)
-
-            # 'shuffle', # 'playlist_shuffle' ? 'watch_shuffle' ?
-            # 'radio',   # 'playlist_radio'   ? 'watch_radio' ?
-
-            # Others?
-        )
-
-        for method in methods:
-            setattr(self.__class__, method, globals()[method])
-
-    def __repr__(self):
-        representation = '<{class_name}()>'.format \
-        (
-            class_name = self.__class__.__name__,
-        )
-
-        return representation
+__all__ = (AbstractYouTubeMusic.__name__,)

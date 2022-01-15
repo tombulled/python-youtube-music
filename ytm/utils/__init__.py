@@ -1,5 +1,17 @@
-''' xxx '''
+'''
+Package containing utility functions.
 
-from ._import import _import
+These utility functions range in purpose, but help the super package
+achieve general tasks.
 
-_import(locals())
+Example:
+    >>> from ytm import utils
+    >>>
+    >>> utils.__all__
+    ...
+    >>>
+'''
+
+from .include import include as __include
+
+__all__ = tuple(__include(__spec__))

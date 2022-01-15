@@ -1,3 +1,7 @@
-from ..AbstractYouTubeMusic import AbstractYouTubeMusic
+'''
+Package containing the Api class: YouTubeMusic
+'''
 
-class YouTubeMusic(AbstractYouTubeMusic): pass
+from .YouTubeMusic import YouTubeMusic
+
+__all__ = (YouTubeMusic.__name__,)

@@ -1,1 +1,1 @@
-# CLI code goes here.
+# YouTubeMusicDL CLI code here.

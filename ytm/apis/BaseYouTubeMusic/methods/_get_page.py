@@ -55,6 +55,8 @@ def _get_page(self: object, *endpoints: str, params: dict = None) -> dict:
         params = params,
     )
 
+    print(resp.text)
+
     config_match = re.search \
     (
         pattern = r'ytcfg\.set\((?P<data>.*)\);',

@@ -52,6 +52,14 @@ class BaseYouTubeMusic(object):
             }
         )
 
+        # Accept YouTube cookies to prevent "Before you continue to YouTube popup"
+        self._session.cookies.update \
+        (
+            {
+                'SOCS': 'CAISOAgREitib3FfaWRlbnRpdHlmcm9udGVuZHVpc2VydmVyXzIwMjIxMjEzLjA3X3AxGgVlbi1HQiACGgYIgIPTnQY',
+            }
+        )
+
         self._update()
 
     def __repr__(self: object) -> str:

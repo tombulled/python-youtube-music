@@ -33,7 +33,7 @@ class AbstractYouTubeMusic(object):
             >>> api = AbstractYouTubeMusic()
         '''
 
-        self._base = BaseYouTubeMusic()
+        self._base    = BaseYouTubeMusic()
 
         for method_name in methods.__all__:
             method = getattr(methods, method_name)

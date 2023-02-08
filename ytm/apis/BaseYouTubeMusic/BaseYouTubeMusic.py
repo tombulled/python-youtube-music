@@ -52,7 +52,7 @@ class BaseYouTubeMusic(object):
             }
         )
 
-        # Accept YouTube cookies to prevent "Before you continue to YouTube popup"
+        # Accept YouTube cookies to prevent "Before you continue to YouTube" popup
         self._session.cookies.update \
         (
             {

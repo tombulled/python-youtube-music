@@ -527,7 +527,7 @@ def _search(data: dict) -> dict:
                     'musicResponsiveListItemFlexColumnRenderer',
                     'text',
                     'runs',
-                    0,
+                    -1,
                     'text',
                     func = cleansers.iso_time,
                 )
@@ -544,22 +544,22 @@ def _search(data: dict) -> dict:
                 (
                     item,
                     'flexColumns',
-                    -2,
+                    1,
                     'musicResponsiveListItemFlexColumnRenderer',
                     'text',
                     'runs',
-                    0,
+                    -3,
                     'text',
                 )
                 item_album_id = utils.get \
                 (
                     item,
                     'flexColumns',
-                    -2,
+                    1,
                     'musicResponsiveListItemFlexColumnRenderer',
                     'text',
                     'runs',
-                    0,
+                    -3,
                     'navigationEndpoint',
                     'browseEndpoint',
                     'browseId',
@@ -593,12 +593,12 @@ def _search(data: dict) -> dict:
                 (
                     item,
                     'flexColumns',
-                    -3,
+                    1,
                     'musicResponsiveListItemFlexColumnRenderer',
                     'text',
                     'runs',
                     default = (),
-                )[::2]
+                )[:-4:2]
 
                 item_artists = []
 

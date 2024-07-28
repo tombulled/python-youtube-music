@@ -82,37 +82,85 @@ def album(data: dict) -> dict:
             default=(),
         )
     else:
-        other_versions_contents = utils.get \
-        (
+        any_column_browse_results_renderer = utils.get(
             data,
-            'contents',
-            'singleColumnBrowseResultsRenderer',
-            'tabs',
-            0,
-            'tabRenderer',
-            'content',
-            'sectionListRenderer',
-            'contents',
-            0,
-            'musicShelfRenderer',
-            'contents',
-            default=(),
+            "contents",
+            func=lambda _info: list(_info)[0]
         )
-        music_detail = utils.get \
-        (
-            data,
-            'header',
-            'musicDetailHeaderRenderer',
-            default={}
-        )
-        music_items = utils.get \
-        (
-            music_detail,
-            'menu',
-            'menuRenderer',
-            'items',
-            default=[]
-        )
+
+        if any_column_browse_results_renderer == 'singleColumnBrowseResultsRenderer':
+            other_versions_contents = utils.get \
+            (
+                data,
+                'contents',
+                'singleColumnBrowseResultsRenderer',
+                'tabs',
+                0,
+                'tabRenderer',
+                'content',
+                'sectionListRenderer',
+                'contents',
+                0,
+                'musicShelfRenderer',
+                'contents',
+                default=(),
+            )
+
+            music_detail = utils.get \
+            (
+                data,
+                'header',
+                'musicDetailHeaderRenderer',
+                default={}
+            )
+            music_items = utils.get \
+            (
+                music_detail,
+                'menu',
+                'menuRenderer',
+                'items',
+                default=[]
+            )
+
+        else:
+            other_versions_contents = utils.get \
+            (
+                data,
+                'contents',
+                'twoColumnBrowseResultsRenderer',
+                'secondaryContents',
+                'sectionListRenderer',
+                'contents',
+                0,
+                'musicShelfRenderer',
+                'contents',
+                default=(),
+            )
+
+            music_detail = utils.get \
+            (
+                data,
+                'contents',
+                'twoColumnBrowseResultsRenderer',
+                'tabs',
+                0,
+                'tabRenderer',
+                'content',
+                'sectionListRenderer',
+                'contents',
+                0,
+                'musicResponsiveHeaderRenderer',
+                default={}
+            )
+            music_items = utils.get \
+            (
+                music_detail,
+                'buttons',
+                2,
+                'menuRenderer',
+                'items',
+                default=[]
+            )
 
     other_versions = []
     album_data = {}
@@ -214,6 +262,14 @@ def album(data: dict) -> dict:
                 default = (),
             )
 
+        strapline_text_extra_details = utils.get(
+            music_detail,
+            'straplineTextOne',
+            'runs',
+        )
+        if strapline_text_extra_details:
+            album_subtitle_runs.extend(strapline_text_extra_details)
+
         album_thumbnail = utils.get \
         (
             album,
@@ -229,6 +285,16 @@ def album(data: dict) -> dict:
                 music_detail,
                 'thumbnail',
                 'croppedSquareThumbnailRenderer',
+                'thumbnail',
+                'thumbnails',
+                -1,
+            )
+        if not album_thumbnail:
+            album_thumbnail = utils.get \
+            (
+                music_detail,
+                'thumbnail',
+                'musicThumbnailRenderer',
                 'thumbnail',
                 'thumbnails',
                 -1,
@@ -320,6 +386,17 @@ def album(data: dict) -> dict:
                 'browseEndpoint',
                 'browseId'
             )
+        if not album_id:
+            album_id = utils.get(
+                album,
+                'overlay',
+                'musicItemThumbnailOverlayRenderer',
+                'content',
+                'musicPlayButtonRenderer',
+                'playNavigationEndpoint',
+                'watchEndpoint',
+                'playlistId'
+            )
 
         album_radio_id = utils.get \
         (
@@ -330,7 +407,7 @@ def album(data: dict) -> dict:
             'playlistId',
         )
         album_radio_params = utils.get \
-            (
+        (
             album_menu,
             'startRadio',
             'endpoint',
@@ -398,7 +475,7 @@ def album(data: dict) -> dict:
         album_artists = []
         album_year = None
 
-        for album_artist in album_subtitle_runs[2::2]:
+        for album_artist in album_subtitle_runs:
             album_artist_id = utils.get \
             (
                 album_artist,
@@ -414,7 +491,12 @@ def album(data: dict) -> dict:
 
             # with new version, 'year' is also picked up
             if not album_artist_id:
-                album_year = album_info
+                if (
+                    not album_year
+                    and isinstance(album_info, str)
+                    and str.isnumeric(album_info)
+                ):
+                    album_year = album_info
                 continue
 
             album_artist_name = album_info

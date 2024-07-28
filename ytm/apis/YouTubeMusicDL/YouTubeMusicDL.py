@@ -23,6 +23,15 @@ import requests
 # )
 
 class BaseYouTubeMusicDL(object):
+    def __init__(self, youtube_downloader=None):
+        if not youtube_downloader:
+            import youtube_dl
+            youtube_downloader = youtube_dl.YoutubeDL
+        self._yt_dl = youtube_downloader
+
+    def __repr__(self) -> str:
+        return f'<{self.__class__.__name__}()>'
+        
     def _download \
             (
                 self,
@@ -39,7 +48,6 @@ class BaseYouTubeMusicDL(object):
         import mutagen.id3
         import mutagen.mp4
         import mutagen.easymp4
-        import youtube_dl
 
         file_name_format = '%(title)s.%(ext)s'
 
@@ -70,7 +78,7 @@ class BaseYouTubeMusicDL(object):
                 }
             )
 
-        ytdl = youtube_dl.YoutubeDL \
+        ytdl = self._yt_dl \
         (
             params = \
             {
@@ -94,10 +102,11 @@ class BaseYouTubeMusicDL(object):
             download = True,
         )
 
+        any_title = info.get('track', info.get('title'))
         metadata = utils.filter \
         (
             {
-                'title':       info.get('track'),
+                'title':       any_title,
                 'artist':      info.get('artist'),
                 'album':       info.get('album'),
                 'albumartist': info.get('artist'),
@@ -107,13 +116,18 @@ class BaseYouTubeMusicDL(object):
                 **metadata,
             }
         )
+        info.setdefault('track', any_title)
 
+        sanitized_name = info['title']
+        illegal_chars = ['\\', '/', ':', '*', '?', '<', '>', '|', '"']
+        for char in illegal_chars:
+            sanitized_name = sanitized_name.replace(char, '_')
         file_path_src = self._get_file_path \
         (
             info,
             file_name_format % \
             {
-                'title': info.get('title'),
+                'title': sanitized_name,
                 'ext': to_ext,
             },
             directory,
@@ -123,7 +137,7 @@ class BaseYouTubeMusicDL(object):
         (
             file_name_format % \
             {
-                'title': info.get('title'),
+                'title': sanitized_name,
                 'ext':   to_ext,
             }
         )

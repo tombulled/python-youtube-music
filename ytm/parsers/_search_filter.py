@@ -56,27 +56,45 @@ def _search_filter(data: dict, filter: str) -> dict:
 
         data['contents'] = \
         {
-            'sectionListRenderer': \
+            'tabbedSearchResultsRenderer': \
             {
-                'contents': \
-                (
+                'tabs': \
+                [
                     {
-                        'musicShelfRenderer': \
+                        'tabRenderer': \
                         {
-                            **shelf,
+                            'content': \
+                            {
+                                'sectionListRenderer': \
+                                {
+                                    'contents': \
+                                    (
+                                        {
+                                            'musicShelfRenderer': \
+                                            {
+                                                **shelf,
+                                            },
+                                        },
+                                    ),
+                                },
+                            },
                         },
                     },
-                ),
-            }
+                ],
+            },
         }
 
     shelves = utils.get \
     (
         data,
         'contents',
+        'tabbedSearchResultsRenderer',
+        'tabs',
+        0,
+        'tabRenderer',
+        'content',
         'sectionListRenderer',
         'contents',
-        default = (),
     )
 
     assert shelves, 'No search results found'

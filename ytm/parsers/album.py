@@ -43,52 +43,95 @@ def album(data: dict) -> dict:
         default = (),
     )
 
-    assert raw_mutations
-
     mutations = {}
+    music_detail = {}
+    music_items = []  # 0: shuffle, # 1: radio, 2: play next, 3: queue next, 4: add playlist, 5: goto artist, 6: share
 
-    for mutation in raw_mutations:
-        payload = utils.get \
+    if raw_mutations:
+        for mutation in raw_mutations:
+            payload = utils.get \
+            (
+                mutation,
+                'payload',
+                default = {},
+            )
+
+            payload_type = utils.get(list(payload.keys()), 0)
+
+            payload = utils.get(payload, payload_type)
+
+            if not payload:
+                continue
+
+            mutations.setdefault(payload_type, []).append(payload)
+
+        other_versions_contents = utils.get \
         (
-            mutation,
-            'payload',
-            default = {},
+            data,
+            'contents',
+            'singleColumnBrowseResultsRenderer',
+            'tabs',
+            0,
+            'tabRenderer',
+            'content',
+            'sectionListRenderer',
+            'contents',
+            1,
+            'musicCarouselShelfRenderer',
+            'contents',
+            default=(),
         )
-
-        payload_type = utils.get(list(payload.keys()), 0)
-
-        payload = utils.get(payload, payload_type)
-
-        if not payload:
-            continue
-
-        mutations.setdefault(payload_type, []).append(payload)
-
-    other_versions_contents = utils.get \
-    (
-        data,
-        'contents',
-        'singleColumnBrowseResultsRenderer',
-        'tabs',
-        0,
-        'tabRenderer',
-        'content',
-        'sectionListRenderer',
-        'contents',
-        1,
-        'musicCarouselShelfRenderer',
-        'contents',
-        default = (),
-    )
+    else:
+        other_versions_contents = utils.get \
+        (
+            data,
+            'contents',
+            'singleColumnBrowseResultsRenderer',
+            'tabs',
+            0,
+            'tabRenderer',
+            'content',
+            'sectionListRenderer',
+            'contents',
+            0,
+            'musicShelfRenderer',
+            'contents',
+            default=(),
+        )
+        music_detail = utils.get \
+        (
+            data,
+            'header',
+            'musicDetailHeaderRenderer',
+            default={}
+        )
+        music_items = utils.get \
+        (
+            music_detail,
+            'menu',
+            'menuRenderer',
+            'items',
+            default=[]
+        )
 
     other_versions = []
+    album_data = {}
+    album_year = None
+    album_type = None
 
-    for album in other_versions_contents:
+    for album_container in other_versions_contents:
         album = utils.get \
         (
-            album,
+            album_container,
             'musicTwoRowItemRenderer',
         )
+        if not album:
+            album = utils.get \
+            (
+                album_container,
+                'musicResponsiveListItemRenderer'
+            )
+        assert album, 'No album data to parse'
 
         album_menu_items = utils.get \
         (
@@ -162,6 +205,14 @@ def album(data: dict) -> dict:
             'runs',
             default = (),
         )
+        if not album_subtitle_runs:
+            album_subtitle_runs = utils.get \
+            (
+                music_detail,
+                'subtitle',
+                'runs',
+                default = (),
+            )
 
         album_thumbnail = utils.get \
         (
@@ -172,6 +223,17 @@ def album(data: dict) -> dict:
             'thumbnails',
             -1,
         )
+        if not album_thumbnail:
+            album_thumbnail = utils.get \
+            (
+                music_detail,
+                'thumbnail',
+                'croppedSquareThumbnailRenderer',
+                'thumbnail',
+                'thumbnails',
+                -1,
+            )
+
         album_name = utils.get \
         (
             album,
@@ -180,6 +242,16 @@ def album(data: dict) -> dict:
             0,
             'text',
         )
+        if not album_name:
+            album_name = utils.get \
+            (
+                music_detail,
+                'title',
+                'runs',
+                -1,
+                'text'
+            )
+
         album_type = utils.get \
         (
             album_subtitle_runs,
@@ -213,6 +285,7 @@ def album(data: dict) -> dict:
             'browseEndpointContextMusicConfig',
             'pageType',
         )
+
         album_id = utils.get \
         (
             album,
@@ -227,6 +300,27 @@ def album(data: dict) -> dict:
             'browseEndpoint',
             'params',
         )
+        if not album_id:
+            album_data = utils.get \
+            (
+                album_subtitle_runs,  # 'Album', 'dot', <data>
+                2,
+            )
+            if not album_name:  # fallback other place info is available
+                album_name = utils.get \
+                (
+                    album_data,
+                    'text'
+                )
+
+            album_id = utils.get \
+            (
+                album_data,
+                'navigationEndpoint',
+                'browseEndpoint',
+                'browseId'
+            )
+
         album_radio_id = utils.get \
         (
             album_menu,
@@ -236,13 +330,34 @@ def album(data: dict) -> dict:
             'playlistId',
         )
         album_radio_params = utils.get \
-        (
+            (
             album_menu,
             'startRadio',
             'endpoint',
             'watchPlaylistEndpoint',
             'params',
         )
+        if not album_radio_id:
+            album_ratio_data = utils.get \
+            (
+                music_items,
+                1,
+                'menuNavigationItemRenderer',
+                'navigationEndpoint',
+                'watchPlaylistEndpoint',
+                default={}
+            )
+            album_radio_id = utils.get \
+            (
+                album_ratio_data,
+                'playlistId'
+            )
+            album_radio_params = utils.get \
+            (
+                album_ratio_data,
+                'params'
+            )
+
         album_shuffle_id = utils.get \
         (
             album_menu,
@@ -259,15 +374,31 @@ def album(data: dict) -> dict:
             'watchPlaylistEndpoint',
             'params',
         )
+        if not album_shuffle_id:
+            album_shuffle_data = utils.get \
+            (
+                music_items,
+                0,
+                'menuNavigationItemRenderer',
+                'navigationEndpoint',
+                'watchPlaylistEndpoint',
+                default={}
+            )
+            album_shuffle_id = utils.get \
+            (
+                album_shuffle_data,
+                'playlistId'
+            )
+            album_shuffle_params = utils.get \
+            (
+                album_shuffle_data,
+                'params'
+            )
 
         album_artists = []
+        album_year = None
 
         for album_artist in album_subtitle_runs[2::2]:
-            album_artist_name = utils.get \
-            (
-                album_artist,
-                'text',
-            )
             album_artist_id = utils.get \
             (
                 album_artist,
@@ -275,13 +406,23 @@ def album(data: dict) -> dict:
                 'browseEndpoint',
                 'browseId',
             )
+            album_info = utils.get \
+            (
+                album_artist,
+                'text',
+            )
 
+            # with new version, 'year' is also picked up
+            if not album_artist_id:
+                album_year = album_info
+                continue
+
+            album_artist_name = album_info
             album_artist_data = \
             {
                 'name': album_artist_name,
                 'id':   album_artist_id,
             }
-
             album_artists.append(album_artist_data)
 
         album_data = \
@@ -311,14 +452,30 @@ def album(data: dict) -> dict:
 
         other_versions.append(album_data)
 
+        # when using music details, data is extracted from tracks directly, which is duplicated
+        if music_detail:
+            break
+
     tracks = utils.get \
     (
         mutations,
         'musicTrack',
         default = (),
     )
+    if not tracks:
+        tracks = [
+            utils.get \
+            (
+                item,
+                'musicResponsiveListItemRenderer',
+                default={}
+            )
+            for item in other_versions_contents
+        ]
+        tracks = [t for t in tracks if t]
 
     tracks_data = []
+    tracks_total_duration = 0
 
     for track in tracks:
         # return track ###
@@ -329,6 +486,17 @@ def album(data: dict) -> dict:
             'albumTrackIndex',
             func = int,
         )
+        if not track_index:
+            track_index = utils.get \
+            (
+                track,
+                'index',
+                'runs',
+                -1,
+                'text',
+                func = int,
+            )
+
         track_artists = utils.get \
         (
             track,
@@ -347,12 +515,34 @@ def album(data: dict) -> dict:
             'lengthMs',
             func = int,
         ) # round(int(track.get('lengthMs'))/60*10**-3, 2)
+        if not track_length:
+            track_duration = utils.get \
+            (
+                track,
+                'fixedColumns',
+                0,
+                'musicResponsiveListItemFixedColumnRenderer',
+                'text',
+                'runs',
+                0,
+                'text'
+            )
+            if ':' in str(track_duration):
+                track_parts = track_duration.split(':')
+                track_parts = [int(part) for part in track_parts]
+                if len(track_parts) == 2:
+                    track_parts = [0] + track_parts  # no hours
+                track_length = 3600 * track_parts[0] + 60 * track_parts[1] + track_parts[2]
+                track_length = int(track_length * 1000)  # to ms
+                tracks_total_duration += track_length
+
         track_thumbnail = utils.get \
         (
             track,
             'thumbnailDetails',
             'thumbnails',
             -1,
+            default=album_thumbnail
         )
         track_title = utils.get \
         (
@@ -364,6 +554,38 @@ def album(data: dict) -> dict:
             track,
             'videoId',
         )
+        if not track_title:
+            track_info = utils.get \
+            (
+                track,
+                'flexColumns',
+                0,
+                'musicResponsiveListItemFlexColumnRenderer',
+                'text',
+                'runs',
+                0,
+                default={}
+            )
+            track_title = utils.get \
+            (
+                track_info,
+                'text'
+            )
+            track_id = utils.get \
+            (
+                track_info,
+                'navigationEndpoint',
+                'watchEndpoint',
+                'videoId'
+            )
+            # alternative
+            if not track_id:
+                track_id = utils.get \
+                (
+                    track,
+                    'playlistItemData',
+                    'videoId'
+                )
 
         track_data = \
         {
@@ -419,6 +641,7 @@ def album(data: dict) -> dict:
         'musicAlbumRelease',
         0,
     )
+
     album_release_detail = utils.get \
     (
         mutations,
@@ -430,110 +653,121 @@ def album(data: dict) -> dict:
     (
         album_release,
         'trackCount',
-        func = int,
+        func = int
     )
-    album_radio_id = utils.get \
-    (
-        album_release,
-        'radioAutomixPlaylistId',
-    )
-    album_shuffle_id = utils.get \
-    (
-        album_release,
-        'radioPlaylistMixPlaylistId', # These may be the wrong way around?
-    )
-    album_id = utils.get \
-    (
-        album_release,
-        'audioPlaylistId',
-    )
-    album_artist_name = utils.get \
-    (
-        album_release,
-        'artistDisplayName',
-    )
-    album_explicit = utils.get \
-    (
-        album_release,
-        'contentRating',
-        'explicitType',
-    ) == 'MUSIC_ENTITY_EXPLICIT_TYPE_EXPLICIT'
-    album_duration = utils.get \
-    (
-        album_release,
-        'durationMs',
-        func = int,
-    ) # /60*10**-3
-    album_primary_artist_ids = utils.get \
-    (
-        album_release,
-        'primaryArtists',
-    )
-    album_release_date = utils.get \
-    (
-        album_release,
-        'releaseDate',
-    )
-    album_release_type = utils.get \
-    (
-        album_release,
-        'releaseType',
-        func = lambda type: type.split('_')[-1].title(),
-    )
-    album_thumbnail = utils.get \
-    (
-        album_release,
-        'thumbnailDetails',
-        'thumbnails',
-        -1,
-    )
-    album_title = utils.get \
-    (
-        album_release,
-        'title',
-    )
-    album_description = utils.get \
-    (
-        album_release_detail,
-        'description',
-    )
+    if not album_track_count and tracks:
+        album_track_count = len(tracks)
 
-    album_radio_data = None
-    album_shuffle_data = None
+    # don't override what has already been found if release is not available!
+    if album_release:
+        album_radio_id = utils.get \
+        (
+            album_release,
+            'radioAutomixPlaylistId'
+        )
+        album_shuffle_id = utils.get \
+        (
+            album_release,
+            'radioPlaylistMixPlaylistId', # These may be the wrong way around?
+            default=album_shuffle_id
+        )
+        album_id = utils.get \
+        (
+            album_release,
+            'audioPlaylistId',
+            default=album_id
+        )
+        album_artist_name = utils.get \
+        (
+            album_release,
+            'artistDisplayName',
+        )
+        album_explicit = utils.get \
+        (
+            album_release,
+            'contentRating',
+            'explicitType',
+        ) == 'MUSIC_ENTITY_EXPLICIT_TYPE_EXPLICIT'
+        album_duration = utils.get \
+        (
+            album_release,
+            'durationMs',
+            func = int,
+        ) # /60*10**-3
+        album_primary_artist_ids = utils.get \
+        (
+            album_release,
+            'primaryArtists',
+        )
+        album_release_date = utils.get \
+        (
+            album_release,
+            'releaseDate',
+        )
+        album_release_type = utils.get \
+        (
+            album_release,
+            'releaseType',
+            func = lambda type: type.split('_')[-1].title(),
+        )
+        album_thumbnail = utils.get \
+        (
+            album_release,
+            'thumbnailDetails',
+            'thumbnails',
+            -1,
+        )
+        album_title = utils.get \
+        (
+            album_release,
+            'title',
+        )
+        album_description = utils.get \
+        (
+            album_release_detail,
+            'description',
+        )
 
-    if album_radio_id:
-        album_radio_data = \
+        album_radio_data = None
+        album_shuffle_data = None
+
+        if album_radio_id:
+            album_radio_data = \
+            {
+                'playlist_id': album_radio_id,
+            }
+        if album_shuffle_id:
+            album_shuffle_data = \
+            {
+                'playlist_id': album_shuffle_id,
+            }
+
+        album_data = \
         {
-            'playlist_id': album_radio_id,
+            'name':          album_title,
+            'id':            album_id,
+            'total_tracks':  album_track_count,
+            'radio':         album_radio_data,
+            'shuffle':       album_shuffle_data,
+            'explicit':      album_explicit,
+            'duration':      album_duration,
+            'date':          album_release_date,
+            'type':          album_release_type,
+            'thumbnail':     album_thumbnail,
+            'description':   album_description,
         }
-    if album_shuffle_id:
-        album_shuffle_data = \
-        {
-            'playlist_id': album_shuffle_id,
-        }
-
-    album_data = \
-    {
-        'name':          album_title,
-        'id':            album_id,
-        'total_tracks':  album_track_count,
-        'radio':         album_radio_data,
-        'shuffle':       album_shuffle_data,
-        'explicit':      album_explicit,
-        'duration':      album_duration,
-        'date':          album_release_date,
-        'type':          album_release_type,
-        'thumbnail':     album_thumbnail,
-        'description':   album_description,
-    }
 
     scraped = \
     {
         **album_data,
-        'artists':  artists_data,
+        'artists':  artists_data or album_data.get('artists', []),
         # 'album':    album_data,
         'tracks':   tracks_data,
         'variants': other_versions,
     }
-
+    scraped.setdefault('total_tracks', album_track_count)
+    scraped.setdefault('explicit', False)  # not available in new version
+    scraped.setdefault('duration', tracks_total_duration)
+    scraped.setdefault('date', {'year': album_year})
+    scraped.setdefault('type', album_type)
     return scraped

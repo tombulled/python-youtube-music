@@ -1,7 +1,7 @@
 import setuptools
 
 NAME           = 'ytm'
-VERSION        = '0.0.1'
+VERSION        = '0.1.0'
 DESCRIPTION    = 'Python YouTube Music Web API Client'
 AUTHOR         = 'Tom Bulled'
 URL            = 'https://github.com/tombulled/python-youtube-music'

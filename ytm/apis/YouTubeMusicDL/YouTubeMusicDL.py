@@ -40,6 +40,7 @@ class BaseYouTubeMusicDL(object):
                 thumbnail = None,
                 directory = None,
                 video     = False,
+                **ydl_extra_opts
             ):
         '''
         '''
@@ -86,6 +87,7 @@ class BaseYouTubeMusicDL(object):
                 'outtmpl':        str(path_file),
                 'postprocessors': post_processors,
                 'format':         format,
+                **ydl_extra_opts
             }
         )
 

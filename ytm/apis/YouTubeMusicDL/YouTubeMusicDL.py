@@ -120,29 +120,32 @@ class BaseYouTubeMusicDL(object):
         )
         info.setdefault('track', any_title)
 
-        sanitized_name = info['title']
-        illegal_chars = ['\\', '/', ':', '*', '?', '<', '>', '|', '"']
-        for char in illegal_chars:
-            sanitized_name = sanitized_name.replace(char, '_')
-        file_path_src = self._get_file_path \
-        (
-            info,
-            file_name_format % \
-            {
-                'title': sanitized_name,
-                'ext': to_ext,
-            },
-            directory,
-        )
-
-        file_path_dst = file_path_src.parent.joinpath \
-        (
-            file_name_format % \
-            {
-                'title': sanitized_name,
-                'ext':   to_ext,
-            }
-        )
+        if info['requested_downloads'][0]['filepath']:
+            file_path_dst = info['requested_downloads'][0]['filepath']
+        else:
+            sanitized_name = info['title']
+            illegal_chars = ['\\', '/', ':', '*', '?', '<', '>', '|', '"']
+            for char in illegal_chars:
+                sanitized_name = sanitized_name.replace(char, '_')
+            file_path_src = self._get_file_path \
+            (
+                info,
+                file_name_format % \
+                {
+                    'title': sanitized_name,
+                    'ext': to_ext,
+                },
+                directory,
+            )
+            print(file_path_src)
+            file_path_dst = file_path_src.parent.joinpath \
+            (
+                file_name_format % \
+                {
+                    'title': sanitized_name,
+                    'ext':   to_ext,
+                }
+            )
 
         if not thumbnail:
             thumbnail = self._get_album_art(info['thumbnails'][0]['url'], crop=True)
@@ -245,30 +248,32 @@ class BaseYouTubeMusicDL(object):
         return buffer.read()
 
 class AbstractYouTubeMusicDL(object):
-    def __init__(self: object, api: object = None):
+    def __init__(self: object, api: object = None, youtube_downloader=None):
         if api is None:
             api = YouTubeMusic()
 
-        self._base = BaseYouTubeMusicDL()
+        self._base = BaseYouTubeMusicDL(youtube_downloader)
         self._api = api
 
-    def download_song(self, song_id, directory=None):
+    def download_song(self, song_id, directory=None, **ydl_extra_opts):
         return self._base._download \
         (
             song_id   = song_id,
             directory = directory,
             video     = False,
+            **ydl_extra_opts
         )
 
-    def download_video(self, song_id, directory=None):
+    def download_video(self, song_id, directory=None, **ydl_extra_opts):
         return self._base._download \
         (
             song_id   = song_id,
             directory = directory,
             video     = True,
+            **ydl_extra_opts
         )
 
-    def download_album(self, album_id, directory=None):
+    def download_album(self, album_id, directory=None, **ydl_extra_opts):
         album = self._api.album(album_id)
 
         album_thumbnail_url = album['thumbnail']['url']
@@ -315,11 +320,12 @@ class AbstractYouTubeMusicDL(object):
                 thumbnail = thumbnail,
                 directory = directory, # CHANGE THIS
                 video     = False,
+                **ydl_extra_opts
             )
 
         return album
 
-    def download_playlist(self, playlist_id, directory=None):
+    def download_playlist(self, playlist_id, directory=None, **ydl_extra_opts):
         playlist = self._api.playlist(playlist_id)
 
         playlist_name          = playlist['name']
@@ -372,6 +378,7 @@ class AbstractYouTubeMusicDL(object):
                 thumbnail = thumbnail,
                 directory = directory, # CHANGE THIS
                 video     = False,
+                **ydl_extra_opts
             )
 
         return playlist

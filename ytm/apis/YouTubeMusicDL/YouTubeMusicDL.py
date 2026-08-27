@@ -67,7 +67,9 @@ class BaseYouTubeMusicDL(object):
             format = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]'
             to_ext = 'mp4'
         else:
-            format = 'bestaudio'
+            # Prefer best audio-only streams, but fallback to any playable format
+            # when YouTube client experiments hide/omit direct bestaudio variants.
+            format = 'bestaudio/best'
             to_ext = 'mp3'
 
             post_processors.append \

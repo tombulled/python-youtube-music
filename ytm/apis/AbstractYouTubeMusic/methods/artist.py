@@ -17,10 +17,10 @@ def artist \
         (
             self:      object,
             artist_id: Union \
-            (
+            [
                 ArtistId,
                 ArtistBrowseId,
-            ),
+            ],
         ) -> dict:
     '''
     Fetch Artist data.
